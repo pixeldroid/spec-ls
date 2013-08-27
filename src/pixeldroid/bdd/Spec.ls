@@ -2,11 +2,13 @@
 package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Matcher;
+	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.Thing;
 
 	public class Spec
 	{
 		private static var things:Vector.<Thing> = [];
+		private static var reporters:Vector.<Reporter> = [];
 
 		public static function describe(thingName:String):Thing
 		{
@@ -14,6 +16,12 @@ package pixeldroid.bdd
 			things.push(thing);
 
 			return thing;
+		}
+
+		public static function addReporter(reporter:Reporter):void
+		{
+			// TODO: make a dictionary to avoid dupes?
+			reporters.push(reporter);
 		}
 
 		public static function execute():void
@@ -24,8 +32,7 @@ package pixeldroid.bdd
 			var n:Number = things.length;
 			for(i = 0; i < n; i++)
 			{
-				things[i].execute();
-				things[i].printExecutionLog();
+				things[i].execute(reporters);
 			}
 		}
 

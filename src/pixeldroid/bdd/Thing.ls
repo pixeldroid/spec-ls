@@ -2,6 +2,7 @@
 package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Matcher;
+	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.models.Expectation;
 	import pixeldroid.bdd.models.MatchResult;
 
@@ -10,6 +11,7 @@ package pixeldroid.bdd
 		private var name:String = '<thing>';
 		private var expectations:Vector.<Expectation> = [];
 		private var executionLog:Vector.<String> = [];
+		private var reporters:Vector.<Reporter> = [];
 
 		public function Thing(name:String)
 		{
@@ -22,17 +24,23 @@ package pixeldroid.bdd
 			expectations.push(new Expectation(declaration, validation));
 		}
 
-		public function execute():void
+		public function execute(reporters:Vector.<Reporter>):void
 		{
-			var e:Expectation;
+			this.reporters = reporters;
+			reportProgress(name);
 
+			var e:Expectation;
 			var i:Number;
 			var n:Number = expectations.length;
 			for (i = 0; i < n; i++)
 			{
 				e = expectations[i];
-				executionLog.push(name +' should ' +e.description);
-				e.test(); // runs the closure, which has captured calls to expects() above
+				reportProgress('+ should ' +e.description +' (' +(i+1) +'/' +n +')');
+
+				// run the validation closure, which has captured this instance in its scope
+				// it will call in to expects(), which will pass flow on to Matcher
+				// which will call addResult()
+				e.test();
 			}
 		}
 
@@ -42,8 +50,7 @@ package pixeldroid.bdd
 			var n:Number = executionLog.length;
 			for (i = 0; i < n; i++)
 			{
-				trace(executionLog[i]);
-				//trace('[' +i +'] ' +executionLog[i]);
+				trace('[' +i +'] ' +executionLog[i]);
 			}
 		}
 
@@ -58,7 +65,21 @@ package pixeldroid.bdd
 		public function addResult(result:MatchResult):void
 		{
 			var verdict:String = result.success ? '.' : 'X';
-			executionLog.push('  ' +verdict +' expect ' +result.message);
+			reportProgress(verdict +' expect ' +result.message);
+		}
+
+
+		private function reportProgress(message:String):void
+		{
+			// TODO: report and store results, not strings
+			executionLog.push(message);
+
+			var i:Number;
+			var n:Number = reporters.length;
+			for (i = 0; i < n; i++)
+			{
+				reporters[i].report(message);
+			}
 		}
 	}
 }

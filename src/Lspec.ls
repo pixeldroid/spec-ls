@@ -8,6 +8,7 @@ package
 
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
+    import pixeldroid.bdd.reporters.ConsoleReporter;
 
     public class Lspec extends Application
     {
@@ -21,7 +22,11 @@ package
             describeLSpec();
             describeExpectations();
 
+            Spec.addReporter(new ConsoleReporter());
             Spec.execute();
+            // TODO: work out error messaging (stack trace?)
+            // TODO: fix toBeA()
+            // TODO: add reporters (console, html, xml, json)
         }
 
         private function describeLSpec():void
