@@ -3,7 +3,7 @@ package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Thing;
 	import pixeldroid.bdd.Matcher;
-	import pixeldroid.bdd.MatchResult;
+	import pixeldroid.bdd.models.MatchResult;
 
 	public class Matcher
 	{

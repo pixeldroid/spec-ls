@@ -1,5 +1,5 @@
 
-package pixeldroid.bdd
+package pixeldroid.bdd.models
 {
 	public class MatchResult
 	{

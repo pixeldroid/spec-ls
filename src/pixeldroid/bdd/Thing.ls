@@ -1,9 +1,9 @@
 
 package pixeldroid.bdd
 {
-	import pixeldroid.bdd.Expectation;
 	import pixeldroid.bdd.Matcher;
-	import pixeldroid.bdd.MatchResult;
+	import pixeldroid.bdd.models.Expectation;
+	import pixeldroid.bdd.models.MatchResult;
 
 	public class Thing
 	{
