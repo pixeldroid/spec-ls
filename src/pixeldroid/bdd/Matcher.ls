@@ -7,8 +7,10 @@ package pixeldroid.bdd
 
 	public class Matcher
 	{
+		// positive matchers do what they say, negative matchers do the opposite
+		private var positive:Boolean = true;
+		
 		private var context:Thing;
-		private var positive:Boolean = true; // positive matchers do what they say, negative matchers do the opposite
 		private var result:MatchResult;
 		private var value:Object;
 
@@ -28,10 +30,10 @@ package pixeldroid.bdd
 		}
 
 
-		public function toBeA(type:Type):void
+		public function toBeA(type:Object):void
 		{
-			result.success = getAdjustedMatch( (value.getType() == type) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeGreaterThan";
+			result.success = getAdjustedMatch( ((value as type) is type) );
+			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeA '" +type.toString() +"'";
 
 			context.addResult(result);
 		}
