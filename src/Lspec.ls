@@ -10,6 +10,7 @@ package
     import pixeldroid.bdd.Thing;
     import pixeldroid.bdd.reporters.ConsoleReporter;
 
+
     public class Lspec extends Application
     {
         override public function run():void
@@ -30,7 +31,7 @@ package
 
         private function describeLSpec():void
         {
-            var it:Thing = Spec.describe('lSpec');
+            var it:Thing = Spec.describe('spec-loom');
 
             it.should('help declare expectations', function() {
                 it.expects('this').not.toEqual('that');
@@ -39,7 +40,7 @@ package
 
         private function describeExpectations():void
         {
-            var it:Thing = Spec.describe('expectations');
+            var it:Thing = Spec.describe('Expectations');
 
             it.should('be executable', function() {
                 var f:Function = function(a:Number,b:Number):Number { return a*b; };
@@ -115,7 +116,7 @@ package
         private function addLabel():void
         {
             var label = new SimpleLabel("assets/Curse-hd.fnt");
-            label.text = "Hello Lspec!";
+            label.text = "spec-loom";
             label.center();
             label.x = stage.stageWidth / 2;
             label.y = stage.stageHeight / 2 - 100;

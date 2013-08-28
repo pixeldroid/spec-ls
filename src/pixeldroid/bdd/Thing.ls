@@ -27,6 +27,7 @@ package pixeldroid.bdd
 		public function execute(reporters:Vector.<Reporter>):void
 		{
 			this.reporters = reporters;
+			reportProgress('');
 			reportProgress(name);
 
 			var e:Expectation;
@@ -35,7 +36,7 @@ package pixeldroid.bdd
 			for (i = 0; i < n; i++)
 			{
 				e = expectations[i];
-				reportProgress('+ should ' +e.description +' (' +(i+1) +'/' +n +')');
+				reportProgress('should ' +e.description +' (' +(i+1) +'/' +n +')');
 
 				// run the validation closure, which has captured this instance in its scope
 				// it will call in to expects(), which will pass flow on to Matcher
