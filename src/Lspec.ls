@@ -109,6 +109,7 @@ package
                 it.expects({}).toBeA(Dictionary);
                 it.expects(function(){}).toBeA(Function);
                 it.expects(it).toBeA(Thing);
+                it.expects(it).not.toBeA(Object);
             });
         }
 
