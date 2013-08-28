@@ -9,7 +9,7 @@ package pixeldroid.bdd
 	{
 		// positive matchers do what they say, negative matchers do the opposite
 		private var positive:Boolean = true;
-		
+
 		private var context:Thing;
 		private var result:MatchResult;
 		private var value:Object;
@@ -30,10 +30,10 @@ package pixeldroid.bdd
 		}
 
 
-		public function toBeA(type:Object):void
+		public function toBeA(type:Type):void
 		{
-			result.success = getAdjustedMatch( ((value as type) is type) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeA '" +type.toString() +"'";
+			result.success = getAdjustedMatch( (value.getFullTypeName() == type.getFullName()) );
+			result.message = "'" +value.getFullTypeName() +"'" +(positive ? "" : " not") +" toBeA '" +type.getFullName() +"'";
 
 			context.addResult(result);
 		}

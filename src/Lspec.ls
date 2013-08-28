@@ -25,7 +25,6 @@ package
             Spec.addReporter(new ConsoleReporter());
             Spec.execute();
             // TODO: work out error messaging (stack trace?)
-            // TODO: fix toBeA()
             // TODO: add reporters (console, html, xml, json)
         }
 
@@ -107,6 +106,8 @@ package
                 it.expects('').toBeA(String);
                 it.expects([]).toBeA(Vector);
                 it.expects({}).toBeA(Dictionary);
+                it.expects(function(){}).toBeA(Function);
+                it.expects(it).toBeA(Thing);
             });
         }
 
