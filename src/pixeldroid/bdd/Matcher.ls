@@ -34,24 +34,31 @@ package pixeldroid.bdd
 		// matchers
 		public function toBeA(type:Type):void
 		{
-			result.success = getAdjustedMatch( (value.getFullTypeName() == type.getFullName()) );
-			result.message = "'" +value.getFullTypeName() +"'" +(positive ? "" : " not") +" toBeA '" +type.getFullName() +"'";
+			// FIXME: there is a known bug with type operators on values passed to functions:
+			// LOOM-1759 - http://theengine.co/forums/troubleshooting-and-issues/topics/bug-type-ops-only-work-on-literal-values/posts/4445
+			var match:Boolean = (value.getFullTypeName() == type.getFullName()) || (value instanceof type) || (value is type);
+			//var match:Boolean = (value.getFullTypeName() == type.getFullName());
+			//var match:Boolean = (value instanceof type);
+			//var match:Boolean = (value is type);
+			//var match:Boolean = ((value as type) != null);
+			result.success = rectifiedMatch( match );
+			result.message = "'" +value.getFullTypeName() +"' " +rectifiedPhrase("toBeA") +" '" +type.getFullName() +"'";
 
 			context.addResult(result);
 		}
 
 		public function toBeNaN():void
 		{
-			result.success = getAdjustedMatch( (isNaN(value as Number)) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeNaN";
+			result.success = rectifiedMatch( (isNaN(value as Number)) );
+			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeNaN");
 
 			context.addResult(result);
 		}
 
 		public function toBeNull():void
 		{
-			result.success = getAdjustedMatch( (value == null) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeNull";
+			result.success = rectifiedMatch( (value == null) );
+			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeNull");
 
 			context.addResult(result);
 		}
@@ -59,8 +66,8 @@ package pixeldroid.bdd
 		public function toBeTruthy():void
 		{
 			var match:Boolean = isNaN(value as Number) ? false : !!(value);
-			result.success = getAdjustedMatch( match );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeTruthy";
+			result.success = rectifiedMatch( match );
+			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeTruthy");
 
 			context.addResult(result);
 		}
@@ -68,24 +75,24 @@ package pixeldroid.bdd
 		public function toBeFalsey():void
 		{
 			var match:Boolean = isNaN(value as Number) ? true : !!!(value);
-			result.success = getAdjustedMatch( match );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeFalsey";
+			result.success = rectifiedMatch( match );
+			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeFalsey");
 
 			context.addResult(result);
 		}
 
 		public function toBeLessThan(value2:Number):void
 		{
-			result.success = getAdjustedMatch( (value < value2) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeLessThan '" +value2.toString() +"'";
+			result.success = rectifiedMatch( (value < value2) );
+			result.message = value.toString() +" " +rectifiedPhrase("toBeLessThan") +" " +value2.toString();
 
 			context.addResult(result);
 		}
 
 		public function toBeGreaterThan(value2:Number):void
 		{
-			result.success = getAdjustedMatch( (value > value2) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toBeGreaterThan '" +value2.toString() +"'";
+			result.success = rectifiedMatch( (value > value2) );
+			result.message = value.toString() +" " +rectifiedPhrase("toBeGreaterThan") +" " +value2.toString();
 
 			context.addResult(result);
 		}
@@ -113,14 +120,23 @@ package pixeldroid.bdd
 
 		public function toEqual(value2:Object):void
 		{
-			result.success = getAdjustedMatch( (value == value2) );
-			result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toEqual '" +value2.toString() +"'";
+			result.success = rectifiedMatch( (value == value2) );
+			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toEqual") +" '" +value2.toString() +"'";
+
+			context.addResult(result);
+		}
 
 			context.addResult(result);
 		}
 
 
-		private function getAdjustedMatch(condition:Boolean):Boolean
+		// helpers
+		private function rectifiedPhrase(phrase:String):String
+		{
+			return (positive ? phrase : 'not ' +phrase);
+		}
+
+		private function rectifiedMatch(condition:Boolean):Boolean
 		{
 			return positive ? (condition) : !(condition);
 		}
