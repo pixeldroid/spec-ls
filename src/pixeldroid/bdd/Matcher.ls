@@ -7,7 +7,6 @@ package pixeldroid.bdd
 
 	public class Matcher
 	{
-		// positive matchers do what they say, negative matchers do the opposite
 		private var positive:Boolean = true;
 
 		private var context:Thing;
@@ -23,6 +22,7 @@ package pixeldroid.bdd
 		}
 
 
+		// modifiers
 		public function get not():Matcher
 		{
 			positive = !positive;
@@ -30,6 +30,8 @@ package pixeldroid.bdd
 		}
 
 
+
+		// matchers
 		public function toBeA(type:Type):void
 		{
 			result.success = getAdjustedMatch( (value.getFullTypeName() == type.getFullName()) );

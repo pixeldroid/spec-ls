@@ -2,8 +2,6 @@ package
 {
     import loom.Application;
     import loom2d.display.StageScaleMode;
-    import loom2d.display.Image;
-    import loom2d.textures.Texture;
     import loom2d.ui.SimpleLabel;
 
     import pixeldroid.bdd.Spec;
@@ -15,7 +13,7 @@ package
     {
         override public function run():void
         {
-            trace('[lSpec] - run()');
+            trace('[Lspec] - run()');
 
             stage.scaleMode = StageScaleMode.LETTERBOX;
             addLabel();
@@ -27,6 +25,7 @@ package
             Spec.execute();
             // TODO: work out error messaging (stack trace?)
             // TODO: add reporters (console, html, xml, json)
+            // TODO: compare to minitest
         }
 
         private function describeLSpec():void
