@@ -1,3 +1,5 @@
 logs/
 bin/
 build/
+*.sublime-project
+*.sublime-workspace
