@@ -8,6 +8,7 @@ package pixeldroid.bdd
 	public class Matcher
 	{
 		private var positive:Boolean = true;
+		private var absoluteDelta:Number = 0;
 
 		private var context:Thing;
 		private var result:MatchResult;
@@ -29,6 +30,11 @@ package pixeldroid.bdd
 			return this;
 		}
 
+		public function toBePlusOrMinus(absoluteDelta:Number):Matcher
+		{
+			this.absoluteDelta = absoluteDelta;
+			return this;
+		}		
 
 
 		// matchers
@@ -149,6 +155,11 @@ package pixeldroid.bdd
 
 			context.addResult(result);
 		}
+
+		public function from(value2:Number):void
+		{
+			result.success = rectifiedMatch( (Math.abs(value2 - value) <= absoluteDelta) );
+			result.message = value.toString() +" " +rectifiedPhrase("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
 
 			context.addResult(result);
 		}
