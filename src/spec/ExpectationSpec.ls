@@ -1,44 +1,12 @@
 package
-{
-    import loom.Application;
-    import loom2d.display.StageScaleMode;
-    import loom2d.ui.SimpleLabel;
-
+{    
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
-    import pixeldroid.bdd.reporters.ConsoleReporter;
 
-
-    public class Lspec extends Application
-    {
-        override public function run():void
-        {
-            trace('[Lspec] - run()');
-
-            stage.scaleMode = StageScaleMode.LETTERBOX;
-            addLabel();
-
-            describeLSpec();
-            describeExpectations();
-
-            Spec.addReporter(new ConsoleReporter());
-            Spec.execute();
-            // TODO: work out error messaging (stack trace?)
-            // TODO: add reporters (console, html, xml, json)
-            // TODO: compare to minitest
-        }
-
-        private function describeLSpec():void
-        {
-            var it:Thing = Spec.describe('spec-loom');
-
-            it.should('help declare expectations', function() {
-                it.expects('this').not.toEqual('that');
-            });
-        }
-
-        private function describeExpectations():void
-        {
+	public static class ExpectationSpec
+	{
+		public static function describe():void
+		{
             var it:Thing = Spec.describe('Expectations');
 
             it.should('be executable', function() {
@@ -129,20 +97,7 @@ package
                 it.expects(function(){}).toBeA(Function);
                 it.expects(it).toBeA(Thing);
                 it.expects(it).toBeA(Object);
-                it.expects(this).toBeA(Application);
-                it.expects(this).toBeA(Object);
             });
-        }
-
-
-        private function addLabel():void
-        {
-            var label = new SimpleLabel("assets/Curse-hd.fnt");
-            label.text = "spec-loom";
-            label.center();
-            label.x = stage.stageWidth / 2;
-            label.y = stage.stageHeight / 2 - 100;
-            stage.addChild(label);
-        }
-    }
+		}
+	}
 }
