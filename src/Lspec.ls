@@ -80,11 +80,16 @@ package
                 it.expects({}).not.toEqual({});
             });
 
-            it.should('provide comparison matchers', function() {
+            it.should('provide inequality matchers', function() {
                 it.expects(3).toBeLessThan(5);
                 it.expects(3).not.toBeLessThan(0);
                 it.expects(3).toBeGreaterThan(-5);
                 it.expects(3).not.toBeGreaterThan(3);
+            });
+
+            it.should('provide a range matcher', function() {
+                it.expects(-3).toBePlusOrMinus(5).from(0);
+                it.expects(3).not.toBePlusOrMinus(2).from(0);
             });
 
             it.should('provide a null matcher', function() {
@@ -94,10 +99,25 @@ package
                 it.expects(NaN).not.toBeNull();
             });
 
+            it.should('provide an empty matcher', function() {
+                it.expects([]).toBeEmpty();
+                it.expects('').toBeEmpty();
+                it.expects([1,2,3]).not.toBeEmpty();
+                it.expects('abc').not.toBeEmpty();
+            });
+
             it.should('provide a membership matcher', function() {
                 var v:Vector.<String> = ['a', 'b', 'c'];
                 it.expects(v).toContain('b');
                 it.expects(v).not.toContain('q');
+
+                var s:String = 'abc';
+                it.expects(s).toContain('b');
+                it.expects(s).not.toContain('q');
+
+                s = 'the quick brown fox';
+                it.expects(s).toContain('brown');
+                it.expects(s).not.toContain('dog');
             });
 
             it.should('provide a type matcher', function() {
@@ -108,7 +128,9 @@ package
                 it.expects({}).toBeA(Dictionary);
                 it.expects(function(){}).toBeA(Function);
                 it.expects(it).toBeA(Thing);
-                it.expects(it).not.toBeA(Object);
+                it.expects(it).toBeA(Object);
+                it.expects(this).toBeA(Application);
+                it.expects(this).toBeA(Object);
             });
         }
 
