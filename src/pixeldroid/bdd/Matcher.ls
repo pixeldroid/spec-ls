@@ -97,22 +97,46 @@ package pixeldroid.bdd
 			context.addResult(result);
 		}
 
-		public function toContain(value2:Object):void
+		public function toBeEmpty():void
 		{
-			// in LoomScript, Vector is the only list data type
-            var vector:Vector = [];
-            var isVector:Boolean = (value.getFullTypeName() == vector.getFullTypeName());
-
-            if (isVector)
+            if (value is String)
             {
-            	vector = value as Vector;
-				result.success = getAdjustedMatch( (vector.contains(value2)) );
-				result.message = "'" +value.toString() +"'" +(positive ? "" : " not") +" toContain '" +value2.toString() +"'";
+            	var s:String = value as String;
+				result.success = rectifiedMatch( (s.length == 0) );
+				result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
+            }
+            else if (value is Vector)
+            {
+            	var vector:Vector = value as Vector;
+				result.success = rectifiedMatch( (vector.length == 0) );
+				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toBeEmpty");
             }
             else
             {
-				result.success = false;
-				result.message = "a Vector to test with, but '" +value.toString() +"' is not a Vector";
+				notAContainer(value, result);
+            }
+
+			context.addResult(result);
+		}
+
+		public function toContain(value2:Object):void
+		{
+            if (value is String)
+            {
+            	var string1:String = value as String;
+            	var string2:String = value2 as String;
+				result.success = rectifiedMatch( (string1.indexOf(string2, 0) > -1) );
+				result.message = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
+            }
+            else if (value is Vector)
+            {
+            	var vector:Vector = value as Vector;
+				result.success = rectifiedMatch( (vector.contains(value2)) );
+				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toContain") +" '" +value2.toString() +"'";
+            }
+            else
+            {
+				notAContainer(value, result);
             }
 
 			context.addResult(result);
@@ -139,6 +163,12 @@ package pixeldroid.bdd
 		private function rectifiedMatch(condition:Boolean):Boolean
 		{
 			return positive ? (condition) : !(condition);
+		}
+
+		private function notAContainer(value:Object, result:MatchResult):void
+		{
+			result.success = false;
+			result.message = "a container type to test with, but '" +value.toString() +"' is not a String or Vector";
 		}
 
 	}
