@@ -3,7 +3,7 @@ package
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
 
-	public static class LspecSpec
+	public static class SpecSpec
 	{
 		public static function describe():void
 		{
