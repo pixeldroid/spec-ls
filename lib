@@ -1,12 +1,17 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+require 'fileutils'
 require 'json'
 
+@build_flag = false
+@run_flag = false
+
+
 def usage(s='')
-    $stderr.puts(s)
-    $stderr.puts("Usage: #{File.basename($0)}: [-h | --help] [-b | --build] [-r | --run]")
-    exit(2)
+	$stderr.puts(s)
+	$stderr.puts("Usage: #{File.basename($0)}: [-h | --help] [-b | --build] [-r | --run]")
+	exit(2)
 end
 
 def exec_with_echo(cmd)
@@ -16,52 +21,55 @@ def exec_with_echo(cmd)
 	$?.exitstatus
 end
 
-def mode
-	m = []
+def parse_opts
+	usage("No option specified") if ARGV.length == 0
 
-	loop { 
+	loop {
 		case ARGV[0]
-			when '-b', '--build'
-				ARGV.shift
-				m << :build
-			when '-r', '--run'
-				ARGV.shift
-				m << :run
 			when '-h', '--help'
 				usage()
+			when '-b', '--build'
+				ARGV.shift
+				@build_flag = true
+			when '-r', '--run'
+				ARGV.shift
+				@run_flag = true
 			when /^-/
 				usage("Unknown option: #{ARGV[0].inspect}")
 			else
 				break
 		end
 	}
-
-	return :build_run if m.include? :build and m.include? :run
-	return m[0] if (m.length == 1)
-
-	usage("No option specified")
 end
+
 
 def sdk_name
 	config = JSON.parse(File.read('loom.config'))
 	config['sdk_version']
 end
 
+def libs
+	Dir.entries("./libs").select { |f|
+		!File.directory?(f) and (File.extname(f) == '.loomlib')
+	}
+end
+
+
 def compile(sdk, config_array)
 	config_array.each do | config |
 		cmd = %Q[~/.loom/sdks/#{sdk}/tools/lsc #{config}]
 		abort("◈ compile failed") if (exec_with_echo(cmd) != 0)
 	end
-end	
+end
 
 def execute(sdk, binary)
 	cmd = %Q[~/.loom/sdks/#{sdk}/tools/loomexec #{binary}]
 	abort("◈ execute failed") if (exec_with_echo(cmd) != 0)
-end	
+end
 
 def install_libs(sdk, libs_array)
 	libs_array.each do | lib |
-		cmd = %Q[cp #{lib} ~/.loom/sdks/#{sdk}/libs]
+		cmd = %Q[cp ./libs/#{lib} ~/.loom/sdks/#{sdk}/libs]
 		abort("◈ lib install failed") if (exec_with_echo(cmd) != 0)
 	end
 end
@@ -69,36 +77,56 @@ end
 
 def build
 	sdk = sdk_name
-	
+
 	puts('')
 	puts('...build libs')
 	compile(sdk, ['lib-spec.build'])
 
 	puts('')
 	puts('...install libs')
-	install_libs(sdk, ['libs/Spec.loomlib'])
+	install_libs(sdk, libs)
 
 	puts('')
 	puts('...build app')
 	compile(sdk, ['test-spec.build'])
 end
 
+def release
+	sdk = sdk_name
+	ext = '.loomlib'
+	release_dir = "releases"
+
+	Dir.mkdir(release_dir) unless File.exists?(release_dir)
+
+	puts('')
+	puts('...release libs')
+	libs.each do | lib |
+		lib_release = %Q[#{File.basename(lib, ext)}-#{sdk}#{ext}]
+		puts lib_release
+		FileUtils.copy("./libs/#{lib}", "#{release_dir}/#{lib_release}")
+	end
+end
+
 def run
 	sdk = sdk_name
+
+	puts('')
 	puts('...run app')
 	execute(sdk, 'bin/TestSpec.loom')
 end
 
-case mode
-	when :build
-		build()
-	when :run 
-		run()
-	when :build_run
-		build()
-		run()
+def done
+	puts('')
+	puts("...done")
+	puts('')
 end
 
-puts("...done")
-puts('')
+
+parse_opts()
+
+build() if @build_flag
+release() if @build_flag
+run() if @run_flag
+
+done()
 exit

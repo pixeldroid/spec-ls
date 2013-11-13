@@ -7,6 +7,8 @@ package pixeldroid.bdd
 
 	public class Spec
 	{
+		public static const version:String = '1.0.0';
+
 		private static var things:Vector.<Thing> = [];
 		private static var reporters:Vector.<Reporter> = [];
 
@@ -26,7 +28,7 @@ package pixeldroid.bdd
 
 		public static function execute():void
 		{
-			trace('[Spec] execute()');
+			trace('[Spec v' +version +'] execute()');
 
 			var i:Number;
 			var n:Number = things.length;

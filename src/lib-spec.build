@@ -1,17 +1,17 @@
 {
-    "name": "Spec",
-    "version": "1.0",
-    "outputDir": "./libs",
-    "references": [
-        "System"
-    ],
-    "modules": [
-        {
-            "name": "Spec",
-            "version": "1.0",
-            "sourcePath": [
-                "lib"
-            ]
-        }
-    ]
+	"name": "Spec",
+	"version": "1.0",
+	"outputDir": "./libs",
+	"references": [
+		"System"
+	],
+	"modules": [
+		{
+			"name": "Spec",
+			"version": "1.0",
+			"sourcePath": [
+				"lib"
+			]
+		}
+	]
 }
