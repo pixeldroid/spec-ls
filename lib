@@ -4,9 +4,9 @@
 require 'json'
 
 def usage(s='')
-    $stderr.puts(s)
-    $stderr.puts("Usage: #{File.basename($0)}: [-h | --help] [-b | --build] [-r | --run]")
-    exit(2)
+	$stderr.puts(s)
+	$stderr.puts("Usage: #{File.basename($0)}: [-h | --help] [-b | --build] [-r | --run]")
+	exit(2)
 end
 
 def exec_with_echo(cmd)
@@ -19,7 +19,7 @@ end
 def mode
 	m = []
 
-	loop { 
+	loop {
 		case ARGV[0]
 			when '-b', '--build'
 				ARGV.shift
@@ -52,12 +52,12 @@ def compile(sdk, config_array)
 		cmd = %Q[~/.loom/sdks/#{sdk}/tools/lsc #{config}]
 		abort("◈ compile failed") if (exec_with_echo(cmd) != 0)
 	end
-end	
+end
 
 def execute(sdk, binary)
 	cmd = %Q[~/.loom/sdks/#{sdk}/tools/loomexec #{binary}]
 	abort("◈ execute failed") if (exec_with_echo(cmd) != 0)
-end	
+end
 
 def install_libs(sdk, libs_array)
 	libs_array.each do | lib |
@@ -69,7 +69,7 @@ end
 
 def build
 	sdk = sdk_name
-	
+
 	puts('')
 	puts('...build libs')
 	compile(sdk, ['lib-spec.build'])
@@ -92,7 +92,7 @@ end
 case mode
 	when :build
 		build()
-	when :run 
+	when :run
 		run()
 	when :build_run
 		build()

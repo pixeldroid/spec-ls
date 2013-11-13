@@ -105,45 +105,45 @@ package pixeldroid.bdd
 
 		public function toBeEmpty():void
 		{
-            if (value is String)
-            {
-            	var s:String = value as String;
+			if (value is String)
+			{
+				var s:String = value as String;
 				result.success = rectifiedMatch( (s.length == 0) );
 				result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
-            }
-            else if (value is Vector)
-            {
-            	var vector:Vector = value as Vector;
+			}
+			else if (value is Vector)
+			{
+				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.length == 0) );
 				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toBeEmpty");
-            }
-            else
-            {
+			}
+			else
+			{
 				notAContainer(value, result);
-            }
+			}
 
 			context.addResult(result);
 		}
 
 		public function toContain(value2:Object):void
 		{
-            if (value is String)
-            {
-            	var string1:String = value as String;
-            	var string2:String = value2 as String;
+			if (value is String)
+			{
+				var string1:String = value as String;
+				var string2:String = value2 as String;
 				result.success = rectifiedMatch( (string1.indexOf(string2, 0) > -1) );
 				result.message = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
-            }
-            else if (value is Vector)
-            {
-            	var vector:Vector = value as Vector;
+			}
+			else if (value is Vector)
+			{
+				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.contains(value2)) );
 				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toContain") +" '" +value2.toString() +"'";
-            }
-            else
-            {
+			}
+			else
+			{
 				notAContainer(value, result);
-            }
+			}
 
 			context.addResult(result);
 		}
