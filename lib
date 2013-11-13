@@ -100,7 +100,6 @@ def release
 
 	puts('')
 	puts('...release libs')
-
 	libs.each do | lib |
 		lib_release = %Q[#{File.basename(lib, ext)}-#{sdk}#{ext}]
 		puts lib_release
@@ -110,6 +109,8 @@ end
 
 def run
 	sdk = sdk_name
+
+	puts('')
 	puts('...run app')
 	execute(sdk, 'bin/TestSpec.loom')
 end

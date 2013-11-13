@@ -7,7 +7,7 @@ package
 	{
 		public static function describe():void
 		{
-			var it:Thing = Spec.describe('spec-loom');
+			var it:Thing = Spec.describe('Spec');
 
 			it.should('be versioned', function() {
 				it.expects(Spec.version).not.toBeEmpty();
