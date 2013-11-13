@@ -48,6 +48,11 @@ def sdk_name
 	config['sdk_version']
 end
 
+def app_name
+	config = JSON.parse(File.read('loom.config'))
+	config['executable']
+end
+
 def libs
 	Dir.entries("./libs").select { |f|
 		!File.directory?(f) and (File.extname(f) == '.loomlib')
@@ -108,11 +113,9 @@ def release
 end
 
 def run
-	sdk = sdk_name
-
 	puts('')
 	puts('...run app')
-	execute(sdk, 'bin/TestSpec.loom')
+	execute(sdk_name, "bin/#{app_name}")
 end
 
 def done
