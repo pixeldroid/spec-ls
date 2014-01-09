@@ -1,5 +1,5 @@
 {
-	"name": "TestSpec",
+	"name": "SpecTest",
 	"version": "1.0",
 	"executable": true,
 	"outputDir": "./bin",
@@ -9,7 +9,7 @@
 	],
 	"modules": [
 		{
-			"name": "TestSpec",
+			"name": "SpecTest",
 			"version": "1.0",
 			"sourcePath": [
 				"app",
