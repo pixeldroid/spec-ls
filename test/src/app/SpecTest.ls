@@ -11,7 +11,7 @@ package
 	import SpecSpec;
 
 
-	public class TestSpec extends ConsoleApplication
+	public class SpecTest extends ConsoleApplication
 	{
 		override public function run():void
 		{

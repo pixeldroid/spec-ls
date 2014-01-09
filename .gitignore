@@ -1,7 +1,4 @@
+/releases
 logs/
-bin/
-build/
-*.sublime-project
-*.sublime-workspace
-libs
-releases
+lib/build
+test/bin
