@@ -126,15 +126,16 @@ end
 
 
 def lib_config
-	@lib_loom_config || (@lib_loom_config = JSON.parse(File.read('lib/loom.config')))
+	@lib_loom_config || (@lib_loom_config = JSON.parse(File.read(File.join('lib', 'loom.config'))))
 end
 
 def test_config
-	@test_loom_config || (@test_loom_config = JSON.parse(File.read('test/loom.config')))
+	@test_loom_config || (@test_loom_config = JSON.parse(File.read(File.join('test', 'loom.config'))))
 end
 
 def sdk_root
-	"/Users/#{Etc.getlogin}/.loom/sdks"
+	File.join(Dir.home, '.loom', 'sdks')
+end
 end
 
 def exec_with_echo(cmd)
