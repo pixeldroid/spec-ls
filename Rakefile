@@ -22,15 +22,22 @@ task :list_targets do |t, args|
 end
 
 file "lib/build/Spec.loomlib" do |t, args|
+	puts "[file] creating #{t.name}..."
+
 	sdk_version = lib_config['sdk_version']
+
 	Dir.chdir("lib") do
 		Dir.mkdir('build') unless Dir.exists?('build')
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/lsc Spec.build]
 		try(cmd, "failed to compile .loomlib")
 	end
+
+	puts ''
 end
 
 file "test/bin/SpecTest.loom" => "lib/build/Spec.loomlib" do |t, args|
+	puts "[file] creating #{t.name}..."
+
 	sdk_version = test_config['sdk_version']
 	file_installed = "#{sdk_root}/#{sdk_version}/libs/Spec.loomlib"
 	file_built = ["lib/build/Spec.loomlib"]
@@ -42,6 +49,8 @@ file "test/bin/SpecTest.loom" => "lib/build/Spec.loomlib" do |t, args|
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/lsc SpecTest.build]
 		try(cmd, "failed to compile .loom")
 	end
+
+	puts ''
 end
 
 namespace :lib do
@@ -118,10 +127,13 @@ namespace :test do
 
 	desc "runs SpecTest.loom"
 	task :run => "test/bin/SpecTest.loom" do |t, args|
-		sdk_version = test_config['sdk_version']
+		puts "[#{t.name}] running #{t.prerequisites[0]}..."
 
+		sdk_version = test_config['sdk_version']
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom]
 		try(cmd, "failed to run .loom")
+
+		puts ''
 	end
 
 end
