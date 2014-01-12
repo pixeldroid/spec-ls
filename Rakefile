@@ -8,7 +8,9 @@ require 'rake/clean'
 @lib_loom_config = nil
 @test_loom_config = nil
 
-CLEAN.include ["lib/build/**", "test/bin/**", "test/build/**"]
+CLEAN.include ["lib/build/**", "test/bin/**"]
+CLOBBER.include ["lib/build", "test/bin", "releases"]
+Rake::Task[:clobber].enhance ["lib:uninstall"]
 
 
 task :default => :list_targets
@@ -22,6 +24,7 @@ end
 file "lib/build/Spec.loomlib" do |t, args|
 	sdk_version = lib_config['sdk_version']
 	Dir.chdir("lib") do
+		Dir.mkdir('build') unless Dir.exists?('build')
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/lsc Spec.build]
 		abort("◈ failed to compile .loomlib") if (exec_with_echo(cmd) != 0)
 	end
@@ -35,6 +38,7 @@ file "test/bin/SpecTest.loom" => "lib/build/Spec.loomlib" do |t, args|
 	Rake::Task["lib:install"].invoke unless FileUtils.uptodate?(file_installed, file_built)
 
 	Dir.chdir("test") do
+		Dir.mkdir('bin') unless Dir.exists?('bin')
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/lsc SpecTest.build]
 		abort("◈ failed to compile .loom") if (exec_with_echo(cmd) != 0)
 	end
@@ -55,7 +59,7 @@ namespace :lib do
 		ext = '.loomlib'
 		release_dir = 'releases'
 
-		Dir.mkdir(release_dir) unless File.exists?(release_dir)
+		Dir.mkdir(release_dir) unless Dir.exists?(release_dir)
 
 		lib_release = %Q[#{File.basename(lib, ext)}-#{sdk}#{ext}]
 		FileUtils.copy(lib, "#{release_dir}/#{lib_release}")
