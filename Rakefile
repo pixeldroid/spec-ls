@@ -26,7 +26,7 @@ file "lib/build/Spec.loomlib" do |t, args|
 	Dir.chdir("lib") do
 		Dir.mkdir('build') unless Dir.exists?('build')
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/lsc Spec.build]
-		abort("◈ failed to compile .loomlib") if (exec_with_echo(cmd) != 0)
+		try(cmd, "failed to compile .loomlib")
 	end
 end
 
@@ -40,7 +40,7 @@ file "test/bin/SpecTest.loom" => "lib/build/Spec.loomlib" do |t, args|
 	Dir.chdir("test") do
 		Dir.mkdir('bin') unless Dir.exists?('bin')
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/lsc SpecTest.build]
-		abort("◈ failed to compile .loom") if (exec_with_echo(cmd) != 0)
+		try(cmd, "failed to compile .loom")
 	end
 end
 
@@ -75,7 +75,7 @@ namespace :lib do
 		libs_path = "#{sdk_root}/#{sdk_version}/libs"
 
 		cmd = %Q[cp #{lib} #{libs_path}]
-		abort("◈ failed to install lib") if (exec_with_echo(cmd) != 0)
+		try(cmd, "failed to install lib")
 
 		puts "[#{t.name}] task completed, Spec.loomlib installed for #{sdk_version}"
 		puts ''
@@ -88,7 +88,7 @@ namespace :lib do
 
 		if (File.exists?(lib))
 			cmd = %Q[rm -f #{lib}]
-			abort("◈ failed to remove lib") if (exec_with_echo(cmd) != 0)
+			try(cmd, "failed to remove lib")
 			puts "[#{t.name}] task completed, Spec.loomlib removed from #{sdk_version}"
 		else
 			puts "[#{t.name}] nothing to do;  no Spec.loomlib found in #{sdk_version} sdk"
@@ -99,8 +99,10 @@ namespace :lib do
 	desc "lists libs installed for the SDK specified in lib/loom.config"
 	task :show do |t, args|
 		sdk_version = lib_config['sdk_version']
+
 		cmd = %Q[ls -l #{sdk_root}/#{sdk_version}/libs]
-		abort("◈ failed to list contents of #{sdk_version} libs directory") if (exec_with_echo(cmd) != 0)
+		try(cmd, "failed to list contents of #{sdk_version} libs directory")
+
 		puts ''
 	end
 
@@ -119,7 +121,7 @@ namespace :test do
 		sdk_version = test_config['sdk_version']
 
 		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom]
-		abort("◈ failed to run .loom") if (exec_with_echo(cmd) != 0)
+		try(cmd, "failed to run .loom")
 	end
 
 end
@@ -136,6 +138,9 @@ end
 def sdk_root
 	File.join(Dir.home, '.loom', 'sdks')
 end
+
+def try(cmd, failure_message)
+	abort("◈ #{failure_message}") if (exec_with_echo(cmd) != 0)
 end
 
 def exec_with_echo(cmd)
