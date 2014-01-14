@@ -1,7 +1,6 @@
 
 package pixeldroid.bdd
 {
-	import pixeldroid.bdd.Matcher;
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.Thing;
 

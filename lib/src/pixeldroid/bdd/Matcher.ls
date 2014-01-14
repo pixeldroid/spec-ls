@@ -2,7 +2,6 @@
 package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Thing;
-	import pixeldroid.bdd.Matcher;
 	import pixeldroid.bdd.models.MatchResult;
 
 	public class Matcher
@@ -34,7 +33,7 @@ package pixeldroid.bdd
 		{
 			this.absoluteDelta = absoluteDelta;
 			return this;
-		}		
+		}
 
 
 		// matchers
