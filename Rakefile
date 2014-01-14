@@ -21,7 +21,14 @@ task :list_targets do |t, args|
 	puts ''
 end
 
-file "lib/build/Spec.loomlib" do |t, args|
+
+LIBRARY = "lib/build/Spec.loomlib"
+
+FileList['lib/src/**/*.ls'].each do |src|
+	file LIBRARY => src
+end
+
+file LIBRARY do |t, args|
 	puts "[file] creating #{t.name}..."
 
 	sdk_version = lib_config['sdk_version']
@@ -35,14 +42,20 @@ file "lib/build/Spec.loomlib" do |t, args|
 	puts ''
 end
 
-file "test/bin/SpecTest.loom" => "lib/build/Spec.loomlib" do |t, args|
+
+APP = "test/bin/SpecTest.loom"
+
+FileList['test/src/**/*.ls'].each do |src|
+	file APP => src
+end
+
+file APP => LIBRARY do |t, args|
 	puts "[file] creating #{t.name}..."
 
 	sdk_version = test_config['sdk_version']
 	file_installed = "#{sdk_root}/#{sdk_version}/libs/Spec.loomlib"
-	file_built = ["lib/build/Spec.loomlib"]
 
-	Rake::Task["lib:install"].invoke unless FileUtils.uptodate?(file_installed, file_built)
+	Rake::Task["lib:install"].invoke unless FileUtils.uptodate?(file_installed, [LIBRARY])
 
 	Dir.chdir("test") do
 		Dir.mkdir('bin') unless Dir.exists?('bin')
@@ -53,16 +66,17 @@ file "test/bin/SpecTest.loom" => "lib/build/Spec.loomlib" do |t, args|
 	puts ''
 end
 
+
 namespace :lib do
 
 	desc "builds Spec.loomlib for the SDK specified in lib/loom.config"
-	task :build => "lib/build/Spec.loomlib" do |t, args|
+	task :build => LIBRARY do |t, args|
 		puts "[#{t.name}] task completed, find .loomlib in lib/build/"
 		puts ''
 	end
 
 	desc "prepares sdk-specific Spec.loomlib for release"
-	task :release => "lib/build/Spec.loomlib" do |t, args|
+	task :release => LIBRARY do |t, args|
 		lib = 'lib/build/Spec.loomlib'
 		sdk = lib_config['sdk_version']
 		ext = '.loomlib'
@@ -78,7 +92,7 @@ namespace :lib do
 	end
 
 	desc "installs Spec.loomlib into the SDK specified in lib/loom.config"
-	task :install => "lib/build/Spec.loomlib" do |t, args|
+	task :install => LIBRARY do |t, args|
 		lib = 'lib/build/Spec.loomlib'
 		sdk_version = lib_config['sdk_version']
 		libs_path = "#{sdk_root}/#{sdk_version}/libs"
@@ -120,13 +134,13 @@ end
 namespace :test do
 
 	desc "builds SpecTest.loom with the SDK specified in test/loom.config"
-	task :build => "test/bin/SpecTest.loom" do |t, args|
+	task :build => APP do |t, args|
 		puts "[#{t.name}] task completed, find .loom in test/bin/"
 		puts ''
 	end
 
 	desc "runs SpecTest.loom"
-	task :run => "test/bin/SpecTest.loom" do |t, args|
+	task :run => APP do |t, args|
 		puts "[#{t.name}] running #{t.prerequisites[0]}..."
 
 		sdk_version = test_config['sdk_version']
