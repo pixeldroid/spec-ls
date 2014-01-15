@@ -5,6 +5,7 @@ package pixeldroid.bdd
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.models.Expectation;
 	import pixeldroid.bdd.models.MatchResult;
+	import pixeldroid.bdd.models.Randomizer;
 
 
 	public class Thing
@@ -27,7 +28,7 @@ package pixeldroid.bdd
 
 		public function execute(reporter:Reporter):void
 		{
-			//TODO: random-sort expectations
+			Randomizer.shuffle(expectations);
 
 			var e:Expectation;
 			var i:Number;
@@ -48,6 +49,7 @@ package pixeldroid.bdd
 			}
 
 			currentExpectation = null;
+
 			reporter.end();
 		}
 

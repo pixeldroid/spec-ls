@@ -3,6 +3,7 @@ package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.Thing;
+	import pixeldroid.bdd.models.Randomizer;
 	import pixeldroid.bdd.models.ReporterManager;
 
 	public class Spec
@@ -30,7 +31,9 @@ package pixeldroid.bdd
 			trace('');
 			trace('[Spec v' +version +'] execute()');
 
-			//TODO: random sort the things
+			Randomizer.initialize();
+			Randomizer.shuffle(things);
+
 			var i:Number;
 			var n:Number = things.length;
 			for(i = 0; i < n; i++)
