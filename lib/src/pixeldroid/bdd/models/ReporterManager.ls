@@ -15,7 +15,7 @@ package pixeldroid.bdd.models
 
 		public function begin(name:String, total:Number):void
 		{
-			for each(var reporter:Reporter in reporters)
+			for each (var reporter:Reporter in reporters)
 			{
 				reporter.begin(name, total);
 			}
@@ -23,7 +23,7 @@ package pixeldroid.bdd.models
 
 		public function report(e:Expectation, index:Number, total:Number):void
 		{
-			for each(var reporter:Reporter in reporters)
+			for each (var reporter:Reporter in reporters)
 			{
 				reporter.report(e, index, total);
 			}
@@ -31,7 +31,7 @@ package pixeldroid.bdd.models
 
 		public function end():void
 		{
-			for each(var reporter:Reporter in reporters)
+			for each (var reporter:Reporter in reporters)
 			{
 				reporter.end();
 			}
