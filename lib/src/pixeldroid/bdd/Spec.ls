@@ -3,13 +3,14 @@ package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.Thing;
+	import pixeldroid.bdd.models.ReporterManager;
 
 	public class Spec
 	{
 		public static const version:String = '1.0.0';
 
 		private static var things:Vector.<Thing> = [];
-		private static var reporters:Vector.<Reporter> = [];
+		private static var reporters:ReporterManager = new ReporterManager();
 
 		public static function describe(thingName:String):Thing
 		{
@@ -21,14 +22,15 @@ package pixeldroid.bdd
 
 		public static function addReporter(reporter:Reporter):void
 		{
-			// TODO: make a dictionary to avoid dupes?
-			reporters.push(reporter);
+			reporters.add(reporter);
 		}
 
 		public static function execute():void
 		{
+			trace('');
 			trace('[Spec v' +version +'] execute()');
 
+			//TODO: random sort the things
 			var i:Number;
 			var n:Number = things.length;
 			for(i = 0; i < n; i++)
