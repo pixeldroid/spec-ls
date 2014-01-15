@@ -5,14 +5,14 @@ package pixeldroid.bdd.models
 
 	public class Expectation
 	{
-		public var description:String;
+		private var _description:String;
 		private var validation:Function;
 		private var results:Vector.<MatchResult>;
 
 
 		public function Expectation(description:String, validation:Function)
 		{
-			this.description = description;
+			_description = description;
 			this.validation = validation;
 			results = [];
 		}
@@ -36,6 +36,11 @@ package pixeldroid.bdd.models
 		public function get numResults():Number
 		{
 			return results.length;
+		}
+
+		public function get description():String
+		{
+			return _description;
 		}
 	}
 }
