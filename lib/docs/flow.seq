@@ -1,0 +1,12 @@
+
+Title: Spec-ls
+
+participant Reporter
+
+Spec->Thing: describe('It')
+Thing->_: it.should('do X')
+_->Expectation: it.expects(Y).not.toBe(Z)
+Expectation->Matcher:
+Matcher->MatchResult:
+Expectation->Thing:
+Thing->Reporter:
