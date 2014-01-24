@@ -3,8 +3,8 @@ package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.Thing;
-	import pixeldroid.bdd.models.Randomizer;
 	import pixeldroid.bdd.models.ReporterManager;
+	import pixeldroid.random.Randomizer;
 
 	public class Spec
 	{
@@ -26,13 +26,14 @@ package pixeldroid.bdd
 			reporters.add(reporter);
 		}
 
-		public static function execute():void
+		public static function execute(seed:Number=-1):void
 		{
-			trace('');
-			trace('[Spec v' +version +'] execute()');
-
-			Randomizer.initialize();
+			seed = Randomizer.initialize(seed);
 			Randomizer.shuffle(things);
+
+			// TODO: move out to value object and provide to reporters
+			trace('');
+			trace('[Spec v' +version +'] seed: ' +seed);
 
 			var i:Number;
 			var n:Number = things.length;

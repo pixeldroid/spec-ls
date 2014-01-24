@@ -5,7 +5,7 @@ package pixeldroid.bdd
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.models.Expectation;
 	import pixeldroid.bdd.models.MatchResult;
-	import pixeldroid.bdd.models.Randomizer;
+	import pixeldroid.random.Randomizer;
 
 
 	public class Thing
