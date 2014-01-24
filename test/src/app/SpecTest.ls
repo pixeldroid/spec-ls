@@ -5,6 +5,7 @@ package
 	import system.application.ConsoleApplication;
 
 	import pixeldroid.bdd.Spec;
+	import pixeldroid.bdd.reporters.AnsiReporter;
 	import pixeldroid.bdd.reporters.ConsoleReporter;
 
 	import ExpectationSpec;
@@ -18,7 +19,8 @@ package
 			SpecSpec.describe();
 			ExpectationSpec.describe();
 
-			Spec.addReporter(new ConsoleReporter());
+			Spec.addReporter(new AnsiReporter());
+			//Spec.addReporter(new ConsoleReporter());
 			Spec.execute();
 		}
 	}
