@@ -25,8 +25,7 @@ package pixeldroid.bdd.reporters
 			numSpecs = total;
 			numAssert = 0;
 
-			ansi.clear;
-			progress = ansi.bold.add(name).nobold.add(' ').toString();
+			progress = ansi.clear.bold.add(name).nobold.add(' ').toString();
 			numChars = name.length + 1;
 
 			trace('');
@@ -107,7 +106,7 @@ package pixeldroid.bdd.reporters
 				for each (var i:Number in resultIndices)
 				{
 					result = e.getResult(i);
-					ansi.clear.add(' "' +e.description +'" ').faint.add('expected ').nofaint.add(result.message);
+					ansi.clear.fgRed.add(' "' +e.description +'" ').faint.add('expected ').nofaint.add(result.message).reset;
 					v.push(ansi.toString());
 				}
 			}
