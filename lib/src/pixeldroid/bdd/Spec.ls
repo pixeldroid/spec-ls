@@ -8,10 +8,11 @@ package pixeldroid.bdd
 
 	public class Spec
 	{
-		public static const version:String = '1.0.0';
+		public static const version:String = '1.1.0';
 
 		private static var things:Vector.<Thing> = [];
 		private static var reporters:ReporterManager = new ReporterManager();
+
 
 		public static function describe(thingName:String):Thing
 		{
