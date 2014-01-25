@@ -4,6 +4,8 @@ package pixeldroid.bdd.reporters
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.models.Expectation;
 	import pixeldroid.bdd.models.MatchResult;
+	import pixeldroid.bdd.models.SpecInfo;
+
 
 	public class ConsoleReporter implements Reporter
 	{
@@ -11,6 +13,12 @@ package pixeldroid.bdd.reporters
 		private var numSpecs:Number;
 		private var numAssert:Number;
 
+
+		public function init(specInfo:SpecInfo):void
+		{
+			trace('');
+			trace(specInfo);
+		}
 
 		public function begin(name:String, total:Number):void
 		{

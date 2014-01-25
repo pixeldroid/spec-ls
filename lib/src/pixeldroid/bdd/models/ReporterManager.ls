@@ -2,6 +2,8 @@
 package pixeldroid.bdd.models
 {
 	import pixeldroid.bdd.Reporter;
+	import pixeldroid.bdd.models.SpecInfo;
+
 
 	public class ReporterManager implements Reporter
 	{
@@ -11,6 +13,15 @@ package pixeldroid.bdd.models
 		public function add(reporter:Reporter):void
 		{
 			reporters.push(reporter);
+		}
+
+
+		public function init(specInfo:SpecInfo):void
+		{
+			for each (var reporter:Reporter in reporters)
+			{
+				reporter.init(specInfo);
+			}
 		}
 
 		public function begin(name:String, total:Number):void

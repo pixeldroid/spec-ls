@@ -4,6 +4,7 @@ package pixeldroid.bdd
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.Thing;
 	import pixeldroid.bdd.models.ReporterManager;
+	import pixeldroid.bdd.models.SpecInfo;
 	import pixeldroid.random.Randomizer;
 
 	public class Spec
@@ -32,9 +33,7 @@ package pixeldroid.bdd
 			seed = Randomizer.initialize(seed);
 			Randomizer.shuffle(things);
 
-			// TODO: move out to value object and provide to reporters
-			trace('');
-			trace('[Spec v' +version +'] seed: ' +seed);
+			reporters.init(new SpecInfo('Spec', version, seed));
 
 			var i:Number;
 			var n:Number = things.length;

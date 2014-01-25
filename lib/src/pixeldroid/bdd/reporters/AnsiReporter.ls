@@ -5,6 +5,8 @@ package pixeldroid.bdd.reporters
 	import pixeldroid.bdd.Reporter;
 	import pixeldroid.bdd.models.Expectation;
 	import pixeldroid.bdd.models.MatchResult;
+	import pixeldroid.bdd.models.SpecInfo;
+
 
 	public class AnsiReporter implements Reporter
 	{
@@ -18,6 +20,16 @@ package pixeldroid.bdd.reporters
 		private var progress:String;
 		private var numChars:Number;
 
+
+		public function init(specInfo:SpecInfo):void
+		{
+			ansi.clear;
+			ansi.faint.add('[').nofaint.add(specInfo.name +' v' +specInfo.version).faint.add(']');
+			ansi.add(' seed: ').nofaint.fgCyan.add(specInfo.seed.toString()).reset;
+
+			trace('');
+			trace(ansi);
+		}
 
 		public function begin(name:String, total:Number):void
 		{
