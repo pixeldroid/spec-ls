@@ -7,29 +7,45 @@ package pixeldroid.bdd.reporters
 
 	public class ConsoleReporter implements Reporter
 	{
-		private var numTests:Number = 0;
-		private var numFailures:Number = 0;
+		private var numFailures:Number;
+		private var numSpecs:Number;
+		private var numAssert:Number;
 
 
 		public function begin(name:String, total:Number):void
 		{
-			numTests = total;
+			numFailures = 0;
+			numSpecs = total;
+			numAssert = 0;
+
 			trace('');
-			trace(name +' (' +total +' tests)');
+			trace(name);
 		}
 
 		public function report(e:Expectation, index:Number, total:Number):void
 		{
-			trace('should ' +e.description +' (' +(index+1) +'/' +total +')');
+			trace(' -should ' +e.description);
 
 			var i:Number;
 			var n:Number = e.numResults;
 			var result:MatchResult;
+			var verdict:String;
+
+			numAssert += n;
+
 			for (i = 0; i < n; i++)
 			{
 				result = e.getResult(i);
-				if (!result.success) numFailures += 1;
-				var verdict:String = result.success ? '.' : 'X';
+				if (result.success)
+				{
+					verdict = '.';
+				}
+				else
+				{
+					verdict = 'X';
+					numFailures++;
+				}
+
 				trace(verdict +' expect ' +result.message);
 			}
 
@@ -37,7 +53,13 @@ package pixeldroid.bdd.reporters
 
 		public function end():void
 		{
-			trace('completed ' +numTests +' tests. ' +numFailures +' ' +pluralize('failure', numFailures) +'.');
+			var summary:String = '';
+			summary += numFailures +' ' +pluralize('failure', numFailures);
+			summary += ' in ' +numAssert +' assertions';
+			summary += ' from ' +numSpecs +' expectations';
+			summary += '.';
+
+			trace(summary);
 		}
 
 
