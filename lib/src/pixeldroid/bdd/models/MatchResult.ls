@@ -5,6 +5,5 @@ package pixeldroid.bdd.models
 	{
 		public var success:Boolean = true;
 		public var message:String = '';
-
 	}
 }
