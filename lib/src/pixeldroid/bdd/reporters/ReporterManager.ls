@@ -1,7 +1,8 @@
 
-package pixeldroid.bdd.models
+package pixeldroid.bdd.reporters
 {
 	import pixeldroid.bdd.Reporter;
+	import pixeldroid.bdd.models.Expectation;
 	import pixeldroid.bdd.models.SpecInfo;
 
 
