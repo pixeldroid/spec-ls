@@ -16,15 +16,16 @@ package pixeldroid.bdd.reporters
 
 		public function init(specInfo:SpecInfo):void
 		{
+			numFailures = 0;
+			numAssert = 0;
+
 			trace('');
 			trace(specInfo);
 		}
 
 		public function begin(name:String, total:Number):void
 		{
-			numFailures = 0;
 			numSpecs = total;
-			numAssert = 0;
 
 			trace('');
 			trace(name);

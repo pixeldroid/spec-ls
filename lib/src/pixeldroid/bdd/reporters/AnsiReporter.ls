@@ -23,6 +23,9 @@ package pixeldroid.bdd.reporters
 
 		public function init(specInfo:SpecInfo):void
 		{
+			failures = {};
+			numAssert = 0;
+
 			ansi.clear;
 			ansi.faint.add('[').nofaint.add(specInfo.name +' v' +specInfo.version).faint.add(']');
 			ansi.add(' seed: ').nofaint.fgCyan.add(specInfo.seed.toString()).reset;
@@ -33,9 +36,7 @@ package pixeldroid.bdd.reporters
 
 		public function begin(name:String, total:Number):void
 		{
-			failures = {};
 			numSpecs = total;
-			numAssert = 0;
 
 			progress = ansi.clear.bold.add(name).nobold.add(' ').toString();
 			numChars = name.length + 1;
@@ -107,6 +108,7 @@ package pixeldroid.bdd.reporters
 			}
 		}
 
+
 		private function collectFailures():Vector.<String>
 		{
 			var v:Vector.<String> = [];
@@ -125,7 +127,6 @@ package pixeldroid.bdd.reporters
 
 			return v;
 		}
-
 
 		private function pluralize(s:String, n:Number):String
 		{
