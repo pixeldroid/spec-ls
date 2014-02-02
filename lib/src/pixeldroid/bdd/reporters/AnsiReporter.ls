@@ -84,7 +84,7 @@ package pixeldroid.bdd.reporters
 			}
 		}
 
-		public function end():void
+		public function end(name:String):void
 		{
 			var failMessages:Vector.<String> = collectFailures();
 			var numFailures:Number = failMessages.length;

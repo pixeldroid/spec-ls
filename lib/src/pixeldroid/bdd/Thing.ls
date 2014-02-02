@@ -50,7 +50,7 @@ package pixeldroid.bdd
 
 			currentExpectation = null;
 
-			reporter.end();
+			reporter.end(name);
 		}
 
 

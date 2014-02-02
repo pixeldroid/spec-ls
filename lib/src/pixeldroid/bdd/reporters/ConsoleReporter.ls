@@ -60,7 +60,7 @@ package pixeldroid.bdd.reporters
 
 		}
 
-		public function end():void
+		public function end(name:String):void
 		{
 			var summary:String = '';
 			summary += numFailures +' ' +pluralize('failure', numFailures);

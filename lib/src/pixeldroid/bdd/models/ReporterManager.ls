@@ -40,11 +40,11 @@ package pixeldroid.bdd.models
 			}
 		}
 
-		public function end():void
+		public function end(name:String):void
 		{
 			for each (var reporter:Reporter in reporters)
 			{
-				reporter.end();
+				reporter.end(name);
 			}
 		}
 	}

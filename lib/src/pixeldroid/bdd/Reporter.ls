@@ -9,6 +9,6 @@ package pixeldroid.bdd
 		function init(specInfo:SpecInfo):void;
 		function begin(name:String, total:Number):void;
 		function report(expectation:Expectation, index:Number, total:Number):void;
-		function end():void;
+		function end(name:String):void;
 	}
 }
