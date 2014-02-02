@@ -32,19 +32,19 @@ package pixeldroid.bdd.models
 			}
 		}
 
-		public function report(e:Expectation, index:Number, total:Number):void
+		public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
 		{
 			for each (var reporter:Reporter in reporters)
 			{
-				reporter.report(e, index, total);
+				reporter.report(e, durationSec, index, total);
 			}
 		}
 
-		public function end(name:String):void
+		public function end(name:String, durationSec:Number):void
 		{
 			for each (var reporter:Reporter in reporters)
 			{
-				reporter.end(name);
+				reporter.end(name, durationSec);
 			}
 		}
 	}

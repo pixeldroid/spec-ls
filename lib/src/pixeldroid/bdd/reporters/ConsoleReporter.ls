@@ -31,7 +31,7 @@ package pixeldroid.bdd.reporters
 			trace(name);
 		}
 
-		public function report(e:Expectation, index:Number, total:Number):void
+		public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
 		{
 			trace(' -should ' +e.description);
 
@@ -60,7 +60,7 @@ package pixeldroid.bdd.reporters
 
 		}
 
-		public function end(name:String):void
+		public function end(name:String, durationSec:Number):void
 		{
 			var summary:String = '';
 			summary += numFailures +' ' +pluralize('failure', numFailures);

@@ -36,20 +36,23 @@ package pixeldroid.bdd.reporters
 			suites.setAttribute('tests', total.toString());
 		}
 
-		public function report(e:Expectation, index:Number, total:Number):void
+		public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
 		{
 			var i:Number;
 			var n:Number = e.numResults;
 			var result:MatchResult;
+			var time:Number;
 
 			var suite:XMLElement = xml.newElement('testsuite');
 			suite.setAttribute('name', e.description);
+			suite.setAttribute('time', durationSec.toString());
 
 			var test:XMLElement;
 			var fail:XMLElement;
 
 			for (i = 0; i < n; i++)
 			{
+				time = Platform.getEpochTime();
 				result = e.getResult(i);
 
 				test = xml.newElement('testcase');
@@ -69,15 +72,14 @@ package pixeldroid.bdd.reporters
 				suite.linkEndChild(test);
 			}
 
-			// TODO: add timings
-
 			suites.linkEndChild(suite);
 		}
 
-		public function end(name:String):void
+		public function end(name:String, durationSec:Number):void
 		{
 			suites.setAttribute('errors', '0');
 			suites.setAttribute('failures', numFailures.toString());
+			suites.setAttribute('time', durationSec.toString());
 
 			writeFile('TEST-' +name +'.xml');
 		}

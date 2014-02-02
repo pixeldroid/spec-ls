@@ -7,12 +7,15 @@ package pixeldroid.bdd
 	import pixeldroid.bdd.models.MatchResult;
 	import pixeldroid.random.Randomizer;
 
+	import system.platform.Platform;
+
 
 	public class Thing
 	{
 		private var name:String = '<thing>';
 		private var expectations:Vector.<Expectation> = [];
 		private var currentExpectation:Expectation;
+		private var startTimeMs:Number;
 
 
 		public function Thing(name:String)
@@ -28,16 +31,20 @@ package pixeldroid.bdd
 
 		public function execute(reporter:Reporter):void
 		{
+			startTimeMs = Platform.getTime();
 			Randomizer.shuffle(expectations);
 
 			var e:Expectation;
 			var i:Number;
 			var n:Number = expectations.length;
+			var ms:Number;
 
 			reporter.begin(name, n);
 
 			for (i = 0; i < n; i++)
 			{
+				ms = Platform.getTime();
+
 				currentExpectation = expectations[i];
 
 				// run the validation closure, which has captured this instance in its scope
@@ -45,12 +52,12 @@ package pixeldroid.bdd
 				// which will call addResult()
 				currentExpectation.test();
 
-				reporter.report(currentExpectation, i, n);
+				reporter.report(currentExpectation, (Platform.getTime() - ms) * .001, i, n);
 			}
 
 			currentExpectation = null;
 
-			reporter.end(name);
+			reporter.end(name, (Platform.getTime() - startTimeMs) * .001);
 		}
 
 

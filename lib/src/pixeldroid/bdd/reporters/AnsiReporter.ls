@@ -45,7 +45,7 @@ package pixeldroid.bdd.reporters
 			trace(''); // overwriting will start on this line
 		}
 
-		public function report(e:Expectation, index:Number, total:Number):void
+		public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
 		{
 			var i:Number;
 			var n:Number = e.numResults;
@@ -84,7 +84,7 @@ package pixeldroid.bdd.reporters
 			}
 		}
 
-		public function end(name:String):void
+		public function end(name:String, durationSec:Number):void
 		{
 			var failMessages:Vector.<String> = collectFailures();
 			var numFailures:Number = failMessages.length;
