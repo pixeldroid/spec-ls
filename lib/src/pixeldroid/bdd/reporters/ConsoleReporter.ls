@@ -16,9 +16,6 @@ package pixeldroid.bdd.reporters
 
 		public function init(specInfo:SpecInfo):void
 		{
-			numFailures = 0;
-			numAssert = 0;
-
 			trace('');
 			trace(specInfo);
 		}
@@ -26,6 +23,8 @@ package pixeldroid.bdd.reporters
 		public function begin(name:String, total:Number):void
 		{
 			numSpecs = total;
+			numAssert = 0;
+			numFailures = 0;
 
 			trace('');
 			trace(name);
@@ -55,7 +54,7 @@ package pixeldroid.bdd.reporters
 					numFailures++;
 				}
 
-				trace(verdict +' expect ' +result.message);
+				trace(verdict +' expect ' +result.description);
 			}
 
 		}
@@ -67,6 +66,7 @@ package pixeldroid.bdd.reporters
 			summary += ' in ' +numAssert +' assertions';
 			summary += ' from ' +numSpecs +' expectations';
 			summary += '.';
+			summary += ' ' +durationSec +'s.';
 
 			trace(summary);
 		}

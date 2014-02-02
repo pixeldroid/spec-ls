@@ -19,8 +19,6 @@ package pixeldroid.bdd.reporters
 
 		public function init(specInfo:SpecInfo):void
 		{
-			numFailures = 0;
-
 			xml = new XMLDocument();
 			xml.linkEndChild(xml.newDeclaration('version="1.0" encoding="UTF-8"'));
 			xml.linkEndChild(xml.newComment(specInfo.toString()));
@@ -31,6 +29,8 @@ package pixeldroid.bdd.reporters
 
 		public function begin(name:String, total:Number):void
 		{
+			numFailures = 0;
+
 			suites.deleteChildren();
 			suites.setAttribute('name', name);
 			suites.setAttribute('tests', total.toString());

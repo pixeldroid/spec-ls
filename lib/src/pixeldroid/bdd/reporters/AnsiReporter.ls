@@ -23,9 +23,6 @@ package pixeldroid.bdd.reporters
 
 		public function init(specInfo:SpecInfo):void
 		{
-			failures = {};
-			numAssert = 0;
-
 			ansi.clear;
 			ansi.faint.add('[').nofaint.add(specInfo.name +' v' +specInfo.version).faint.add(']');
 			ansi.add(' seed: ').nofaint.fgCyan.add(specInfo.seed.toString()).reset;
@@ -37,6 +34,8 @@ package pixeldroid.bdd.reporters
 		public function begin(name:String, total:Number):void
 		{
 			numSpecs = total;
+			numAssert = 0;
+			failures = {};
 
 			progress = ansi.clear.bold.add(name).nobold.add(' ').toString();
 			numChars = name.length + 1;
@@ -98,7 +97,7 @@ package pixeldroid.bdd.reporters
 			ansi.add(' ' +numFailures +' ' +pluralize('failure', numFailures)).reset;
 			ansi.faint.add(' in ').nofaint.add(numAssert +' assertions');
 			ansi.faint.add(' from ').nofaint.add(numSpecs +' expectations');
-			ansi.faint.add('.').nofaint;
+			ansi.faint.add('. ' +durationSec +'s.').reset;
 
 			trace(ansi);
 
@@ -120,7 +119,7 @@ package pixeldroid.bdd.reporters
 				for each (var i:Number in resultIndices)
 				{
 					result = e.getResult(i);
-					ansi.clear.fgRed.add(' "' +e.description +'" ').faint.add('expected ').nofaint.add(result.message).reset;
+					ansi.clear.fgRed.add(' "' +e.description +'" ').faint.add('expected ').nofaint.add(result.description).reset;
 					v.push(ansi.toString());
 				}
 			}

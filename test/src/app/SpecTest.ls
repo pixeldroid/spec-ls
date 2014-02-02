@@ -20,8 +20,8 @@ package
 			SpecSpec.describe();
 			ExpectationSpec.describe();
 
-			//Spec.addReporter(new AnsiReporter());
 			//Spec.addReporter(new ConsoleReporter());
+			Spec.addReporter(new AnsiReporter());
 			Spec.addReporter(new JunitReporter());
 			Spec.execute();
 		}
