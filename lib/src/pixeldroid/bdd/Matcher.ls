@@ -47,7 +47,7 @@ package pixeldroid.bdd
 			//var match:Boolean = (value is type);
 			//var match:Boolean = ((value as type) != null);
 			result.success = rectifiedMatch( match );
-			result.message = "'" +value.getFullTypeName() +"' " +rectifiedPhrase("toBeA") +" '" +type.getFullName() +"'";
+			result.description = "'" +value.getFullTypeName() +"' " +rectifiedPhrase("toBeA") +" '" +type.getFullName() +"'";
 
 			context.addResult(result);
 		}
@@ -55,7 +55,7 @@ package pixeldroid.bdd
 		public function toBeNaN():void
 		{
 			result.success = rectifiedMatch( (isNaN(value as Number)) );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeNaN");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeNaN");
 
 			context.addResult(result);
 		}
@@ -63,7 +63,7 @@ package pixeldroid.bdd
 		public function toBeNull():void
 		{
 			result.success = rectifiedMatch( (value == null) );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeNull");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeNull");
 
 			context.addResult(result);
 		}
@@ -72,7 +72,7 @@ package pixeldroid.bdd
 		{
 			var match:Boolean = isNaN(value as Number) ? false : !!(value);
 			result.success = rectifiedMatch( match );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeTruthy");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeTruthy");
 
 			context.addResult(result);
 		}
@@ -81,7 +81,7 @@ package pixeldroid.bdd
 		{
 			var match:Boolean = isNaN(value as Number) ? true : !!!(value);
 			result.success = rectifiedMatch( match );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeFalsey");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeFalsey");
 
 			context.addResult(result);
 		}
@@ -89,7 +89,7 @@ package pixeldroid.bdd
 		public function toBeLessThan(value2:Number):void
 		{
 			result.success = rectifiedMatch( (value < value2) );
-			result.message = value.toString() +" " +rectifiedPhrase("toBeLessThan") +" " +value2.toString();
+			result.description = value.toString() +" " +rectifiedPhrase("toBeLessThan") +" " +value2.toString();
 
 			context.addResult(result);
 		}
@@ -97,7 +97,7 @@ package pixeldroid.bdd
 		public function toBeGreaterThan(value2:Number):void
 		{
 			result.success = rectifiedMatch( (value > value2) );
-			result.message = value.toString() +" " +rectifiedPhrase("toBeGreaterThan") +" " +value2.toString();
+			result.description = value.toString() +" " +rectifiedPhrase("toBeGreaterThan") +" " +value2.toString();
 
 			context.addResult(result);
 		}
@@ -108,13 +108,13 @@ package pixeldroid.bdd
 			{
 				var s:String = value as String;
 				result.success = rectifiedMatch( (s.length == 0) );
-				result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
+				result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
 			}
 			else if (value is Vector)
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.length == 0) );
-				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toBeEmpty");
+				result.description = "[" +value.toString() +"] " +rectifiedPhrase("toBeEmpty");
 			}
 			else
 			{
@@ -131,13 +131,13 @@ package pixeldroid.bdd
 				var string1:String = value as String;
 				var string2:String = value2 as String;
 				result.success = rectifiedMatch( (string1.indexOf(string2, 0) > -1) );
-				result.message = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
+				result.description = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
 			}
 			else if (value is Vector)
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.contains(value2)) );
-				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toContain") +" '" +value2.toString() +"'";
+				result.description = "[" +value.toString() +"] " +rectifiedPhrase("toContain") +" '" +value2.toString() +"'";
 			}
 			else
 			{
@@ -150,7 +150,7 @@ package pixeldroid.bdd
 		public function toEqual(value2:Object):void
 		{
 			result.success = rectifiedMatch( (value == value2) );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toEqual") +" '" +value2.toString() +"'";
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toEqual") +" '" +value2.toString() +"'";
 
 			context.addResult(result);
 		}
@@ -158,7 +158,8 @@ package pixeldroid.bdd
 		public function from(value2:Number):void
 		{
 			result.success = rectifiedMatch( (Math.abs(value2 - value) <= absoluteDelta) );
-			result.message = value.toString() +" " +rectifiedPhrase("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
+			result.description = value.toString() +" " +rectifiedPhrase("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
+			result.message = value.toString() +" is " +Math.abs(value2 - value) +" away from " +value2.toString();
 
 			context.addResult(result);
 		}
@@ -178,7 +179,7 @@ package pixeldroid.bdd
 		private function notAContainer(value:Object, result:MatchResult):void
 		{
 			result.success = false;
-			result.message = "a container type to test with, but '" +value.toString() +"' is not a String or Vector";
+			result.message = "needed a container type to test with, but '" +value.toString() +"' is not a String or Vector";
 		}
 
 	}

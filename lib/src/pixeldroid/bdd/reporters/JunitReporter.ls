@@ -53,14 +53,15 @@ package pixeldroid.bdd.reporters
 				result = e.getResult(i);
 
 				test = xml.newElement('testcase');
-				test.setAttribute('name', 'expect ' +result.message);
+				test.setAttribute('name', 'expect ' +result.description);
 
 				if (!result.success)
 				{
 					numFailures++;
 
 					fail = xml.newElement('failure');
-					fail.setAttribute('type', 'failure');
+					fail.setAttribute('type', 'assertion');
+					if (result.hasMessage()) fail.setAttribute('message', result.message);
 
 					test.linkEndChild(fail);
 				}
