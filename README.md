@@ -71,9 +71,9 @@ package
 
 spec-ls ships with three reporters:
 
-* AnsiReporter - prints a compact summary to the console using ANSI color codes
-* ConsoleReporter - traces the complete results with a minimum of frill
-* JunitReporter - writes jUnit style xml summaries for CI systems like Jenkins and Bamboo
+* **AnsiReporter** - prints a compact summary to the console using ANSI color codes
+* **ConsoleReporter** - traces the complete results with a minimum of frill
+* **JunitReporter** - writes jUnit style xml summaries for CI systems like Jenkins and Bamboo
 
 ..or create your own by implementing the simple [Reporter][Reporter.ls] interface.
 
