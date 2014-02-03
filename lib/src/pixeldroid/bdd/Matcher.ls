@@ -196,7 +196,8 @@ package pixeldroid.bdd
 		private function notAContainer(value:Object, result:MatchResult):void
 		{
 			result.success = false;
-			result.message = "needed a container type to test with, but '" +value.toString() +"' is not a String or Vector";
+			result.description = "a container type";
+			result.message = "'" +value.toString() +"' is not a String or Vector type value";
 		}
 
 	}
