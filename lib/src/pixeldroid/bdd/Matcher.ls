@@ -39,13 +39,8 @@ package pixeldroid.bdd
 		// matchers
 		public function toBeA(type:Type):void
 		{
-			// FIXME: there is a known bug with type operators on values passed to functions:
-			// LOOM-1759 - http://theengine.co/forums/troubleshooting-and-issues/topics/bug-type-ops-only-work-on-literal-values/posts/4445
-			var match:Boolean = (value.getFullTypeName() == type.getFullName()) || (value instanceof type) || (value is type);
-			//var match:Boolean = (value.getFullTypeName() == type.getFullName());
-			//var match:Boolean = (value instanceof type);
-			//var match:Boolean = (value is type);
-			//var match:Boolean = ((value as type) != null);
+			var match:Boolean = (isTypeMatch(value, type) || isSubtypeMatch(value, type));
+
 			result.success = rectifiedMatch( match );
 			result.description = "'" +value.getFullTypeName() +"' " +rectifiedPhrase("toBeA") +" '" +type.getFullName() +"'";
 
@@ -104,13 +99,13 @@ package pixeldroid.bdd
 
 		public function toBeEmpty():void
 		{
-			if (value is String)
+			if (isTypeMatch(value, String))
 			{
 				var s:String = value as String;
 				result.success = rectifiedMatch( (s.length == 0) );
 				result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
 			}
-			else if (value is Vector)
+			else if (isTypeMatch(value, Vector))
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.length == 0) );
@@ -126,14 +121,14 @@ package pixeldroid.bdd
 
 		public function toContain(value2:Object):void
 		{
-			if (value is String)
+			if (isTypeMatch(value, String))
 			{
 				var string1:String = value as String;
 				var string2:String = value2 as String;
 				result.success = rectifiedMatch( (string1.indexOf(string2, 0) > -1) );
 				result.description = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
 			}
-			else if (value is Vector)
+			else if (isTypeMatch(value, Vector))
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.contains(value2)) );
@@ -166,6 +161,28 @@ package pixeldroid.bdd
 
 
 		// helpers
+		private function isTypeMatch(value:Object, type:Type):Boolean
+		{
+			return (value.getFullTypeName() == type.getFullName());
+		}
+
+		private function isSubtypeMatch(value:Object, type:Type):Boolean
+		{
+			/*
+			FIXME: there is a known bug with is, as, and instanceof operators on Type variables,
+			which is preventing inheritance & interface matching from working:
+
+			LOOM-1759 - http://theengine.co/forums/troubleshooting-and-issues/topics/bug-type-ops-only-work-on-literal-values/posts/4445
+
+			// i.e., these fail when invoked against the input variable to this function named type,
+			// but would operate correctly if invoked against a literal type like Number, or MyClass:
+			var match:Boolean = (value instanceof type);
+			var match:Boolean = (value is type);
+			var match:Boolean = ((value as type) != null);
+			*/
+			return ((value instanceof type) || (value is type) || ((value as type) != null));
+		}
+
 		private function rectifiedPhrase(phrase:String):String
 		{
 			return (positive ? phrase : 'not ' +phrase);
