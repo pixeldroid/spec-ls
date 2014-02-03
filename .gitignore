@@ -2,3 +2,4 @@
 logs/
 lib/build
 test/bin
+TEST-*.xml
