@@ -31,6 +31,7 @@ package
 			it.should('provide a negation helper', function() {
 				it.expects(false).not.toBeTruthy();
 				it.expects(true).not.toBeFalsey();
+				it.expects(false).not.not.toBeFalsey();
 				it.expects(true).not.not.toBeTruthy();
 			});
 

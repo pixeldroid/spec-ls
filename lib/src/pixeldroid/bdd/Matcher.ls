@@ -2,7 +2,6 @@
 package pixeldroid.bdd
 {
 	import pixeldroid.bdd.Thing;
-	import pixeldroid.bdd.Matcher;
 	import pixeldroid.bdd.models.MatchResult;
 
 	public class Matcher
@@ -34,21 +33,16 @@ package pixeldroid.bdd
 		{
 			this.absoluteDelta = absoluteDelta;
 			return this;
-		}		
+		}
 
 
 		// matchers
 		public function toBeA(type:Type):void
 		{
-			// FIXME: there is a known bug with type operators on values passed to functions:
-			// LOOM-1759 - http://theengine.co/forums/troubleshooting-and-issues/topics/bug-type-ops-only-work-on-literal-values/posts/4445
-			var match:Boolean = (value.getFullTypeName() == type.getFullName()) || (value instanceof type) || (value is type);
-			//var match:Boolean = (value.getFullTypeName() == type.getFullName());
-			//var match:Boolean = (value instanceof type);
-			//var match:Boolean = (value is type);
-			//var match:Boolean = ((value as type) != null);
+			var match:Boolean = (isTypeMatch(value, type) || isSubtypeMatch(value, type));
+
 			result.success = rectifiedMatch( match );
-			result.message = "'" +value.getFullTypeName() +"' " +rectifiedPhrase("toBeA") +" '" +type.getFullName() +"'";
+			result.description = "'" +value.getFullTypeName() +"' " +rectifiedPhrase("toBeA") +" '" +type.getFullName() +"'";
 
 			context.addResult(result);
 		}
@@ -56,7 +50,7 @@ package pixeldroid.bdd
 		public function toBeNaN():void
 		{
 			result.success = rectifiedMatch( (isNaN(value as Number)) );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeNaN");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeNaN");
 
 			context.addResult(result);
 		}
@@ -64,7 +58,7 @@ package pixeldroid.bdd
 		public function toBeNull():void
 		{
 			result.success = rectifiedMatch( (value == null) );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeNull");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeNull");
 
 			context.addResult(result);
 		}
@@ -73,7 +67,7 @@ package pixeldroid.bdd
 		{
 			var match:Boolean = isNaN(value as Number) ? false : !!(value);
 			result.success = rectifiedMatch( match );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeTruthy");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeTruthy");
 
 			context.addResult(result);
 		}
@@ -82,7 +76,7 @@ package pixeldroid.bdd
 		{
 			var match:Boolean = isNaN(value as Number) ? true : !!!(value);
 			result.success = rectifiedMatch( match );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeFalsey");
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeFalsey");
 
 			context.addResult(result);
 		}
@@ -90,7 +84,7 @@ package pixeldroid.bdd
 		public function toBeLessThan(value2:Number):void
 		{
 			result.success = rectifiedMatch( (value < value2) );
-			result.message = value.toString() +" " +rectifiedPhrase("toBeLessThan") +" " +value2.toString();
+			result.description = value.toString() +" " +rectifiedPhrase("toBeLessThan") +" " +value2.toString();
 
 			context.addResult(result);
 		}
@@ -98,24 +92,24 @@ package pixeldroid.bdd
 		public function toBeGreaterThan(value2:Number):void
 		{
 			result.success = rectifiedMatch( (value > value2) );
-			result.message = value.toString() +" " +rectifiedPhrase("toBeGreaterThan") +" " +value2.toString();
+			result.description = value.toString() +" " +rectifiedPhrase("toBeGreaterThan") +" " +value2.toString();
 
 			context.addResult(result);
 		}
 
 		public function toBeEmpty():void
 		{
-			if (value is String)
+			if (isTypeMatch(value, String))
 			{
 				var s:String = value as String;
 				result.success = rectifiedMatch( (s.length == 0) );
-				result.message = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
+				result.description = "'" +value.toString() +"' " +rectifiedPhrase("toBeEmpty");
 			}
-			else if (value is Vector)
+			else if (isTypeMatch(value, Vector))
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.length == 0) );
-				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toBeEmpty");
+				result.description = "[" +value.toString() +"] " +rectifiedPhrase("toBeEmpty");
 			}
 			else
 			{
@@ -127,18 +121,18 @@ package pixeldroid.bdd
 
 		public function toContain(value2:Object):void
 		{
-			if (value is String)
+			if (isTypeMatch(value, String))
 			{
 				var string1:String = value as String;
 				var string2:String = value2 as String;
 				result.success = rectifiedMatch( (string1.indexOf(string2, 0) > -1) );
-				result.message = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
+				result.description = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
 			}
-			else if (value is Vector)
+			else if (isTypeMatch(value, Vector))
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.contains(value2)) );
-				result.message = "[" +value.toString() +"] " +rectifiedPhrase("toContain") +" '" +value2.toString() +"'";
+				result.description = "[" +value.toString() +"] " +rectifiedPhrase("toContain") +" '" +value2.toString() +"'";
 			}
 			else
 			{
@@ -151,7 +145,7 @@ package pixeldroid.bdd
 		public function toEqual(value2:Object):void
 		{
 			result.success = rectifiedMatch( (value == value2) );
-			result.message = "'" +value.toString() +"' " +rectifiedPhrase("toEqual") +" '" +value2.toString() +"'";
+			result.description = "'" +value.toString() +"' " +rectifiedPhrase("toEqual") +" '" +value2.toString() +"'";
 
 			context.addResult(result);
 		}
@@ -159,13 +153,36 @@ package pixeldroid.bdd
 		public function from(value2:Number):void
 		{
 			result.success = rectifiedMatch( (Math.abs(value2 - value) <= absoluteDelta) );
-			result.message = value.toString() +" " +rectifiedPhrase("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
+			result.description = value.toString() +" " +rectifiedPhrase("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
+			result.message = value.toString() +" is " +Math.abs(value2 - value) +" away from " +value2.toString();
 
 			context.addResult(result);
 		}
 
 
 		// helpers
+		private function isTypeMatch(value:Object, type:Type):Boolean
+		{
+			return (value.getFullTypeName() == type.getFullName());
+		}
+
+		private function isSubtypeMatch(value:Object, type:Type):Boolean
+		{
+			/*
+			FIXME: there is a known bug with is, as, and instanceof operators on Type variables,
+			which is preventing inheritance & interface matching from working:
+
+			LOOM-1759 - http://theengine.co/forums/troubleshooting-and-issues/topics/bug-type-ops-only-work-on-literal-values/posts/4445
+
+			// i.e., these fail when invoked against the input variable to this function named type,
+			// but would operate correctly if invoked against a literal type like Number, or MyClass:
+			var match:Boolean = (value instanceof type);
+			var match:Boolean = (value is type);
+			var match:Boolean = ((value as type) != null);
+			*/
+			return ((value instanceof type) || (value is type) || ((value as type) != null));
+		}
+
 		private function rectifiedPhrase(phrase:String):String
 		{
 			return (positive ? phrase : 'not ' +phrase);
@@ -179,7 +196,8 @@ package pixeldroid.bdd
 		private function notAContainer(value:Object, result:MatchResult):void
 		{
 			result.success = false;
-			result.message = "a container type to test with, but '" +value.toString() +"' is not a String or Vector";
+			result.description = "a container type";
+			result.message = "'" +value.toString() +"' is not a String or Vector type value";
 		}
 
 	}
