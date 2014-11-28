@@ -67,6 +67,21 @@ file APP => LIBRARY do |t, args|
 end
 
 
+desc "sets the provided SDK version into lib/loom.config and test/loom.config"
+task :set, [:sdk] do |t, args|
+	args.with_defaults(:sdk => 'sprint33')
+	sdk_version = args.sdk
+
+	lib_config['sdk_version'] = sdk_version
+	test_config['sdk_version'] = sdk_version
+
+	write_lib_config(lib_config)
+	write_test_config(test_config)
+
+	puts "[#{t.name}] task completed, sdk updated to #{sdk_version}"
+	puts ''
+end
+
 namespace :lib do
 
 	desc "builds Spec.loomlib for the SDK specified in lib/loom.config"
@@ -168,6 +183,13 @@ end
 def test_config
 	@test_loom_config || (@test_loom_config = JSON.parse(File.read(test_config_file)))
 end
+
+def write_lib_config(config)
+	File.open(lib_config_file, 'w') { |f| f.write(JSON.pretty_generate(config)) }
+end
+
+def write_test_config(config)
+	File.open(test_config_file, 'w') { |f| f.write(JSON.pretty_generate(config)) }
 end
 
 def sdk_root
