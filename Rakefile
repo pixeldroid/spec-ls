@@ -16,7 +16,11 @@ Rake::Task[:clobber].enhance ["lib:uninstall"]
 task :default => :list_targets
 
 task :list_targets do |t, args|
+	lib_sdk = lib_config['sdk_version']
+	test_sdk = test_config['sdk_version']
 	puts "Spec Rakefile running on Ruby #{RUBY_VERSION}"
+	puts "  lib SDK:  #{lib_sdk}"
+	puts "  test SDK: #{test_sdk}"
 	system("rake -T")
 	puts ''
 end
