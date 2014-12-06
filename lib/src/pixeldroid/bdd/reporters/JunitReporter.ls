@@ -20,7 +20,7 @@ package pixeldroid.bdd.reporters
 		public function init(specInfo:SpecInfo):void
 		{
 			xml = new XMLDocument();
-			xml.linkEndChild(xml.newDeclaration('version="1.0" encoding="UTF-8"'));
+			xml.linkEndChild(xml.newDeclaration('xml version="1.0" encoding="UTF-8"'));
 			xml.linkEndChild(xml.newComment(specInfo.toString()));
 
 			suites = xml.newElement('testsuites');
