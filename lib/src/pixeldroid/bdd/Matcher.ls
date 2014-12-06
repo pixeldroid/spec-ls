@@ -125,7 +125,7 @@ package pixeldroid.bdd
 			{
 				var string1:String = value as String;
 				var string2:String = value2 as String;
-				result.success = rectifiedMatch( (string1.indexOf(string2, 0) > -1) );
+				result.success = rectifiedMatch( (string1.indexOf(string2) > -1) );
 				result.description = "'" +string1 +"' " +rectifiedPhrase("toContain") +" '" +string2 +"'";
 			}
 			else if (isTypeMatch(value, Vector))
