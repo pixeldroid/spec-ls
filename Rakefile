@@ -196,8 +196,12 @@ def write_test_config(config)
 	File.open(test_config_file, 'w') { |f| f.write(JSON.pretty_generate(config)) }
 end
 
+def home
+	ENV['LOOM_HOME'] || Dir.home
+end
+
 def sdk_root
-	File.join(Dir.home, '.loom', 'sdks')
+	File.join(home, '.loom', 'sdks')
 end
 
 def try(cmd, failure_message)
