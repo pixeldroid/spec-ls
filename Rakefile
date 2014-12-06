@@ -72,7 +72,7 @@ end
 
 
 desc "sets the provided SDK version into lib/loom.config and test/loom.config"
-task :set, [:sdk] do |t, args|
+task :set, [:sdk] => "lib:uninstall" do |t, args|
 	args.with_defaults(:sdk => 'sprint33')
 	sdk_version = args.sdk
 
