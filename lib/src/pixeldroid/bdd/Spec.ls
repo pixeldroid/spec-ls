@@ -28,6 +28,11 @@ package pixeldroid.bdd
 			if (reporter) reporters.add(reporter);
 		}
 
+		public static function get numReporters():Number
+		{
+			return reporters.length;
+		}
+
 		public static function execute(seed:Number=-1):void
 		{
 			seed = Randomizer.initialize(seed);
