@@ -9,7 +9,7 @@ package pixeldroid.bdd
 
 	public class Spec
 	{
-		public static const version:String = '1.1.0';
+		public static const version:String = '1.1.1';
 
 		private static var things:Vector.<Thing> = [];
 		private static var reporters:ReporterManager = new ReporterManager();
@@ -25,7 +25,12 @@ package pixeldroid.bdd
 
 		public static function addReporter(reporter:Reporter):void
 		{
-			reporters.add(reporter);
+			if (reporter) reporters.add(reporter);
+		}
+
+		public static function get numReporters():Number
+		{
+			return reporters.length;
 		}
 
 		public static function execute(seed:Number=-1):void

@@ -92,6 +92,7 @@ package
 			it.should('provide a type matcher', function() {
 				it.expects(true).toBeA(Boolean);
 				it.expects(9).toBeA(Number);
+				it.expects(9).not.toBeA(String);
 				it.expects('').toBeA(String);
 				it.expects([]).toBeA(Vector);
 				it.expects({}).toBeA(Dictionary);

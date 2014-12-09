@@ -16,7 +16,11 @@ Rake::Task[:clobber].enhance ["lib:uninstall"]
 task :default => :list_targets
 
 task :list_targets do |t, args|
+	lib_sdk = lib_config['sdk_version']
+	test_sdk = test_config['sdk_version']
 	puts "Spec Rakefile running on Ruby #{RUBY_VERSION}"
+	puts "  lib SDK:  #{lib_sdk}"
+	puts "  test SDK: #{test_sdk}"
 	system("rake -T")
 	puts ''
 end
@@ -66,6 +70,21 @@ file APP => LIBRARY do |t, args|
 	puts ''
 end
 
+
+desc "sets the provided SDK version into lib/loom.config and test/loom.config"
+task :set, [:sdk] => "lib:uninstall" do |t, args|
+	args.with_defaults(:sdk => 'sprint33')
+	sdk_version = args.sdk
+
+	lib_config['sdk_version'] = sdk_version
+	test_config['sdk_version'] = sdk_version
+
+	write_lib_config(lib_config)
+	write_test_config(test_config)
+
+	puts "[#{t.name}] task completed, sdk updated to #{sdk_version}"
+	puts ''
+end
 
 namespace :lib do
 
@@ -144,7 +163,18 @@ namespace :test do
 		puts "[#{t.name}] running #{t.prerequisites[0]}..."
 
 		sdk_version = test_config['sdk_version']
-		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom]
+		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom --format ansi]
+		try(cmd, "failed to run .loom")
+
+		puts ''
+	end
+
+	desc "runs SpecTest.loom for CI"
+	task :ci => APP do |t, args|
+		puts "[#{t.name}] running #{t.prerequisites[0]}..."
+
+		sdk_version = test_config['sdk_version']
+		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom --format junit --format console]
 		try(cmd, "failed to run .loom")
 
 		puts ''
@@ -153,16 +183,36 @@ namespace :test do
 end
 
 
+def lib_config_file
+	File.join('lib', 'loom.config')
+end
+
+def test_config_file
+	File.join('test', 'loom.config')
+end
+
 def lib_config
-	@lib_loom_config || (@lib_loom_config = JSON.parse(File.read(File.join('lib', 'loom.config'))))
+	@lib_loom_config || (@lib_loom_config = JSON.parse(File.read(lib_config_file)))
 end
 
 def test_config
-	@test_loom_config || (@test_loom_config = JSON.parse(File.read(File.join('test', 'loom.config'))))
+	@test_loom_config || (@test_loom_config = JSON.parse(File.read(test_config_file)))
+end
+
+def write_lib_config(config)
+	File.open(lib_config_file, 'w') { |f| f.write(JSON.pretty_generate(config)) }
+end
+
+def write_test_config(config)
+	File.open(test_config_file, 'w') { |f| f.write(JSON.pretty_generate(config)) }
+end
+
+def home
+	ENV['LOOM_HOME'] || Dir.home
 end
 
 def sdk_root
-	File.join(Dir.home, '.loom', 'sdks')
+	File.join(home, '.loom', 'sdks')
 end
 
 def try(cmd, failure_message)

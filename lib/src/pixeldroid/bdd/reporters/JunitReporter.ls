@@ -20,7 +20,7 @@ package pixeldroid.bdd.reporters
 		public function init(specInfo:SpecInfo):void
 		{
 			xml = new XMLDocument();
-			xml.linkEndChild(xml.newDeclaration('version="1.0" encoding="UTF-8"'));
+			xml.linkEndChild(xml.newDeclaration('xml version="1.0" encoding="UTF-8"'));
 			xml.linkEndChild(xml.newComment(specInfo.toString()));
 
 			suites = xml.newElement('testsuites');
@@ -41,7 +41,6 @@ package pixeldroid.bdd.reporters
 			var i:Number;
 			var n:Number = e.numResults;
 			var result:MatchResult;
-			var time:Number;
 
 			var suite:XMLElement = xml.newElement('testsuite');
 			suite.setAttribute('name', e.description);
@@ -52,7 +51,6 @@ package pixeldroid.bdd.reporters
 
 			for (i = 0; i < n; i++)
 			{
-				time = Platform.getEpochTime();
 				result = e.getResult(i);
 
 				test = xml.newElement('testcase');

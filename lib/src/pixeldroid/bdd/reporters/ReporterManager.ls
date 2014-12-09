@@ -11,11 +11,16 @@ package pixeldroid.bdd.reporters
 		private var reporters:Vector.<Reporter> = [];
 
 
+		public function get length():Number
+		{
+			return reporters.length;
+		}
+
+
 		public function add(reporter:Reporter):void
 		{
 			reporters.push(reporter);
 		}
-
 
 		public function init(specInfo:SpecInfo):void
 		{
