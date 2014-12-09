@@ -168,18 +168,6 @@ package pixeldroid.bdd
 
 		private function isSubtypeMatch(value:Object, type:Type):Boolean
 		{
-			/*
-			FIXME: there is a known bug with is, as, and instanceof operators on Type variables,
-			which is preventing inheritance & interface matching from working:
-
-			LOOM-1759 - http://theengine.co/forums/troubleshooting-and-issues/topics/bug-type-ops-only-work-on-literal-values/posts/4445
-
-			// i.e., these fail when invoked against the input variable to this function named type,
-			// but would operate correctly if invoked against a literal type like Number, or MyClass:
-			var match:Boolean = (value instanceof type);
-			var match:Boolean = (value is type);
-			var match:Boolean = ((value as type) != null);
-			*/
 			return ((value instanceof type) || (value is type) || ((value as type) != null));
 		}
 
