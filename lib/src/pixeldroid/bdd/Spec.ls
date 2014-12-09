@@ -25,7 +25,7 @@ package pixeldroid.bdd
 
 		public static function addReporter(reporter:Reporter):void
 		{
-			reporters.add(reporter);
+			if (reporter) reporters.add(reporter);
 		}
 
 		public static function execute(seed:Number=-1):void
