@@ -163,7 +163,18 @@ namespace :test do
 		puts "[#{t.name}] running #{t.prerequisites[0]}..."
 
 		sdk_version = test_config['sdk_version']
-		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom]
+		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom --format ansi]
+		try(cmd, "failed to run .loom")
+
+		puts ''
+	end
+
+	desc "runs SpecTest.loom for CI"
+	task :ci => APP do |t, args|
+		puts "[#{t.name}] running #{t.prerequisites[0]}..."
+
+		sdk_version = test_config['sdk_version']
+		cmd = %Q[#{sdk_root}/#{sdk_version}/tools/loomexec test/bin/SpecTest.loom --format junit --format console]
 		try(cmd, "failed to run .loom")
 
 		puts ''
