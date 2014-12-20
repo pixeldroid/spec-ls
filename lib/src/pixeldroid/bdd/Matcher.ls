@@ -42,7 +42,7 @@ package pixeldroid.bdd
 			var match:Boolean = (isTypeMatch(value, type) || isSubtypeMatch(value, type));
 
 			result.success = rectifiedMatch( match );
-			result.description = "'" +value.getFullTypeName() +"' " +rectifiedPrefix("toBeA") +" '" +type.getFullName() +"'";
+			result.description = value.getFullTypeName() +" " +rectifiedPrefix("toBeA") +" " +type.getFullName();
 
 			if (!result.success) result.message = "types " +rectifiedSuffix("do", true) +" match.";
 
@@ -52,7 +52,7 @@ package pixeldroid.bdd
 		public function toBeNaN():void
 		{
 			result.success = rectifiedMatch( (isNaN(value as Number)) );
-			result.description = "'" +value.toString() +"' " +rectifiedPrefix("toBeNaN");
+			result.description = stringify(value) +" " +rectifiedPrefix("toBeNaN");
 
 			if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" not-a-number.";
 
@@ -62,7 +62,7 @@ package pixeldroid.bdd
 		public function toBeNull():void
 		{
 			result.success = rectifiedMatch( (value == null) );
-			result.description = "'" +value.toString() +"' " +rectifiedPrefix("toBeNull");
+			result.description = stringify(value) +" " +rectifiedPrefix("toBeNull");
 
 			if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" null.";
 
@@ -73,7 +73,7 @@ package pixeldroid.bdd
 		{
 			var match:Boolean = isNaN(value as Number) ? false : !!(value);
 			result.success = rectifiedMatch( match );
-			result.description = "'" +value.toString() +"' " +rectifiedPrefix("toBeTruthy");
+			result.description = stringify(value) +" " +rectifiedPrefix("toBeTruthy");
 
 			if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" truthy.";
 
@@ -84,7 +84,7 @@ package pixeldroid.bdd
 		{
 			var match:Boolean = isNaN(value as Number) ? true : !!!(value);
 			result.success = rectifiedMatch( match );
-			result.description = "'" +value.toString() +"' " +rectifiedPrefix("toBeFalsey");
+			result.description = stringify(value) +" " +rectifiedPrefix("toBeFalsey");
 
 			if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" falsey.";
 
@@ -117,7 +117,7 @@ package pixeldroid.bdd
 			{
 				var s:String = value as String;
 				result.success = rectifiedMatch( (s.length == 0) );
-				result.description = "'" +value.toString() +"' " +rectifiedPrefix("toBeEmpty");
+				result.description = "'" +s +"' " +rectifiedPrefix("toBeEmpty");
 
 				if (!result.success) result.message = "String " +rectifiedSuffix("is", true) +" empty.";
 			}
@@ -125,7 +125,7 @@ package pixeldroid.bdd
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.length == 0) );
-				result.description = "[" +value.toString() +"] " +rectifiedPrefix("toBeEmpty");
+				result.description = "[" +vector.join() +"] " +rectifiedPrefix("toBeEmpty");
 
 				if (!result.success) result.message = "Vector " +rectifiedSuffix("is", true) +" empty.";
 			}
@@ -152,9 +152,9 @@ package pixeldroid.bdd
 			{
 				var vector:Vector = value as Vector;
 				result.success = rectifiedMatch( (vector.contains(value2)) );
-				result.description = "[" +value.toString() +"] " +rectifiedPrefix("toContain") +" '" +value2.toString() +"'";
+				result.description = "[" +vector.join() +"] " +rectifiedPrefix("toContain") +" " +stringify(value2);
 
-				if (!result.success) result.message = "Vector " +rectifiedSuffix("does", true) +" contain '" +value2.toString() +"'.";
+				if (!result.success) result.message = "Vector " +rectifiedSuffix("does", true) +" contain " +stringify(value2) +".";
 			}
 			else
 			{
@@ -167,7 +167,7 @@ package pixeldroid.bdd
 		public function toEqual(value2:Object):void
 		{
 			result.success = rectifiedMatch( (value == value2) );
-			result.description = "'" +value.toString() +"' " +rectifiedPrefix("toEqual") +" '" +value2.toString() +"'";
+			result.description = stringify(value) +" " +rectifiedPrefix("toEqual") +" " +stringify(value2);
 
 			if (!result.success) result.message = "values " +rectifiedSuffix("are", true) +" equal.";
 
@@ -217,6 +217,39 @@ package pixeldroid.bdd
 			result.success = false;
 			result.description = "a container type";
 			result.message = "'" +value.toString() +"' is not a String or Vector type value";
+		}
+
+		private function stringify(value:Object):String
+		{
+			var s:String = '';
+
+			switch (value.getFullTypeName())
+			{
+				case ((String as Type).getFullName()):
+					s = "'" +value +"'";
+				break;
+
+				case ((Vector as Type).getFullName()):
+					s = '[' +(value as Vector).join() +']';
+				break;
+
+				case ((Dictionary as Type).getFullName()):
+					var pairs:Vector.<String> = [];
+					var dictionary:Dictionary.<Object, Object> = value as Dictionary.<Object, Object>;
+
+					for (var key:Object in dictionary) {
+						pairs.push(key.toString() +':' +dictionary[key].toString());
+					}
+
+					s = '{' +pairs.join() +'}';
+				break;
+
+				default:
+					s = value.toString();
+				break;
+			}
+
+			return s;
 		}
 
 	}
