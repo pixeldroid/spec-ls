@@ -1,52 +1,52 @@
 
 package pixeldroid.bdd
 {
-	import pixeldroid.bdd.Reporter;
-	import pixeldroid.bdd.Thing;
-	import pixeldroid.bdd.models.SpecInfo;
-	import pixeldroid.bdd.reporters.ReporterManager;
-	import pixeldroid.random.Randomizer;
+    import pixeldroid.bdd.Reporter;
+    import pixeldroid.bdd.Thing;
+    import pixeldroid.bdd.models.SpecInfo;
+    import pixeldroid.bdd.reporters.ReporterManager;
+    import pixeldroid.random.Randomizer;
 
-	public class Spec
-	{
-		public static const version:String = '1.1.1';
+    public class Spec
+    {
+        public static const version:String = '1.1.2';
 
-		private static var things:Vector.<Thing> = [];
-		private static var reporters:ReporterManager = new ReporterManager();
+        private static var things:Vector.<Thing> = [];
+        private static var reporters:ReporterManager = new ReporterManager();
 
 
-		public static function describe(thingName:String):Thing
-		{
-			var thing:Thing = new Thing(thingName);
-			things.push(thing);
+        public static function describe(thingName:String):Thing
+        {
+            var thing:Thing = new Thing(thingName);
+            things.push(thing);
 
-			return thing;
-		}
+            return thing;
+        }
 
-		public static function addReporter(reporter:Reporter):void
-		{
-			if (reporter) reporters.add(reporter);
-		}
+        public static function addReporter(reporter:Reporter):void
+        {
+            if (reporter) reporters.add(reporter);
+        }
 
-		public static function get numReporters():Number
-		{
-			return reporters.length;
-		}
+        public static function get numReporters():Number
+        {
+            return reporters.length;
+        }
 
-		public static function execute(seed:Number=-1):void
-		{
-			seed = Randomizer.initialize(seed);
-			Randomizer.shuffle(things);
+        public static function execute(seed:Number=-1):void
+        {
+            seed = Randomizer.initialize(seed);
+            Randomizer.shuffle(things);
 
-			reporters.init(new SpecInfo('Spec', version, seed));
+            reporters.init(new SpecInfo('Spec', version, seed));
 
-			var i:Number;
-			var n:Number = things.length;
-			for(i = 0; i < n; i++)
-			{
-				things[i].execute(reporters);
-			}
-		}
+            var i:Number;
+            var n:Number = things.length;
+            for(i = 0; i < n; i++)
+            {
+                things[i].execute(reporters);
+            }
+        }
 
-	}
+    }
 }

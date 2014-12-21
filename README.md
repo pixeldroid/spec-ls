@@ -12,7 +12,7 @@ Download the library into its matching sdk folder:
 
 ```bash
 $ curl -L -o ~/.loom/sdks/sprint33/libs/Spec.loomlib \
-    https://github.com/pixeldroid/spec-ls/releases/download/v1.1.1/Spec-sprint33.loomlib
+    https://github.com/pixeldroid/spec-ls/releases/download/v1.1.2/Spec-sprint33.loomlib
 ```
 
 To uninstall, simply delete the file:
@@ -31,38 +31,38 @@ $ rm ~/.loom/sdks/sprint33/libs/Spec.loomlib
 ```as3
 package
 {
-	import loom.Application;
+    import loom.Application;
 
-	import pixeldroid.bdd.Spec;
-	import pixeldroid.bdd.reporters.ConsoleReporter;
-
-
-	public class SpecTest extends Application
-	{
-
-		override public function run():void
-		{
-			MySpec.describe();
-
-			Spec.addReporter(new ConsoleReporter());
-			Spec.execute();
-		}
-	}
+    import pixeldroid.bdd.Spec;
+    import pixeldroid.bdd.reporters.ConsoleReporter;
 
 
-	import pixeldroid.bdd.Thing;
+    public class SpecTest extends Application
+    {
 
-	public static class MySpec
-	{
-		public static function describe():void
-		{
-			var it:Thing = Spec.describe('a Thing');
+        override public function run():void
+        {
+            MySpec.describe();
 
-			it.should('exist', function() {
-				it.expects(MySpec).not.toBeNull();
-			});
-		}
-	}
+            Spec.addReporter(new ConsoleReporter());
+            Spec.execute();
+        }
+    }
+
+
+    import pixeldroid.bdd.Thing;
+
+    public static class MySpec
+    {
+        public static function describe():void
+        {
+            var it:Thing = Spec.describe('a Thing');
+
+            it.should('exist', function() {
+                it.expects(MySpec).not.toBeNull();
+            });
+        }
+    }
 
 }
 ```
