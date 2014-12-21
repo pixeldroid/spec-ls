@@ -16,11 +16,11 @@ Rake::Task[:clobber].enhance ["lib:uninstall"]
 task :default => :list_targets
 
 task :list_targets do |t, args|
-	lib_sdk = lib_config['sdk_version']
-	test_sdk = test_config['sdk_version']
-	puts "Spec Rakefile running on Ruby #{RUBY_VERSION}"
-	puts "  lib SDK:  #{lib_sdk}"
-	puts "  test SDK: #{test_sdk}"
+	a = "Spec v#{lib_version} Rakefile"
+	b = "running on Ruby #{RUBY_VERSION}"
+	c = "lib=#{lib_config['sdk_version']}"
+	d = "test=#{test_config['sdk_version']}"
+	puts "#{a} #{b} (#{c}, #{d})"
 	system("rake -T")
 	puts ''
 end
@@ -187,6 +187,10 @@ def lib_config_file()
 	File.join('lib', 'loom.config')
 end
 
+def lib_version_file()
+	File.join('lib', 'src', 'pixeldroid', 'bdd', 'Spec.ls')
+end
+
 def test_config_file()
 	File.join('test', 'loom.config')
 end
@@ -197,6 +201,14 @@ end
 
 def test_config()
 	@test_loom_config || (@test_loom_config = JSON.parse(File.read(test_config_file)))
+end
+
+def lib_version_regex()
+	Regexp.new(%q/^\s*public static const version:String = '(\d\.\d\.\d)';/)
+end
+
+def lib_version()
+	File.open(lib_version_file, 'r') { |f| f.read.scan(lib_version_regex).first[0] }
 end
 
 def write_lib_config(config)
