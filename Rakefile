@@ -101,6 +101,8 @@ namespace :lib do
     ext = '.loomlib'
     release_dir = 'releases'
 
+    update_readme_version()
+
     Dir.mkdir(release_dir) unless Dir.exists?(release_dir)
 
     lib_release = %Q[#{File.basename(lib, ext)}-#{sdk}#{ext}]
@@ -183,6 +185,10 @@ namespace :test do
 end
 
 
+def readme_file()
+  File.join('README.md')
+end
+
 def lib_config_file()
   File.join('lib', 'loom.config')
 end
@@ -201,6 +207,21 @@ end
 
 def test_config()
   @test_loom_config || (@test_loom_config = JSON.parse(File.read(test_config_file)))
+end
+
+def readme_version_regex()
+  Regexp.new(%q/download\/v(\d\.\d\.\d)/)
+end
+
+def readme_version_literal()
+  "download/v#{lib_version}"
+end
+
+def update_readme_version()
+  IO.write(
+    readme_file,
+    File.open(readme_file, 'r') { |f| f.read.gsub!(readme_version_regex, readme_version_literal) }
+  )
 end
 
 def lib_version_regex()
