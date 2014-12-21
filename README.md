@@ -12,7 +12,7 @@ Download the library into its matching sdk folder:
 
 ```bash
 $ curl -L -o ~/.loom/sdks/sprint33/libs/Spec.loomlib \
-    https://github.com/pixeldroid/spec-ls/releases/download/v1.1.1/Spec-sprint33.loomlib
+    https://github.com/pixeldroid/spec-ls/releases/download/v1.1.2/Spec-sprint33.loomlib
 ```
 
 To uninstall, simply delete the file:
