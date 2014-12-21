@@ -183,19 +183,19 @@ namespace :test do
 end
 
 
-def lib_config_file
+def lib_config_file()
 	File.join('lib', 'loom.config')
 end
 
-def test_config_file
+def test_config_file()
 	File.join('test', 'loom.config')
 end
 
-def lib_config
+def lib_config()
 	@lib_loom_config || (@lib_loom_config = JSON.parse(File.read(lib_config_file)))
 end
 
-def test_config
+def test_config()
 	@test_loom_config || (@test_loom_config = JSON.parse(File.read(test_config_file)))
 end
 
