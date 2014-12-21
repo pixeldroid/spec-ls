@@ -227,8 +227,12 @@ def sdk_root
   File.join(home, '.loom', 'sdks')
 end
 
+def fail(message)
+  abort("◈ #{message}")
+end
+
 def try(cmd, failure_message)
-  abort("◈ #{failure_message}") if (exec_with_echo(cmd) != 0)
+  fail(failure_message) if (exec_with_echo(cmd) != 0)
 end
 
 def exec_with_echo(cmd)
