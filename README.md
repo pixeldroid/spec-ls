@@ -74,14 +74,17 @@ spec-ls ships with three reporters:
 ..or create your own by implementing the simple [Reporter][Reporter.ls] interface.
 
 
-## compiling from source
+## working from source
+
+first install [loomtasks][loomtasks]
+
+### compiling
 
     $ rake lib:install
 
 this will build the Spec library and install it in the currently configured sdk
 
-
-## running tests
+### running tests
 
     $ rake test:run
 
@@ -89,3 +92,4 @@ this will build the Spec library, install it in the currently configured sdk, bu
 
 
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
