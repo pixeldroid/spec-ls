@@ -10,14 +10,14 @@ a simple specification framework for Loom
 
 Download the library into its matching sdk folder:
 
-```bash
+```console
 $ curl -L -o ~/.loom/sdks/sprint33/libs/Spec.loomlib \
     https://github.com/pixeldroid/spec-ls/releases/download/v1.1.2/Spec-sprint33.loomlib
 ```
 
 To uninstall, simply delete the file:
 
-```bash
+```console
 $ rm ~/.loom/sdks/sprint33/libs/Spec.loomlib
 ```
 
@@ -28,7 +28,7 @@ $ rm ~/.loom/sdks/sprint33/libs/Spec.loomlib
 0. have the specifications describe themselves to Spec
 0. add your reporter(s) to Spec and execute
 
-```as3
+```ls
 package
 {
     import loom.Application;
@@ -80,7 +80,7 @@ spec-ls ships with three reporters:
 
 ## compiling from source
 
-```bash
+```console
 $ rake lib:install
 ```
 
@@ -89,7 +89,7 @@ this will build the Spec library and install it in the currently configured sdk
 
 ## running tests
 
-```bash
+```console
 $ rake test:run
 ```
 
