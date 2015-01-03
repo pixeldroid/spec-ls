@@ -63,6 +63,24 @@ package
 }
 ```
 
+### matchers
+
+spec-ls has a basic set of expectation phrases for specifying behavior:
+
+* `toEqual(value2:Object)`
+* `toBeA(type:Type)`
+* `toBeNaN()`
+* `toBeNull()`
+* `toBeTruthy()`
+* `toBeFalsey()`
+* `toBeLessThan(value2:Number)`
+* `toBeGreaterThan(value2:Number)`
+* `toContain(value2:Object)`
+* `toBeEmpty()`
+* `toBePlusOrMinus(absoluteDelta:Number).from(value2:Number)`
+
+you can see them used in the specifications for spec-ls itself: [ExpectationSpec][ExpectationSpec.ls]
+
 ### reporters
 
 spec-ls ships with three reporters:
@@ -91,5 +109,11 @@ this will build the Spec library and install it in the currently configured sdk
 this will build the Spec library, install it in the currently configured sdk, build the test app, and run the test app.
 
 
+## contributing
+
+Pull requests are welcome!
+
+
+[ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
