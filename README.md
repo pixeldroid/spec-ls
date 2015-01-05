@@ -88,4 +88,4 @@ this will build the Spec library and install it in the currently configured sdk
 this will build the Spec library, install it in the currently configured sdk, build the test app, and run the test app.
 
 
-[Reporter.ls]: https://github.com/pixeldroid/spec-ls/blob/master/lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
