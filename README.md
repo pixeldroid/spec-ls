@@ -11,7 +11,7 @@ a simple specification framework for Loom
 Download the library into its matching sdk folder:
 
     $ curl -L -o ~/.loom/sdks/sprint33/libs/Spec.loomlib \
-        https://github.com/pixeldroid/spec-ls/releases/download/v1.1.2/Spec-sprint33.loomlib
+        https://github.com/pixeldroid/spec-ls/releases/download/v1.1.3/Spec-sprint33.loomlib
 
 To uninstall, simply delete the file:
 
@@ -63,6 +63,24 @@ package
 }
 ```
 
+### matchers
+
+spec-ls has a basic set of expectation phrases for specifying behavior:
+
+* `toEqual(value2:Object)`
+* `toBeA(type:Type)`
+* `toBeNaN()`
+* `toBeNull()`
+* `toBeTruthy()`
+* `toBeFalsey()`
+* `toBeLessThan(value2:Number)`
+* `toBeGreaterThan(value2:Number)`
+* `toContain(value2:Object)`
+* `toBeEmpty()`
+* `toBePlusOrMinus(absoluteDelta:Number).from(value2:Number)`
+
+you can see them used in the specifications for spec-ls itself: [ExpectationSpec][ExpectationSpec.ls]
+
 ### reporters
 
 spec-ls ships with three reporters:
@@ -74,18 +92,28 @@ spec-ls ships with three reporters:
 ..or create your own by implementing the simple [Reporter][Reporter.ls] interface.
 
 
-## compiling from source
+## working from source
+
+first install [loomtasks][loomtasks]
+
+### compiling
 
     $ rake lib:install
 
 this will build the Spec library and install it in the currently configured sdk
 
+### running tests
 
-## running tests
-
-    $ rake test:run
+    $ rake test
 
 this will build the Spec library, install it in the currently configured sdk, build the test app, and run the test app.
 
 
+## contributing
+
+Pull requests are welcome!
+
+
+[ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"

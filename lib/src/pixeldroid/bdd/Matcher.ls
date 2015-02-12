@@ -221,27 +221,39 @@ package pixeldroid.bdd
 
         private function stringify(value:Object):String
         {
+            if (value is Type) return value.getFullTypeName();
+
             var s:String = '';
+            var items:Vector.<String> = [];
 
             switch (value.getFullTypeName())
             {
-                case ((String as Type).getFullName()):
+                case ('system.String'):
                     s = "'" +value +"'";
                 break;
 
-                case ((Vector as Type).getFullName()):
-                    s = '[' +(value as Vector).join() +']';
-                break;
+                case ('system.Vector'):
+                    var vector:Vector.<Object> = value as Vector.<Object>;
 
-                case ((Dictionary as Type).getFullName()):
-                    var pairs:Vector.<String> = [];
-                    var dictionary:Dictionary.<Object, Object> = value as Dictionary.<Object, Object>;
-
-                    for (var key:Object in dictionary) {
-                        pairs.push(key.toString() +':' +dictionary[key].toString());
+                    if (vector) {
+                        for each(var item:Object in vector) {
+                            items.push(item.toString());
+                        }
                     }
 
-                    s = '{' +pairs.join() +'}';
+                    s = '[' +items.join() +']';
+                break;
+
+                case ('system.Dictionary'):
+                    var dictionary:Dictionary.<Object, Object> = value as Dictionary.<Object, Object>;
+
+                    if (dictionary) {
+                        for (var key:Object in dictionary) {
+                            items.push(key.toString() +':' +dictionary[key].toString());
+                        }
+                    }
+
+                    s = '{' +items.join() +'}';
                 break;
 
                 default:
