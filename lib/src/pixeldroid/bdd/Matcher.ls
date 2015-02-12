@@ -222,6 +222,7 @@ package pixeldroid.bdd
         private function stringify(value:Object):String
         {
             var s:String = '';
+            var items:Vector.<String> = [];
 
             switch (value.getFullTypeName())
             {
@@ -230,18 +231,27 @@ package pixeldroid.bdd
                 break;
 
                 case ((Vector as Type).getFullName()):
-                    s = '[' +(value as Vector).join() +']';
+                    var vector:Vector.<Object> = value as Vector.<Object>;
+
+                    if (vector) {
+                        for each(var item:Object in vector) {
+                            items.push(item.toString());
+                        }
+                    }
+
+                    s = '[' +items.join() +']';
                 break;
 
                 case ((Dictionary as Type).getFullName()):
-                    var pairs:Vector.<String> = [];
                     var dictionary:Dictionary.<Object, Object> = value as Dictionary.<Object, Object>;
 
-                    for (var key:Object in dictionary) {
-                        pairs.push(key.toString() +':' +dictionary[key].toString());
+                    if (dictionary) {
+                        for (var key:Object in dictionary) {
+                            items.push(key.toString() +':' +dictionary[key].toString());
+                        }
                     }
 
-                    s = '{' +pairs.join() +'}';
+                    s = '{' +items.join() +'}';
                 break;
 
                 default:
