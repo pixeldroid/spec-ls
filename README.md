@@ -104,7 +104,7 @@ this will build the Spec library and install it in the currently configured sdk
 
 ### running tests
 
-    $ rake test:run
+    $ rake test
 
 this will build the Spec library, install it in the currently configured sdk, build the test app, and run the test app.
 
