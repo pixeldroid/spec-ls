@@ -221,16 +221,18 @@ package pixeldroid.bdd
 
         private function stringify(value:Object):String
         {
+            if (value is Type) return value.getFullTypeName();
+
             var s:String = '';
             var items:Vector.<String> = [];
 
             switch (value.getFullTypeName())
             {
-                case ((String as Type).getFullName()):
+                case ('system.String'):
                     s = "'" +value +"'";
                 break;
 
-                case ((Vector as Type).getFullName()):
+                case ('system.Vector'):
                     var vector:Vector.<Object> = value as Vector.<Object>;
 
                     if (vector) {
@@ -242,7 +244,7 @@ package pixeldroid.bdd
                     s = '[' +items.join() +']';
                 break;
 
-                case ((Dictionary as Type).getFullName()):
+                case ('system.Dictionary'):
                     var dictionary:Dictionary.<Object, Object> = value as Dictionary.<Object, Object>;
 
                     if (dictionary) {
