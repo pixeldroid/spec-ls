@@ -29,7 +29,7 @@ package
         private function addReporters():void
         {
             var arg:String;
-            for (var i = 2; i < CommandLine.getArgCount(); i++)
+            for (var i = 0; i < CommandLine.getArgCount(); i++)
             {
                 arg = CommandLine.getArg(i);
                 if (arg == '--format') Spec.addReporter(reporterByName(CommandLine.getArg(++i)));
