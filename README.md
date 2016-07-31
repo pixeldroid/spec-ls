@@ -91,6 +91,25 @@ spec-ls ships with three reporters:
 
 ..or create your own by implementing the simple [Reporter][Reporter.ls] interface.
 
+### random seed
+
+by default, Spec will execute tests in a different random order every time, to guard against accidental order dependencies.
+
+to reproduce the order of a specific run, pass in the same seed value to `Spec.execute()`:
+
+```ls
+        override public function run():void
+        {
+            MySpec.describe();
+
+            Spec.addReporter(new ConsoleReporter());
+
+            var seed:Number = 97;
+            Spec.execute(seed);
+        }
+```
+
+see [SpecTest][SpecTest.ls] for an exaple of how to read the seed value from the command-line.
 
 ## working from source
 
@@ -115,5 +134,6 @@ Pull requests are welcome!
 
 
 [ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
-[Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
+[Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"

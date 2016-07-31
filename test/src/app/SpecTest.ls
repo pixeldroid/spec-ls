@@ -16,23 +16,26 @@ package
 
     public class SpecTest extends ConsoleApplication
     {
+        private var seed:Number = -1;
+
         override public function run():void
         {
             SpecSpec.describe();
             ExpectationSpec.describe();
 
-            addReporters();
+            parseArgs();
 
-            Spec.execute();
+            Spec.execute(seed);
         }
 
-        private function addReporters():void
+        private function parseArgs():void
         {
             var arg:String;
             for (var i = 0; i < CommandLine.getArgCount(); i++)
             {
                 arg = CommandLine.getArg(i);
                 if (arg == '--format') Spec.addReporter(reporterByName(CommandLine.getArg(++i)));
+                if (arg == '--seed') seed = Number.fromString(CommandLine.getArg(++i));
             }
 
             if (Spec.numReporters == 0) Spec.addReporter(new ConsoleReporter());
