@@ -1,17 +1,17 @@
 {
-    "name": "Spec",
-    "version": "1.0",
-    "outputDir": "./build",
-    "references": [
-        "System"
-    ],
-    "modules": [
-        {
-            "name": "Spec",
-            "version": "1.0",
-            "sourcePath": [
-                "."
-            ]
-        }
-    ]
+  "name": "Spec",
+  "version": "1.1.4",
+  "outputDir": "./build",
+  "references": [
+    "System"
+  ],
+  "modules": [
+    {
+      "name": "Spec",
+      "version": "1.1.4",
+      "sourcePath": [
+        "."
+      ]
+    }
+  ]
 }

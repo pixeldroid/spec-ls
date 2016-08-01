@@ -10,12 +10,12 @@ a simple specification framework for Loom
 
 Download the library into its matching sdk folder:
 
-    $ curl -L -o ~/.loom/sdks/sprint33/libs/Spec.loomlib \
-        https://github.com/pixeldroid/spec-ls/releases/download/v1.1.3/Spec-sprint33.loomlib
+    $ curl -L -o ~/.loom/sdks/1.1.4794/libs/Spec.loomlib \
+        https://github.com/pixeldroid/spec-ls/releases/download/v1.1.4/Spec-1.1.4794.loomlib
 
 To uninstall, simply delete the file:
 
-    $ rm ~/.loom/sdks/sprint33/libs/Spec.loomlib
+    $ rm ~/.loom/sdks/1.1.4794/libs/Spec.loomlib
 
 
 ## usage
@@ -91,6 +91,25 @@ spec-ls ships with three reporters:
 
 ..or create your own by implementing the simple [Reporter][Reporter.ls] interface.
 
+### random seed
+
+by default, Spec will execute tests in a different random order every time, to guard against accidental order dependencies.
+
+to reproduce the order of a specific run, pass in the same seed value to `Spec.execute()`:
+
+```ls
+        override public function run():void
+        {
+            MySpec.describe();
+
+            Spec.addReporter(new ConsoleReporter());
+
+            var seed:Number = 97;
+            Spec.execute(seed);
+        }
+```
+
+see [SpecTest][SpecTest.ls] for an exaple of how to read the seed value from the command-line.
 
 ## working from source
 
@@ -115,5 +134,6 @@ Pull requests are welcome!
 
 
 [ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
-[Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
+[Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"
