@@ -33,10 +33,11 @@ package pixeldroid.bdd
             return reporters.length;
         }
 
-        public static function execute(seed:Number=-1):void
+        public static function execute(seed:Number=-1):Boolean
         {
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);
+            var success:Boolean = true;
 
             reporters.init(new SpecInfo('Spec', version, seed));
 
@@ -44,8 +45,10 @@ package pixeldroid.bdd
             var n:Number = things.length;
             for(i = 0; i < n; i++)
             {
-                things[i].execute(reporters);
+                if (!things[i].execute(reporters)) success = false;
             }
+
+            return success;
         }
 
     }

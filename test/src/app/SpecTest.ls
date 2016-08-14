@@ -2,6 +2,7 @@
 package
 {
 
+    import system.Process;
     import system.application.ConsoleApplication;
 
     import pixeldroid.bdd.Spec;
@@ -17,6 +18,8 @@ package
     public class SpecTest extends ConsoleApplication
     {
         private var seed:Number = -1;
+        private const SUCCESS:Number = 0;
+        private const FAILURE:Number = 1;
 
         override public function run():void
         {
@@ -25,7 +28,7 @@ package
 
             parseArgs();
 
-            Spec.execute(seed);
+            Process.exit(Spec.execute(seed) ? SUCCESS : FAILURE);
         }
 
         private function parseArgs():void

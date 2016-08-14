@@ -29,7 +29,7 @@ package pixeldroid.bdd
             expectations.push(new Expectation(declaration, validation));
         }
 
-        public function execute(reporter:Reporter):void
+        public function execute(reporter:Reporter):Boolean
         {
             startTimeMs = Platform.getTime();
             Randomizer.shuffle(expectations);
@@ -57,7 +57,7 @@ package pixeldroid.bdd
 
             currentExpectation = null;
 
-            reporter.end(name, (Platform.getTime() - startTimeMs) * .001);
+            return reporter.end(name, (Platform.getTime() - startTimeMs) * .001);
         }
 
 

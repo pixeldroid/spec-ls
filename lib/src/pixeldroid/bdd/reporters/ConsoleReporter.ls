@@ -60,7 +60,7 @@ package pixeldroid.bdd.reporters
 
         }
 
-        public function end(name:String, durationSec:Number):void
+        public function end(name:String, durationSec:Number):Boolean
         {
             var summary:String = '';
             summary += numFailures +' ' +pluralize('failure', numFailures);
@@ -70,6 +70,8 @@ package pixeldroid.bdd.reporters
             summary += ' ' +durationSec +'s.';
 
             trace(summary);
+
+            return (numFailures == 0);
         }
 
 

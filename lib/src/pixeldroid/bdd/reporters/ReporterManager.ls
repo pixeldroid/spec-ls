@@ -46,12 +46,16 @@ package pixeldroid.bdd.reporters
             }
         }
 
-        public function end(name:String, durationSec:Number):void
+        public function end(name:String, durationSec:Number):Boolean
         {
+            var success:Boolean = true;
+
             for each (var reporter:Reporter in reporters)
             {
-                reporter.end(name, durationSec);
+                if (!reporter.end(name, durationSec)) success = false;
             }
+
+            return success;
         }
     }
 }

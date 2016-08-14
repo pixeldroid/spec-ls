@@ -73,13 +73,15 @@ package pixeldroid.bdd.reporters
             suites.linkEndChild(suite);
         }
 
-        public function end(name:String, durationSec:Number):void
+        public function end(name:String, durationSec:Number):Boolean
         {
             suites.setAttribute('errors', '0');
             suites.setAttribute('failures', numFailures.toString());
             suites.setAttribute('time', durationSec.toString());
 
             writeFile('TEST-' +name +'.xml');
+
+            return (numFailures == 0);
         }
 
 
