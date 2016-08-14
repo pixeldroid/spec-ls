@@ -75,7 +75,7 @@ package
                 it.expects('abc').not.toBeEmpty();
             });
 
-            it.should('provide a membership matcher', function() {
+            it.should('provide membership matchers', function() {
                 var v:Vector.<String> = ['a', 'b', 'c'];
                 it.expects(v).toContain('b');
                 it.expects(v).not.toContain('q');
@@ -87,6 +87,9 @@ package
                 s = 'the quick brown fox';
                 it.expects(s).toContain('brown');
                 it.expects(s).not.toContain('dog');
+
+                it.expects(s).toStartWith('the qui');
+                it.expects(s).toEndWith('own fox');
             });
 
             it.should('provide a type matcher', function() {
