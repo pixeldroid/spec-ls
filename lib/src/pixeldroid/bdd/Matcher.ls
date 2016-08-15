@@ -174,6 +174,30 @@ package pixeldroid.bdd
             context.addResult(result);
         }
 
+        public function toPatternMatch(value2:String, matches:Number=1):void
+        {
+            // Loom uses Lua regex patterns:
+            //   http://lua-users.org/wiki/PatternsTutorial
+            //   http://www.lua.org/manual/5.2/manual.html#6.4.1
+            if (isTypeMatch(value, String))
+            {
+                var string1:String = value as String;
+                var string2:String = value2 as String;
+                var matchList:Vector.<String> = string1.find(string2);
+                var matched:Number = matchList.length;
+                result.success = rectifiedMatch( (matched == matches) );
+                result.description = "'" +string1 +"' " +rectifiedPrefix("toPatternMatch") +" '" +string2 +"' with " +matches +" capture group" +((matches != 1) ? 's' : '');
+
+                if (!result.success) result.message = "found " +matched +".";
+            }
+            else
+            {
+                notAString(value, result);
+            }
+
+            context.addResult(result);
+        }
+
         public function toStartWith(value2:String):void
         {
             if (isTypeMatch(value, String))

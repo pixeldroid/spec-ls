@@ -92,6 +92,16 @@ package
                 it.expects(s).toEndWith('own fox');
             });
 
+            it.should('provide a pattern matcher', function() {
+                it.expects('missing groups').not.toPatternMatch('.*');
+                it.expects('one or more groups').toPatternMatch('(.*)%s', 1);
+                it.expects('one or more groups').toPatternMatch('(.*)%s(.*)', 2);
+                it.expects('one or more groups').toPatternMatch('(.*)%s(.*)%s(.*)', 3);
+                it.expects('01/02/1234').toPatternMatch('(%d+)/(%d+)/(%d+)', 3);
+                it.expects('#ff0000 red').toPatternMatch('^#?(%x+)%s.*$');
+                it.expects('name@company.com').toPatternMatch('^(.+@.+%..+)$');
+            });
+
             it.should('provide a type matcher', function() {
                 it.expects(true).toBeA(Boolean);
                 it.expects(9).toBeA(Number);
