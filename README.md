@@ -67,18 +67,19 @@ package
 
 spec-ls has a basic set of expectation phrases for specifying behavior:
 
-* `toEqual(value2:Object)`
 * `toBeA(type:Type)`
+* `toBeEmpty()`
+* `toBeFalsey()` / `toBeTruthy()`
+* `toBeGreaterThan(value2:Number)` / `toBeLessThan(value2:Number)`
 * `toBeNaN()`
 * `toBeNull()`
-* `toBeTruthy()`
-* `toBeFalsey()`
-* `toBeLessThan(value2:Number)`
-* `toBeGreaterThan(value2:Number)`
-* `toContain(value2:Object)`
-* `toBeEmpty()`
 * `toBePlusOrMinus(absoluteDelta:Number).from(value2:Number)`
+* `toContain(value2:Object)`
+* `toEndWith(value2:String)` / `toStartWith(value2:String)`
+* `toEqual(value2:Object)`
+* `toPatternMatch(value2:String, matches:Number=1)`
 
+they are defined in [Matcher.ls][Matcher.ls];
 you can see them used in the specifications for spec-ls itself: [ExpectationSpec][ExpectationSpec.ls]
 
 ### reporters
@@ -109,7 +110,7 @@ to reproduce the order of a specific run, pass in the same seed value to `Spec.e
         }
 ```
 
-see [SpecTest][SpecTest.ls] for an exaple of how to read the seed value from the command-line.
+see [SpecTest][SpecTest.ls] for an example of how to read the seed value from the command-line.
 
 ## working from source
 
@@ -135,5 +136,6 @@ Pull requests are welcome!
 
 [ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
 [loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
+[Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"
