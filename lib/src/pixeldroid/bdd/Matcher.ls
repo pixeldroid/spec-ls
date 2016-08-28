@@ -29,7 +29,7 @@ package pixeldroid.bdd
             return this;
         }
 
-        public function toBePlusOrMinus(absoluteDelta:Number):Matcher
+        public function toBePlusOrMinus(absoluteDelta:Number):Matcher // used with from()
         {
             this.absoluteDelta = absoluteDelta;
             return this;
@@ -174,7 +174,69 @@ package pixeldroid.bdd
             context.addResult(result);
         }
 
-        public function from(value2:Number):void
+        public function toPatternMatch(value2:String, matches:Number=1):void
+        {
+            // Loom uses Lua regex patterns:
+            //   http://lua-users.org/wiki/PatternsTutorial
+            //   http://www.lua.org/manual/5.2/manual.html#6.4.1
+            if (isTypeMatch(value, String))
+            {
+                var string1:String = value as String;
+                var string2:String = value2 as String;
+                var matchList:Vector.<String> = string1.find(string2);
+                var matched:Number = matchList.length;
+                result.success = rectifiedMatch( (matched == matches) );
+                result.description = "'" +string1 +"' " +rectifiedPrefix("toPatternMatch") +" '" +string2 +"' with " +matches +" capture group" +((matches != 1) ? 's' : '');
+
+                if (!result.success) result.message = "found " +matched +".";
+            }
+            else
+            {
+                notAString(value, result);
+            }
+
+            context.addResult(result);
+        }
+
+        public function toStartWith(value2:String):void
+        {
+            if (isTypeMatch(value, String))
+            {
+                var string1:String = value as String;
+                var string2:String = value2 as String;
+                result.success = rectifiedMatch( (string1.indexOf(string2) == 0) );
+                result.description = "'" +string1 +"' " +rectifiedPrefix("toStartWith") +" '" +string2 +"'";
+
+                if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" start with '" +string2 +"'.";
+            }
+            else
+            {
+                notAString(value, result);
+            }
+
+            context.addResult(result);
+        }
+
+        public function toEndWith(value2:String):void
+        {
+            if (isTypeMatch(value, String))
+            {
+                var string1:String = value as String;
+                var string2:String = value2 as String;
+                result.success = rectifiedMatch( (string1.indexOf(string2) == (string1.length - string2.length)) );
+                result.description = "'" +string1 +"' " +rectifiedPrefix("toEndWith") +" '" +string2 +"'";
+
+                if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" end with '" +string2 +"'.";
+            }
+            else
+            {
+                notAString(value, result);
+            }
+
+            context.addResult(result);
+        }
+
+        public function from(value2:Number):void // used with toBePlusOrMinus()
         {
             result.success = rectifiedMatch( (Math.abs(value2 - value) <= absoluteDelta) );
             result.description = value.toString() +" " +rectifiedPrefix("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
@@ -217,6 +279,13 @@ package pixeldroid.bdd
             result.success = false;
             result.description = "a container type";
             result.message = "'" +value.toString() +"' is not a String or Vector type value";
+        }
+
+        private function notAString(value:Object, result:MatchResult):void
+        {
+            result.success = false;
+            result.description = "a string type";
+            result.message = "'" +value.toString() +"' is not a String type value";
         }
 
         private function stringify(value:Object):String

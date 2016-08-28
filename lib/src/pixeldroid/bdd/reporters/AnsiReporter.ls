@@ -83,15 +83,16 @@ package pixeldroid.bdd.reporters
             }
         }
 
-        public function end(name:String, durationSec:Number):void
+        public function end(name:String, durationSec:Number):Boolean
         {
             var failMessages:Vector.<String> = collectFailures();
             var numFailures:Number = failMessages.length;
+            var success:Boolean = (numFailures == 0);
 
             trace('');
             ansi.clear;
 
-            if (numFailures == 0) ansi.fgGreen;
+            if (success) ansi.fgGreen;
             else ansi.bold.fgRed;
 
             ansi.add(' ' +numFailures +' ' +pluralize('failure', numFailures)).reset;
@@ -105,6 +106,8 @@ package pixeldroid.bdd.reporters
             {
                 trace(s);
             }
+
+            return success;
         }
 
 

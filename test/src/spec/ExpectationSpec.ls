@@ -75,7 +75,7 @@ package
                 it.expects('abc').not.toBeEmpty();
             });
 
-            it.should('provide a membership matcher', function() {
+            it.should('provide membership matchers', function() {
                 var v:Vector.<String> = ['a', 'b', 'c'];
                 it.expects(v).toContain('b');
                 it.expects(v).not.toContain('q');
@@ -87,6 +87,19 @@ package
                 s = 'the quick brown fox';
                 it.expects(s).toContain('brown');
                 it.expects(s).not.toContain('dog');
+
+                it.expects(s).toStartWith('the qui');
+                it.expects(s).toEndWith('own fox');
+            });
+
+            it.should('provide a pattern matcher', function() {
+                it.expects('missing groups').not.toPatternMatch('.*');
+                it.expects('one or more groups').toPatternMatch('(.*)%s', 1);
+                it.expects('one or more groups').toPatternMatch('(.*)%s(.*)', 2);
+                it.expects('one or more groups').toPatternMatch('(.*)%s(.*)%s(.*)', 3);
+                it.expects('01/02/1234').toPatternMatch('(%d+)/(%d+)/(%d+)', 3);
+                it.expects('#ff0000 red').toPatternMatch('^#?(%x+)%s.*$');
+                it.expects('name@company.com').toPatternMatch('^(.+@.+%..+)$');
             });
 
             it.should('provide a type matcher', function() {
