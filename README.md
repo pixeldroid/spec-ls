@@ -1,7 +1,12 @@
 spec-ls
 =======
 
-a simple specification framework for Loom
+a simple specification framework for [Loom][loom-sdk]
+
+- [installation](#installation)
+- [usage](#usage)
+- [building](#building)
+- [contributing](#contributing)
 
 ![spec-ls screenshot](terminal.png)
 
@@ -112,11 +117,12 @@ to reproduce the order of a specific run, pass in the same seed value to `Spec.e
 
 see [SpecTest][SpecTest.ls] for an example of how to read the seed value from the command-line.
 
-## working from source
 
-first install [loomtasks][loomtasks]
+## building
 
-### compiling
+first, install [loomtasks][loomtasks] and the [spec-ls library][spec-ls]
+
+### compiling from source
 
     $ rake lib:install
 
@@ -135,7 +141,9 @@ Pull requests are welcome!
 
 
 [ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
-[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
+[loom-sdk]: https://github.com/LoomSDK/LoomSDK "a native mobile app and game framework"
+[loomtasks]: https://github.com/pixeldroid/loomtasks "Rake tasks for working with loomlibs"
 [Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[spec-ls]: https://github.com/pixeldroid/spec-ls "a simple spec framework for Loom"
 [SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"
