@@ -10,7 +10,7 @@ package
             var it:Thing = Spec.describe('Spec');
 
             it.should('be versioned', function() {
-                it.expects(Spec.version).not.toBeEmpty();
+                it.expects(Spec.version).toPatternMatch('(%d+).(%d+).(%d+)', 3);
             });
 
             it.should('help declare expectations', function() {

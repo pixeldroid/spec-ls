@@ -1,9 +1,14 @@
 spec-ls
 =======
 
-a simple specification framework for Loom
+a simple specification framework for [Loom][loom-sdk]
 
 ![spec-ls screenshot](terminal.png)
+
+- [installation](#installation)
+- [usage](#usage)
+- [building](#building)
+- [contributing](#contributing)
 
 
 ## installation
@@ -11,7 +16,7 @@ a simple specification framework for Loom
 Download the library into its matching sdk folder:
 
     $ curl -L -o ~/.loom/sdks/sprint34/libs/Spec.loomlib \
-        https://github.com/pixeldroid/spec-ls/releases/download/v1.1.5/Spec-sprint34.loomlib
+        https://github.com/pixeldroid/spec-ls/releases/download/v1.2.0/Spec-sprint34.loomlib
 
 To uninstall, simply delete the file:
 
@@ -63,6 +68,8 @@ package
 }
 ```
 
+> **TIP**: use [SpecExecutor][SpecExecutor.ls]; it has convenience methods to set reporter formats and seed values. See [SpecTest][SpecTest.ls] for an example.
+
 ### matchers
 
 spec-ls has a basic set of expectation phrases for specifying behavior:
@@ -105,18 +112,17 @@ to reproduce the order of a specific run, pass in the same seed value to `Spec.e
 
             Spec.addReporter(new ConsoleReporter());
 
-            var seed:Number = 97;
+            var seed:Number = 71387;
             Spec.execute(seed);
         }
 ```
 
-see [SpecTest][SpecTest.ls] for an example of how to read the seed value from the command-line.
 
-## working from source
+## building
 
-first install [loomtasks][loomtasks]
+first, install [loomtasks][loomtasks]
 
-### compiling
+### compiling from source
 
     $ rake lib:install
 
@@ -135,7 +141,9 @@ Pull requests are welcome!
 
 
 [ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
-[loomtasks]: https://github.com/pixeldroid/loomtasks "loomtasks"
+[loom-sdk]: https://github.com/LoomSDK/LoomSDK "a native mobile app and game framework"
+[loomtasks]: https://github.com/pixeldroid/loomtasks "Rake tasks for working with loomlibs"
 [Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
+[SpecExecutor.ls]: lib/src/pixeldroid/bdd/SpecExecutor.ls "SpecExecutor.ls"
 [SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"
