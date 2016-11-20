@@ -3,12 +3,12 @@ spec-ls
 
 a simple specification framework for [Loom][loom-sdk]
 
+![spec-ls screenshot](terminal.png)
+
 - [installation](#installation)
 - [usage](#usage)
 - [building](#building)
 - [contributing](#contributing)
-
-![spec-ls screenshot](terminal.png)
 
 
 ## installation
@@ -112,7 +112,7 @@ to reproduce the order of a specific run, pass in the same seed value to `Spec.e
 
             Spec.addReporter(new ConsoleReporter());
 
-            var seed:Number = 97;
+            var seed:Number = 71387;
             Spec.execute(seed);
         }
 ```
@@ -120,7 +120,7 @@ to reproduce the order of a specific run, pass in the same seed value to `Spec.e
 
 ## building
 
-first, install [loomtasks][loomtasks] and the [spec-ls library][spec-ls]
+first, install [loomtasks][loomtasks]
 
 ### compiling from source
 
@@ -145,6 +145,5 @@ Pull requests are welcome!
 [loomtasks]: https://github.com/pixeldroid/loomtasks "Rake tasks for working with loomlibs"
 [Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
-[spec-ls]: https://github.com/pixeldroid/spec-ls "a simple spec framework for Loom"
 [SpecExecutor.ls]: lib/src/pixeldroid/bdd/SpecExecutor.ls "SpecExecutor.ls"
 [SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"
