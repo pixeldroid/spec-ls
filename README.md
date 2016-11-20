@@ -16,7 +16,7 @@ a simple specification framework for [Loom][loom-sdk]
 Download the library into its matching sdk folder:
 
     $ curl -L -o ~/.loom/sdks/sprint34/libs/Spec.loomlib \
-        https://github.com/pixeldroid/spec-ls/releases/download/v1.1.5/Spec-sprint34.loomlib
+        https://github.com/pixeldroid/spec-ls/releases/download/v1.2.0/Spec-sprint34.loomlib
 
 To uninstall, simply delete the file:
 
@@ -68,6 +68,8 @@ package
 }
 ```
 
+> **TIP**: use [SpecExecutor][SpecExecutor.ls]; it has convenience methods to set reporter formats and seed values. See [SpecTest][SpecTest.ls] for an example.
+
 ### matchers
 
 spec-ls has a basic set of expectation phrases for specifying behavior:
@@ -115,8 +117,6 @@ to reproduce the order of a specific run, pass in the same seed value to `Spec.e
         }
 ```
 
-see [SpecTest][SpecTest.ls] for an example of how to read the seed value from the command-line.
-
 
 ## building
 
@@ -146,4 +146,5 @@ Pull requests are welcome!
 [Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [spec-ls]: https://github.com/pixeldroid/spec-ls "a simple spec framework for Loom"
+[SpecExecutor.ls]: lib/src/pixeldroid/bdd/SpecExecutor.ls "SpecExecutor.ls"
 [SpecTest.ls]: test/src/app/SpecTest.ls "SpecTest.ls"
