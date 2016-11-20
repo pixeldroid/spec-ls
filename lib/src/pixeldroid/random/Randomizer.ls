@@ -1,11 +1,10 @@
 
 package pixeldroid.random
 {
+    import system.Random;
     import system.platform.Platform;
 
-    // TODO: when sprint32 is deprecated, we can remove this class; sprint33 introduced:
-    //       * seedable PRNG: system.Random::setSeed, system.Random::randRangeInt
-    //       * system.Vector::shuffle
+    // TODO: when system.Vector::shuffle uses system.Random::randRangeInt, we can remove this class
 
     public final class Randomizer
     {
@@ -13,13 +12,12 @@ package pixeldroid.random
         {
             if (seed < 0)
             {
-                // spin the random number generator an unpredictable number of times
-                // otherwise, the PRNG always starts from the same default seed
-                seed = Platform.getEpochTime() % 100;
+                var t:Number = Platform.getEpochTime();
+                Random.setSeed(t % 1000);
+                seed = Random.randRangeInt(10000, 99999);
             }
 
-            var i:Number = seed;
-            while (i--) Math.random();
+            Random.setSeed(seed);
 
             return seed;
         }
@@ -33,7 +31,7 @@ package pixeldroid.random
 
             while (n > 0)
             {
-                i = Math.randomRangeInt(0, n);
+                i = Random.randRangeInt(0, n);
 
                 t = v[n];
                 v[n] = v[i];
