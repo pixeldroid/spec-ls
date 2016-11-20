@@ -1,6 +1,7 @@
 
 package pixeldroid.bdd
 {
+
     import pixeldroid.bdd.Reporter;
     import pixeldroid.bdd.Thing;
     import pixeldroid.bdd.models.SpecInfo;
@@ -37,6 +38,7 @@ package pixeldroid.bdd
         {
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);
+
             var success:Boolean = true;
 
             reporters.init(new SpecInfo('Spec', version, seed));
