@@ -16,7 +16,7 @@ a simple specification framework for [Loom][loom-sdk]
 Download the library into its matching sdk folder:
 
     $ curl -L -o ~/.loom/sdks/sprint34/libs/Spec.loomlib \
-        https://github.com/pixeldroid/spec-ls/releases/download/v1.2.0/Spec-sprint34.loomlib
+        https://github.com/pixeldroid/spec-ls/releases/download/v3.1.0/Spec-sprint34.loomlib
 
 To uninstall, simply delete the file:
 
