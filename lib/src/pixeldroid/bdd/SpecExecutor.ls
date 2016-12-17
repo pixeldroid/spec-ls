@@ -2,7 +2,6 @@ package pixeldroid.bdd
 {
 
     import system.CommandLine;
-    import system.Process;
     import system.reflection.MethodInfo;
     import system.reflection.Type;
 
@@ -30,7 +29,7 @@ package pixeldroid.bdd
             Spec.addReporter(reporterByName(format));
         }
 
-        public static function exec(specs:Vector.<Type>):void
+        public static function exec(specs:Vector.<Type>):Number
         {
             if (Spec.numReporters == 0) Spec.addReporter(new ConsoleReporter());
 
@@ -42,7 +41,7 @@ package pixeldroid.bdd
                 method.invokeSingle(spec, null);
             }
 
-            Process.exit(Spec.execute(seed) ? SUCCESS : FAILURE);
+            return Spec.execute(seed) ? SUCCESS : FAILURE;
         }
 
         public static function parseArgs():void

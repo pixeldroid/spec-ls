@@ -1,6 +1,7 @@
 package
 {
     import system.application.ConsoleApplication;
+    import system.Process;
 
     import pixeldroid.bdd.SpecExecutor;
 
@@ -14,10 +15,12 @@ package
         {
             SpecExecutor.parseArgs();
 
-            SpecExecutor.exec([
+            var returnCode:Number = SpecExecutor.exec([
                 ExpectationSpec,
                 SpecSpec
             ]);
+
+            Process.exit(returnCode);
         }
     }
 
