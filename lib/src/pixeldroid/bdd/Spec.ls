@@ -10,7 +10,7 @@ package pixeldroid.bdd
 
     public class Spec
     {
-        public static const version:String = '1.3.0';
+        public static const version:String = '1.3.1';
 
         private static var things:Vector.<Thing> = [];
         private static var reporters:ReporterManager = new ReporterManager();
