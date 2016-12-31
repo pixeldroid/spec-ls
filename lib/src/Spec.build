@@ -1,6 +1,6 @@
 {
   "name": "Spec",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "outputDir": "./build",
   "references": [
     "System"
@@ -8,7 +8,7 @@
   "modules": [
     {
       "name": "Spec",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "sourcePath": [
         "."
       ]
