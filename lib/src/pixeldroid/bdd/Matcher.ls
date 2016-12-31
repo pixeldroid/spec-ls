@@ -39,11 +39,10 @@ package pixeldroid.bdd
         // matchers
         public function toBeA(type:Type):void
         {
-            var match:Boolean = (isTypeMatch(value, type) || isSubtypeMatch(value, type));
-
-            result.success = rectifiedMatch( match );
             result.description = value.getFullTypeName() +" " +rectifiedPrefix("toBeA") +" " +type.getFullName();
 
+            var match:Boolean = (isTypeMatch(value, type) || isSubtypeMatch(value, type));
+            result.success = rectifiedMatch( match );
             if (!result.success) result.message = "types " +rectifiedSuffix("do", true) +" match.";
 
             context.addResult(result);
@@ -51,9 +50,9 @@ package pixeldroid.bdd
 
         public function toBeNaN():void
         {
-            result.success = rectifiedMatch( (isNaN(value as Number)) );
             result.description = stringify(value) +" " +rectifiedPrefix("toBeNaN");
 
+            result.success = rectifiedMatch( (isNaN(value as Number)) );
             if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" not-a-number.";
 
             context.addResult(result);
@@ -61,9 +60,9 @@ package pixeldroid.bdd
 
         public function toBeNull():void
         {
-            result.success = rectifiedMatch( (value == null) );
             result.description = stringify(value) +" " +rectifiedPrefix("toBeNull");
 
+            result.success = rectifiedMatch( (value == null) );
             if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" null.";
 
             context.addResult(result);
@@ -71,10 +70,10 @@ package pixeldroid.bdd
 
         public function toBeTruthy():void
         {
-            var match:Boolean = isNaN(value as Number) ? false : !!(value);
-            result.success = rectifiedMatch( match );
             result.description = stringify(value) +" " +rectifiedPrefix("toBeTruthy");
 
+            var match:Boolean = isNaN(value as Number) ? false : !!(value);
+            result.success = rectifiedMatch( match );
             if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" truthy.";
 
             context.addResult(result);
@@ -82,10 +81,10 @@ package pixeldroid.bdd
 
         public function toBeFalsey():void
         {
-            var match:Boolean = isNaN(value as Number) ? true : !!!(value);
-            result.success = rectifiedMatch( match );
             result.description = stringify(value) +" " +rectifiedPrefix("toBeFalsey");
 
+            var match:Boolean = isNaN(value as Number) ? true : !!!(value);
+            result.success = rectifiedMatch( match );
             if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" falsey.";
 
             context.addResult(result);
@@ -93,9 +92,9 @@ package pixeldroid.bdd
 
         public function toBeLessThan(value2:Number):void
         {
-            result.success = rectifiedMatch( (value < value2) );
             result.description = value.toString() +" " +rectifiedPrefix("toBeLessThan") +" " +value2.toString();
 
+            result.success = rectifiedMatch( (value < value2) );
             if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" less than " +value2.toString() +".";
 
             context.addResult(result);
@@ -103,9 +102,9 @@ package pixeldroid.bdd
 
         public function toBeGreaterThan(value2:Number):void
         {
-            result.success = rectifiedMatch( (value > value2) );
             result.description = value.toString() +" " +rectifiedPrefix("toBeGreaterThan") +" " +value2.toString();
 
+            result.success = rectifiedMatch( (value > value2) );
             if (!result.success) result.message = "value " +rectifiedSuffix("is", true) +" greater than " +value2.toString() +".";
 
             context.addResult(result);
@@ -116,17 +115,19 @@ package pixeldroid.bdd
             if (isTypeMatch(value, String))
             {
                 var s:String = value as String;
-                result.success = rectifiedMatch( (s.length == 0) );
+
                 result.description = "'" +s +"' " +rectifiedPrefix("toBeEmpty");
 
+                result.success = rectifiedMatch( (s.length == 0) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("is", true) +" empty.";
             }
             else if (isTypeMatch(value, Vector))
             {
                 var vector:Vector = value as Vector;
-                result.success = rectifiedMatch( (vector.length == 0) );
+
                 result.description = "[" +vector.join() +"] " +rectifiedPrefix("toBeEmpty");
 
+                result.success = rectifiedMatch( (vector.length == 0) );
                 if (!result.success) result.message = "Vector " +rectifiedSuffix("is", true) +" empty.";
             }
             else
@@ -143,17 +144,19 @@ package pixeldroid.bdd
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
-                result.success = rectifiedMatch( (string1.indexOf(string2) > -1) );
+
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toContain") +" '" +string2 +"'";
 
+                result.success = rectifiedMatch( (string1.indexOf(string2) > -1) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" contain '" +string2 +"'.";
             }
             else if (isTypeMatch(value, Vector))
             {
                 var vector:Vector = value as Vector;
-                result.success = rectifiedMatch( (vector.contains(value2)) );
+
                 result.description = "[" +vector.join() +"] " +rectifiedPrefix("toContain") +" " +stringify(value2);
 
+                result.success = rectifiedMatch( (vector.contains(value2)) );
                 if (!result.success) result.message = "Vector " +rectifiedSuffix("does", true) +" contain " +stringify(value2) +".";
             }
             else
@@ -166,9 +169,9 @@ package pixeldroid.bdd
 
         public function toEqual(value2:Object):void
         {
-            result.success = rectifiedMatch( (value == value2) );
             result.description = stringify(value) +" " +rectifiedPrefix("toEqual") +" " +stringify(value2);
 
+            result.success = rectifiedMatch( (value == value2) );
             if (!result.success) result.message = "values " +rectifiedSuffix("are", true) +" equal.";
 
             context.addResult(result);
@@ -185,9 +188,10 @@ package pixeldroid.bdd
                 var string2:String = value2 as String;
                 var matchList:Vector.<String> = string1.find(string2);
                 var matched:Number = matchList.length;
-                result.success = rectifiedMatch( (matched == matches) );
+
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toPatternMatch") +" '" +string2 +"' with " +matches +" capture group" +((matches != 1) ? 's' : '');
 
+                result.success = rectifiedMatch( (matched == matches) );
                 if (!result.success) result.message = "found " +matched +".";
             }
             else
@@ -204,9 +208,10 @@ package pixeldroid.bdd
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
-                result.success = rectifiedMatch( (string1.indexOf(string2) == 0) );
+
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toStartWith") +" '" +string2 +"'";
 
+                result.success = rectifiedMatch( (string1.indexOf(string2) == 0) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" start with '" +string2 +"'.";
             }
             else
@@ -223,9 +228,10 @@ package pixeldroid.bdd
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
-                result.success = rectifiedMatch( (string1.indexOf(string2) == (string1.length - string2.length)) );
+
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toEndWith") +" '" +string2 +"'";
 
+                result.success = rectifiedMatch( (string1.indexOf(string2) == (string1.length - string2.length)) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" end with '" +string2 +"'.";
             }
             else
@@ -238,8 +244,9 @@ package pixeldroid.bdd
 
         public function from(value2:Number):void // used with toBePlusOrMinus()
         {
-            result.success = rectifiedMatch( (Math.abs(value2 - value) <= absoluteDelta) );
             result.description = value.toString() +" " +rectifiedPrefix("toBePlusOrMinus") +" " +absoluteDelta.toString() +" from " +value2.toString();
+
+            result.success = rectifiedMatch( (Math.abs(value2 - value) <= absoluteDelta) );
             result.message = value.toString() +" is " +Math.abs(value2 - value) +" away from " +value2.toString();
 
             context.addResult(result);
@@ -276,19 +283,19 @@ package pixeldroid.bdd
 
         private function notAContainer(value:Object, result:MatchResult):void
         {
-            result.success = false;
             result.description = "a container type";
+            result.success = false;
             result.message = "'" +value.toString() +"' is not a String or Vector type value";
         }
 
         private function notAString(value:Object, result:MatchResult):void
         {
-            result.success = false;
             result.description = "a string type";
+            result.success = false;
             result.message = "'" +value.toString() +"' is not a String type value";
         }
 
-        private function stringify(value:Object):String
+        public static function stringify(value:Object):String
         {
             if (value is Type) return value.getFullTypeName();
 
