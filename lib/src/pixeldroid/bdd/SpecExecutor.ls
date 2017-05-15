@@ -18,30 +18,36 @@ package pixeldroid.bdd
         public static const FORMAT_CONSOLE:String = 'console';
         public static const FORMAT_JUNIT:String = 'junit';
 
+        public static const SPECIFIER_METHOD:String = 'specify';
+
         public static var seed:Number = -1;
 
         private static const SUCCESS:Number = 0;
         private static const FAILURE:Number = 1;
 
+        private static var _specifier:Spec;
+
 
         public static function addFormat(format:String):void
         {
-            Spec.addReporter(reporterByName(format));
+            var spec:Spec = specifier;
+            spec.addReporter(reporterByName(format));
         }
 
         public static function exec(specs:Vector.<Type>):Number
         {
-            if (Spec.numReporters == 0) Spec.addReporter(new ConsoleReporter());
+            var spec:Spec = specifier;
+            if (spec.numReporters == 0) spec.addReporter(reporterByName(FORMAT_CONSOLE));
 
             var method:MethodInfo;
-            for each(var spec:Type in specs)
+            for each(var type:Type in specs)
             {
-                method = spec.getMethodInfoByName('describe');
-                Debug.assert(method, 'Could not find describe method on class' +spec.getFullName());
-                method.invokeSingle(spec, null);
+                method = type.getMethodInfoByName(SPECIFIER_METHOD);
+                Debug.assert(method, 'Could not find method named "' +SPECIFIER_METHOD +'" on class' +type.getFullName());
+                method.invokeSingle(type, spec);
             }
 
-            return Spec.execute(seed) ? SUCCESS : FAILURE;
+            return spec.execute(seed) ? SUCCESS : FAILURE;
         }
 
         public static function parseArgs():void
@@ -55,6 +61,12 @@ package pixeldroid.bdd
             }
         }
 
+
+        private static function get specifier():Spec
+        {
+            if (!_specifier) _specifier = new Spec();
+            return _specifier;
+        }
 
         private static function reporterByName(name:String):Reporter
         {

@@ -6,10 +6,12 @@ package
 
     public static class SpecSpec
     {
-        private static const it:Thing = Spec.describe('Spec');
+        private static var it:Thing;
 
-        public static function describe():void
+        public static function specify(specifier:Spec):void
         {
+            it = specifier.describe('Spec');
+
             it.should('be versioned', be_versioned);
             it.should('help declare expectations', declare_expectations);
         }

@@ -12,11 +12,13 @@ package pixeldroid.bdd
     {
         public static const version:String = '2.0.0';
 
-        private static var things:Vector.<Thing> = [];
-        private static var reporters:ReporterManager = new ReporterManager();
+        private const things:Vector.<Thing> = [];
+        private const reporters:ReporterManager = new ReporterManager();
+
+        public function Spec() { }
 
 
-        public static function describe(thingName:String):Thing
+        public function describe(thingName:String):Thing
         {
             var thing:Thing = new Thing(thingName);
             things.push(thing);
@@ -24,17 +26,17 @@ package pixeldroid.bdd
             return thing;
         }
 
-        public static function addReporter(reporter:Reporter):void
+        public function addReporter(reporter:Reporter):void
         {
             if (reporter) reporters.add(reporter);
         }
 
-        public static function get numReporters():Number
+        public function get numReporters():Number
         {
             return reporters.length;
         }
 
-        public static function execute(seed:Number=-1):Boolean
+        public function execute(seed:Number=-1):Boolean
         {
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);

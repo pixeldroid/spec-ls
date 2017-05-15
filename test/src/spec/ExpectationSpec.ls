@@ -6,10 +6,12 @@ package
 
     public static class ExpectationSpec
     {
-        private static const it:Thing = Spec.describe('Expectations');
+        private static var it:Thing;
 
-        public static function describe():void
+        public static function specify(specifier:Spec):void
         {
+            it = specifier.describe('Expectations');
+
             it.should('be executable', be_executable);
             it.should('provide boolean matchers', provide_boolean_matchers);
             it.should('provide a negation helper', provide_negation_helper);
