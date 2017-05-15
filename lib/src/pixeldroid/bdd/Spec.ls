@@ -38,6 +38,8 @@ package pixeldroid.bdd
 
         public function execute(seed:Number=-1):Boolean
         {
+            Debug.assert((numReporters > 0), 'must add at least one reporter to execute a Spec');
+
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);
 

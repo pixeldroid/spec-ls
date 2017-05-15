@@ -3,6 +3,8 @@ package
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
 
+    import pixeldroid.bdd.Reporter;
+
 
     public static class SpecSpec
     {
@@ -14,6 +16,8 @@ package
 
             it.should('be versioned', be_versioned);
             it.should('help declare expectations', declare_expectations);
+            it.should('fail specifications whose expectations lack assertions', fail_empty_specs);
+            it.should('support custom reporters via an api', support_reporters);
         }
 
 
@@ -25,6 +29,72 @@ package
         private static function declare_expectations():void
         {
             it.expects('this').not.toEqual('that other thing');
+        }
+
+        private static function fail_empty_specs():void
+        {
+            var testSpec:Spec = new Spec();
+            testSpec.addReporter(new TestReporter());
+
+            var test:Thing = testSpec.describe('Test');
+            test.should('fail empty specs', function() {});
+
+            it.expects(testSpec.execute()).toBeFalsey();
+        }
+
+        private static function support_reporters():void
+        {
+            var testSpec:Spec = new Spec();
+            var testReporter:TestReporter = new TestReporter();
+            testSpec.addReporter(testReporter);
+
+            var test:Thing = testSpec.describe('Test');
+            test.should('exercise the reporter api', function() {
+                test.expects(testReporter).toBeA(Reporter);
+            });
+
+            it.expects(testSpec.execute()).toBeTruthy();
+
+            var apiCalled:Boolean =
+                testReporter.called['init']
+                && testReporter.called['begin']
+                && testReporter.called['report']
+                && testReporter.called['end'];
+            it.expects(apiCalled).toBeTruthy();
+        }
+    }
+
+    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.MatchResult;
+    import pixeldroid.bdd.models.SpecInfo;
+
+    public class TestReporter implements Reporter
+    {
+        private var numFailures:Number = 0;
+        public var called:Dictionary.<String, Boolean> = {
+            'init': false,
+            'begin': false,
+            'report': false,
+            'end': false
+        };
+        public function init(specInfo:SpecInfo):void { called['init'] = true; }
+        public function begin(name:String, total:Number):void { called['begin'] = true; }
+        public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
+        {
+            called['report'] = true;
+            var i:Number;
+            var n:Number = e.numResults;
+            var result:MatchResult;
+            for (i = 0; i < n; i++)
+            {
+                result = e.getResult(i);
+                if (!result.success) numFailures++;
+            }
+        }
+        public function end(name:String, duration:Number):Boolean
+        {
+            called['end'] = true;
+            return (numFailures == 0);
         }
     }
 }

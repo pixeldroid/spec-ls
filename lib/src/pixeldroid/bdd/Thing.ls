@@ -24,13 +24,18 @@ package pixeldroid.bdd
         }
 
 
+        public function get numExpectations():Number { return expectations.length; }
+
         public function should(declaration:String, validation:Function):void
         {
+            Debug.assert(validation, 'validation function must not be null');
             expectations.push(new Expectation(declaration, validation));
         }
 
         public function execute(reporter:Reporter):Boolean
         {
+            if (numExpectations == 0) return true;
+
             startTimeMs = Platform.getTime();
             Randomizer.shuffle(expectations);
 
@@ -52,6 +57,15 @@ package pixeldroid.bdd
                 //     which will call addResult()
                 currentExpectation.test();
 
+                if (currentExpectation.numResults == 0)
+                {
+                    var noop:MatchResult = new MatchResult();
+                    noop.success = false;
+                    noop.message = 'expectation generated no results';
+                    currentExpectation.addResult(noop);
+                }
+
+                // result is added, so can now report it
                 reporter.report(currentExpectation, (Platform.getTime() - ms) * .001, i, n);
             }
 
