@@ -44,12 +44,12 @@ package pixeldroid.bdd
             for (i = 0; i < n; i++)
             {
                 ms = Platform.getTime();
-
                 currentExpectation = expectations[i];
 
                 // run the validation closure, which has captured this instance in its scope
-                // it will call in to expects(), which will pass flow on to Matcher
-                // which will call addResult()
+                // it will call in to expects(),
+                //   which will pass flow on to Matcher,
+                //     which will call addResult()
                 currentExpectation.test();
 
                 reporter.report(currentExpectation, (Platform.getTime() - ms) * .001, i, n);

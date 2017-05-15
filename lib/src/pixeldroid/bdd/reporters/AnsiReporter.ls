@@ -101,11 +101,7 @@ package pixeldroid.bdd.reporters
             ansi.faint.add('. ' +durationSec +'s.').reset;
 
             trace(ansi);
-
-            for each (var s:String in failMessages)
-            {
-                trace(s);
-            }
+            for each (var s:String in failMessages) trace(s);
 
             return success;
         }

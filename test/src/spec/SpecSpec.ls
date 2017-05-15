@@ -24,7 +24,7 @@ package
 
         private static function declare_expectations():void
         {
-            it.expects('this').not.toEqual('that');
+            it.expects('this').not.toEqual('that other thing');
         }
     }
 }

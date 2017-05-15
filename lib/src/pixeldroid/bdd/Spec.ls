@@ -41,16 +41,11 @@ package pixeldroid.bdd
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);
 
-            var success:Boolean = true;
-
             reporters.init(new SpecInfo('Spec', version, seed));
 
-            var i:Number;
-            var n:Number = things.length;
-            for(i = 0; i < n; i++)
-            {
-                if (!things[i].execute(reporters)) success = false;
-            }
+            var success:Boolean = true;
+            for each(var thing:Thing in things)
+                if (!thing.execute(reporters)) success = false;
 
             return success;
         }
