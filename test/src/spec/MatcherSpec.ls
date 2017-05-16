@@ -4,15 +4,14 @@ package
     import pixeldroid.bdd.Thing;
 
 
-    public static class ExpectationSpec
+    public static class MatcherSpec
     {
         private static var it:Thing;
 
         public static function specify(specifier:Spec):void
         {
-            it = specifier.describe('Expectations');
+            it = specifier.describe('Matcher');
 
-            it.should('be executable', be_executable);
             it.should('provide boolean matchers', provide_boolean_matchers);
             it.should('provide a negation helper', provide_negation_helper);
             it.should('provide an equality matcher', provide_equality_matcher);
@@ -25,12 +24,6 @@ package
             it.should('provide a type matcher', provide_type_matcher);
         }
 
-
-        private static function be_executable():void
-        {
-            var f:Function = function(a:Number,b:Number):Number { return a*b; };
-            it.expects(f(5,7)).toEqual(5*7);
-        }
 
         private static function provide_boolean_matchers():void
         {
@@ -141,5 +134,6 @@ package
             it.expects(it).toBeA(Thing);
             it.expects(it).toBeA(Object);
         }
+
     }
 }
