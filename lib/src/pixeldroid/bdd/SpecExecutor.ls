@@ -43,7 +43,7 @@ package pixeldroid.bdd
             for each(var type:Type in specs)
             {
                 method = type.getMethodInfoByName(SPECIFIER_METHOD);
-                Debug.assert(method, 'Could not find method named "' +SPECIFIER_METHOD +'" on class' +type.getFullName());
+                Debug.assert(method, 'Could not find method named "' +SPECIFIER_METHOD +'" on class ' +type.getFullName());
                 method.invokeSingle(type, spec);
             }
 
