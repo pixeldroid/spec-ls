@@ -15,7 +15,7 @@ package
             it = specifier.describe('Spec');
 
             it.should('be versioned', be_versioned);
-            it.should('help declare expectations', declare_expectations);
+            it.should('define specifications', define_specifications);
             it.should('fail specifications whose expectations lack assertions', fail_empty_specs);
             it.should('support custom reporters via an api', support_reporters);
         }
@@ -26,9 +26,10 @@ package
             it.expects(Spec.version).toPatternMatch('(%d+).(%d+).(%d+)', 3);
         }
 
-        private static function declare_expectations():void
+        private static function define_specifications():void
         {
-            it.expects('this').not.toEqual('that other thing');
+            var testSpec:Spec = new Spec();
+            it.expects(testSpec.describe('Test')).toBeA(Thing);
         }
 
         private static function fail_empty_specs():void
