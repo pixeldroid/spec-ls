@@ -5,8 +5,9 @@ package
 
     import pixeldroid.bdd.SpecExecutor;
 
-    import ExpectationSpec;
+    import MatcherSpec;
     import SpecSpec;
+    import ThingSpec;
 
 
     public class SpecTest extends ConsoleApplication
@@ -16,8 +17,9 @@ package
             SpecExecutor.parseArgs();
 
             var returnCode:Number = SpecExecutor.exec([
-                ExpectationSpec,
-                SpecSpec
+                SpecSpec,
+                ThingSpec,
+                MatcherSpec
             ]);
 
             Process.exit(returnCode);
