@@ -96,8 +96,8 @@ package pixeldroid.bdd.reporters
             else ansi.bold.fgRed;
 
             ansi.add(' ' +numFailures +' ' +pluralize('failure', numFailures)).reset;
-            ansi.faint.add(' in ').nofaint.add(numAssert +' assertions');
-            ansi.faint.add(' from ').nofaint.add(numSpecs +' expectations');
+            ansi.faint.add(' in ').nofaint.add(numAssert +' ' +pluralize('assertion', numAssert));
+            ansi.faint.add(' from ').nofaint.add(numSpecs +' ' +pluralize('expectation', numSpecs));
             ansi.faint.add('. ' +durationSec +'s.').reset;
 
             trace(ansi);

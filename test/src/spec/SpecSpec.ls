@@ -69,7 +69,7 @@ package
     import pixeldroid.bdd.models.MatchResult;
     import pixeldroid.bdd.models.SpecInfo;
 
-    public class TestReporter implements Reporter
+    private class TestReporter implements Reporter
     {
         private var numFailures:Number = 0;
         public var called:Dictionary.<String, Boolean> = {

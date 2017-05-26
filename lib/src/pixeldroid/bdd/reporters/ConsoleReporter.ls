@@ -64,8 +64,8 @@ package pixeldroid.bdd.reporters
         {
             var summary:String = '';
             summary += numFailures +' ' +pluralize('failure', numFailures);
-            summary += ' in ' +numAssert +' assertions';
-            summary += ' from ' +numSpecs +' expectations';
+            summary += ' in ' +numAssert +' ' +pluralize('assertion', numAssert);
+            summary += ' from ' +numSpecs +' ' +pluralize('expectation', numSpecs);
             summary += '.';
             summary += ' ' +durationSec +'s.';
 

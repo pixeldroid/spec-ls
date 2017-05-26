@@ -19,7 +19,7 @@ package pixeldroid.bdd.reporters
 
         public function add(reporter:Reporter):void
         {
-            reporters.push(reporter);
+            if (reporter) reporters.push(reporter);
         }
 
         public function init(specInfo:SpecInfo):void
