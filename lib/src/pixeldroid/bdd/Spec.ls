@@ -4,6 +4,7 @@ package pixeldroid.bdd
 
     import pixeldroid.bdd.Reporter;
     import pixeldroid.bdd.Thing;
+    import pixeldroid.bdd.ThingValidator;
     import pixeldroid.bdd.models.SpecInfo;
     import pixeldroid.bdd.reporters.ReporterManager;
     import pixeldroid.random.Randomizer;
@@ -13,6 +14,7 @@ package pixeldroid.bdd
         public static const version:String = '2.0.0';
 
         private const things:Vector.<Thing> = [];
+        private const validator:ThingValidator = new ThingValidator();
         private const reporters:ReporterManager = new ReporterManager();
 
         public function Spec() { }
@@ -47,7 +49,7 @@ package pixeldroid.bdd
 
             var success:Boolean = true;
             for each(var thing:Thing in things)
-                if (!thing.execute(reporters)) success = false;
+                if (!validator.validate(thing, reporters)) success = false;
 
             return success;
         }

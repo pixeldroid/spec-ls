@@ -1,7 +1,7 @@
 
 package pixeldroid.bdd
 {
-    import pixeldroid.bdd.Thing;
+    import pixeldroid.bdd.models.Expectation;
     import pixeldroid.bdd.models.MatchResult;
 
     public class Matcher
@@ -9,12 +9,12 @@ package pixeldroid.bdd
         private var positive:Boolean = true;
         private var absoluteDelta:Number = 0;
 
-        private var context:Thing;
+        private var context:Expectation;
         private var result:MatchResult;
         private var value:Object;
 
 
-        public function Matcher(context:Thing, value:Object)
+        public function Matcher(context:Expectation, value:Object)
         {
             this.context = context;
             this.value = value;
