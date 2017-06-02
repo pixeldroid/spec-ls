@@ -19,7 +19,12 @@ package pixeldroid.bdd.reporters
 
         public function add(reporter:Reporter):void
         {
-            if (reporter) reporters.push(reporter);
+            if (reporter && !reporters.contains(reporter)) reporters.push(reporter);
+        }
+
+        public function remove(reporter:Reporter):void
+        {
+            reporters.remove(reporter);
         }
 
         public function init(specInfo:SpecInfo):void
