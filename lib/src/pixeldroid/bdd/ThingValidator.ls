@@ -73,7 +73,8 @@ package pixeldroid.bdd
                 {
                     var noop:MatchResult = new MatchResult();
                     noop.success = false;
-                    noop.message = 'expectation generated no results';
+                    noop.description = 'nothing';
+                    noop.message = 'expectations must test something';
                     currentExpectation.addResult(noop);
                 }
 
