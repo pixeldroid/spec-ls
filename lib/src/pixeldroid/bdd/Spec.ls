@@ -9,6 +9,8 @@ package pixeldroid.bdd
     import pixeldroid.bdd.reporters.ReporterManager;
     import pixeldroid.random.Randomizer;
 
+    import system.platform.Platform;
+
     public class Spec
     {
         public static const version:String = '2.0.0';
@@ -42,14 +44,18 @@ package pixeldroid.bdd
         {
             Debug.assert((numReporters > 0), 'must add at least one reporter to execute a Spec');
 
+            var startTimeMs:Number = Platform.getTime();
+            var success:Boolean = true;
+
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);
 
             reporters.init(new SpecInfo('Spec', version, seed));
 
-            var success:Boolean = true;
             for each(var thing:Thing in things)
                 if (!validator.validate(thing, reporters)) success = false;
+
+            reporters.finalize((Platform.getTime() - startTimeMs) * .001);
 
             return success;
         }

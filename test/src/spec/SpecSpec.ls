@@ -60,7 +60,8 @@ package
                 testReporter.called['init']
                 && testReporter.called['begin']
                 && testReporter.called['report']
-                && testReporter.called['end'];
+                && testReporter.called['end']
+                && testReporter.called['finalize'];
             it.expects(apiCalled).toBeTruthy();
         }
     }
@@ -76,7 +77,8 @@ package
             'init': false,
             'begin': false,
             'report': false,
-            'end': false
+            'end': false,
+            'finalize': false
         };
         public function init(specInfo:SpecInfo):void { called['init'] = true; }
         public function begin(name:String, total:Number):void { called['begin'] = true; }
@@ -97,5 +99,6 @@ package
             called['end'] = true;
             return (numFailures == 0);
         }
+        public function finalize(durationSec:Number):void { called['finalize'] = true; }
     }
 }

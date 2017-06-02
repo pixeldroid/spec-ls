@@ -84,6 +84,11 @@ package pixeldroid.bdd.reporters
             return (numFailures == 0);
         }
 
+        public function finalize(durationSec:Number):void
+        {
+            /* no-op */
+        }
+
 
         private function writeFile(fileName:String):void
         {

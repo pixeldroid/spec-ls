@@ -12,9 +12,13 @@ package pixeldroid.bdd.reporters
     {
         private const lineWidth:Number = 60;
 
+        private var totalFailures:Number;
+        private var totalAsserts:Number;
+        private var totalExpects:Number;
+
         private var failures:Dictionary.<Expectation, Vector.<Number>>;
-        private var numSpecs:Number;
         private var numAssert:Number;
+        private var numExpect:Number;
 
         private var ansi:ANSI = new ANSI();
         private var progress:String;
@@ -23,19 +27,24 @@ package pixeldroid.bdd.reporters
 
         public function init(specInfo:SpecInfo):void
         {
+            totalFailures = 0;
+            totalAsserts = 0;
+            totalExpects = 0;
+
+            trace('');
+
             ansi.clear;
             ansi.faint.add('[').nofaint.add(specInfo.name +' v' +specInfo.version).faint.add(']');
             ansi.add(' seed: ').nofaint.fgCyan.add(specInfo.seed.toString()).reset;
 
-            trace('');
             trace(ansi);
         }
 
         public function begin(name:String, total:Number):void
         {
-            numSpecs = total;
-            numAssert = 0;
             failures = {};
+            numAssert = 0;
+            numExpect = total;
 
             progress = ansi.clear.bold.add(name).nobold.add(' ').toString();
             numChars = name.length + 1;
@@ -90,20 +99,40 @@ package pixeldroid.bdd.reporters
             var success:Boolean = (numFailures == 0);
 
             trace('');
-            ansi.clear;
 
+            ansi.clear;
             if (success) ansi.fgGreen;
             else ansi.bold.fgRed;
 
             ansi.add(' ' +numFailures +' ' +pluralize('failure', numFailures)).reset;
             ansi.faint.add(' in ').nofaint.add(numAssert +' ' +pluralize('assertion', numAssert));
-            ansi.faint.add(' from ').nofaint.add(numSpecs +' ' +pluralize('expectation', numSpecs));
+            ansi.faint.add(' from ').nofaint.add(numExpect +' ' +pluralize('expectation', numExpect));
             ansi.faint.add('. ' +durationSec +'s.').reset;
 
             trace(ansi);
             for each (var s:String in failMessages) trace(s);
 
+            totalFailures += numFailures;
+            totalAsserts += numAssert;
+            totalExpects += numExpect;
+
             return success;
+        }
+
+        public function finalize(durationSec:Number):void
+        {
+            trace('');
+
+            ansi.clear;
+            ansi.faint.add(totalFailures +' ' +pluralize('failure', totalFailures));
+            ansi.faint.add(' in ' +totalAsserts +' ' +pluralize('assertion', totalAsserts));
+            ansi.faint.add(' from ' +totalExpects +' ' +pluralize('expectation', totalExpects));
+            ansi.faint.add('.').reset;
+            trace(ansi);
+
+            ansi.clear;
+            ansi.faint.add('completed in ' +durationSec +'s.').reset;
+            trace(ansi);
         }
 
 

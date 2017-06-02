@@ -10,5 +10,6 @@ package pixeldroid.bdd
         function begin(name:String, total:Number):void;
         function report(expectation:Expectation, durationSec:Number, index:Number, total:Number):void;
         function end(name:String, durationSec:Number):Boolean;
+        function finalize(durationSec:Number):void;
     }
 }

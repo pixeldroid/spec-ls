@@ -57,6 +57,13 @@ package pixeldroid.bdd.reporters
 
             return success;
         }
+        public function finalize(durationSec:Number):void
+        {
+            for each (var reporter:Reporter in reporters)
+            {
+                reporter.finalize(durationSec);
+            }
+        }
     }
 }
 

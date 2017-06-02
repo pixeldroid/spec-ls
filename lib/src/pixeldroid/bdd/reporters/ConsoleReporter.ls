@@ -9,22 +9,30 @@ package pixeldroid.bdd.reporters
 
     public class ConsoleReporter implements Reporter
     {
+        private var totalFailures:Number;
+        private var totalAsserts:Number;
+        private var totalExpects:Number;
+
         private var numFailures:Number;
-        private var numSpecs:Number;
         private var numAssert:Number;
+        private var numExpect:Number;
 
 
         public function init(specInfo:SpecInfo):void
         {
+            totalFailures = 0;
+            totalAsserts = 0;
+            totalExpects = 0;
+
             trace('');
             trace(specInfo);
         }
 
         public function begin(name:String, total:Number):void
         {
-            numSpecs = total;
-            numAssert = 0;
             numFailures = 0;
+            numAssert = 0;
+            numExpect = total;
 
             trace('');
             trace(name);
@@ -65,13 +73,30 @@ package pixeldroid.bdd.reporters
             var summary:String = '';
             summary += numFailures +' ' +pluralize('failure', numFailures);
             summary += ' in ' +numAssert +' ' +pluralize('assertion', numAssert);
-            summary += ' from ' +numSpecs +' ' +pluralize('expectation', numSpecs);
+            summary += ' from ' +numExpect +' ' +pluralize('expectation', numExpect);
             summary += '.';
             summary += ' ' +durationSec +'s.';
 
             trace(summary);
 
+            totalFailures += numFailures;
+            totalAsserts += numAssert;
+            totalExpects += numExpect;
+
             return (numFailures == 0);
+        }
+
+        public function finalize(durationSec:Number):void
+        {
+            var summary:String = '';
+            summary += totalFailures +' ' +pluralize('failure', totalFailures);
+            summary += ' in ' +totalAsserts +' ' +pluralize('assertion', totalAsserts);
+            summary += ' from ' +totalExpects +' ' +pluralize('expectation', totalExpects);
+            summary += '.';
+
+            trace('');
+            trace(summary);
+            trace('completed in ' +durationSec +'s.');
         }
 
 
