@@ -1,6 +1,9 @@
 
 package pixeldroid.bdd
 {
+    import system.Debug;
+    import system.CallStackInfo;
+
     import pixeldroid.bdd.models.Expectation;
     import pixeldroid.bdd.models.MatchResult;
 
@@ -14,11 +17,42 @@ package pixeldroid.bdd
         private var value:Object;
 
 
+
+        private static function stringEndsWith(string1:String, string2:String):Boolean
+        {
+            return (string1.indexOf(string2) == (string1.length - string2.length));
+        }
+
+        private static function stringStartsWith(string1:String, string2:String):Boolean
+        {
+            return (string1.indexOf(string2) == 0);
+        }
+
+
         public function Matcher(context:Expectation, value:Object)
         {
+            var callStack:Vector.<CallStackInfo> = Debug.getCallStack();
+            var stackFrame:Number;
+            var csi:CallStackInfo;
+            var source:String;
+            var line:Number;
+
+            for (stackFrame = callStack.length - 1; stackFrame >= 0; stackFrame--)
+            {
+                csi = callStack[stackFrame];
+                if (Matcher.stringEndsWith(csi.source, context.getTypeName() +'.ls'))
+                {
+                    stackFrame--;
+                    csi = callStack[stackFrame];
+                    source = csi.source;
+                    line = csi.line;
+                    break;
+                }
+            }
+
             this.context = context;
             this.value = value;
-            result = new MatchResult();
+            result = new MatchResult(source, line);
         }
 
 
@@ -211,7 +245,7 @@ package pixeldroid.bdd
 
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toStartWith") +" '" +string2 +"'";
 
-                result.success = rectifiedMatch( (string1.indexOf(string2) == 0) );
+                result.success = rectifiedMatch( Matcher.stringStartsWith(string1, string2) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" start with '" +string2 +"'.";
             }
             else
@@ -231,7 +265,7 @@ package pixeldroid.bdd
 
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toEndWith") +" '" +string2 +"'";
 
-                result.success = rectifiedMatch( (string1.indexOf(string2) == (string1.length - string2.length)) );
+                result.success = rectifiedMatch( Matcher.stringEndsWith(string1, string2) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" end with '" +string2 +"'.";
             }
             else
