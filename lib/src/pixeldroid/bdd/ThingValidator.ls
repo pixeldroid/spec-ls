@@ -1,6 +1,7 @@
 
 package pixeldroid.bdd
 {
+    import pixeldroid.bdd.Assertion;
     import pixeldroid.bdd.Matcher;
     import pixeldroid.bdd.Reporter;
     import pixeldroid.bdd.Thing;
@@ -26,6 +27,17 @@ package pixeldroid.bdd
         @param value Vector of Expectation instances to be tested
         */
         public function setExpectations(value:Vector.<Expectation>):void { expectations = value; }
+
+        /**
+        Retrieve an assertion for the expectation currently under test.
+
+        @param value A value to provide to the Assertion
+        */
+        public function getAssertion(value:Object):Assertion
+        {
+            var assertion:Assertion = new Assertion(currentExpectation, value);
+            return assertion;
+        }
 
         /**
         Retrieve a matcher for the expectation currently under test.

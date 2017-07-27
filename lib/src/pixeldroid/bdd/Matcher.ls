@@ -1,8 +1,8 @@
 
 package pixeldroid.bdd
 {
-    import system.Debug;
     import system.CallStackInfo;
+    import system.Debug;
 
     import pixeldroid.bdd.models.Expectation;
     import pixeldroid.bdd.models.MatchResult;
@@ -18,12 +18,12 @@ package pixeldroid.bdd
 
 
 
-        private static function stringEndsWith(string1:String, string2:String):Boolean
+        public static function stringEndsWith(string1:String, string2:String):Boolean
         {
             return (string1.indexOf(string2) == (string1.length - string2.length));
         }
 
-        private static function stringStartsWith(string1:String, string2:String):Boolean
+        public static function stringStartsWith(string1:String, string2:String):Boolean
         {
             return (string1.indexOf(string2) == 0);
         }

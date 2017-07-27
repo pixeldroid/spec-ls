@@ -32,6 +32,12 @@ package pixeldroid.bdd
             this.validator.setExpectations(expectations);
         }
 
+        public function asserts(value:Object):Assertion
+        {
+            Debug.assert(validator, 'validator must be initialized via submitForValidation');
+            return validator.getAssertion(value);
+        }
+
         public function expects(value:Object):Matcher
         {
             Debug.assert(validator, 'validator must be initialized via submitForValidation');

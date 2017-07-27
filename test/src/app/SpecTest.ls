@@ -19,7 +19,8 @@ package
             var returnCode:Number = SpecExecutor.exec([
                 SpecSpec,
                 ThingSpec,
-                MatcherSpec
+                MatcherSpec,
+                AssertionSpec,
             ]);
 
             Process.exit(returnCode);
