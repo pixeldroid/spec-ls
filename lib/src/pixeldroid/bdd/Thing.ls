@@ -3,13 +3,13 @@ package pixeldroid.bdd
 {
     import pixeldroid.bdd.Matcher;
     import pixeldroid.bdd.ThingValidator;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
 
 
     /**
-    A test subject whose behavior will be described through expectations.
+    A test subject whose behavior will be described through requirements.
 
-    Use the `should` method to declare a desired behavior and a function that
+    Use the `should` method to describe a desired behavior and a function that
     validates the behavior with one or more calls to the `expects` method:
 
     ```as3
@@ -35,7 +35,7 @@ package pixeldroid.bdd
     {
         private var _name:String = '<thing>';
         private var validator:ThingValidator;
-        private const expectations:Vector.<Expectation> = [];
+        private const requirements:Vector.<Requirement> = [];
 
 
         /**
@@ -65,18 +65,18 @@ package pixeldroid.bdd
         public function should(declaration:String, validation:Function):void
         {
             Debug.assert(validation, 'validation function must not be null');
-            expectations.push(new Expectation(declaration, validation));
+            requirements.push(new Requirement(declaration, validation));
         }
 
         /**
-        provide expectations to a validator for testing.
+        provide requirements to a validator for testing.
 
-        @param validator A test execution engine that can process the expectations of this subject's behavior
+        @param validator A test execution engine that can process the requirements of this subject's behavior
         */
         public function submitForValidation(validator:ThingValidator):void
         {
             this.validator = validator;
-            this.validator.setExpectations(expectations);
+            this.validator.setRequirements(requirements);
         }
 
         /**
@@ -93,7 +93,7 @@ package pixeldroid.bdd
         /**
         Start a value matching chain to compare the provided value to the results of one or more `Matcher`.
 
-        @param value A value to set expectations for
+        @param value A value to set requirements for
         */
         public function expects(value:Object):Matcher
         {

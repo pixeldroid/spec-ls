@@ -16,7 +16,7 @@ package
 
             it.should('be versioned', be_versioned);
             it.should('define specifications', define_specifications);
-            it.should('fail specifications whose expectations lack assertions', fail_empty_specs);
+            it.should('fail specifications whose requirements lack expectations', fail_empty_specs);
             it.should('support custom reporters via an api', support_reporters);
         }
 
@@ -66,7 +66,7 @@ package
         }
     }
 
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
     import pixeldroid.bdd.models.SpecInfo;
 
@@ -82,15 +82,15 @@ package
         };
         public function init(specInfo:SpecInfo):void { called['init'] = true; }
         public function begin(name:String, total:Number):void { called['begin'] = true; }
-        public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
+        public function report(req:Requirement, durationSec:Number, index:Number, total:Number):void
         {
             called['report'] = true;
             var i:Number;
-            var n:Number = e.numResults;
+            var n:Number = req.numResults;
             var result:MatchResult;
             for (i = 0; i < n; i++)
             {
-                result = e.getResult(i);
+                result = req.getResult(i);
                 if (!result.success) numFailures++;
             }
         }

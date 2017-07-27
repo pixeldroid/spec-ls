@@ -4,7 +4,7 @@ package pixeldroid.bdd
     import system.CallStackInfo;
     import system.Debug;
 
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
 
     public class Matcher
@@ -12,7 +12,7 @@ package pixeldroid.bdd
         private var positive:Boolean = true;
         private var absoluteDelta:Number = 0;
 
-        private var context:Expectation;
+        private var context:Requirement;
         private var result:MatchResult;
         private var value:Object;
 
@@ -29,7 +29,7 @@ package pixeldroid.bdd
         }
 
 
-        public function Matcher(context:Expectation, value:Object)
+        public function Matcher(context:Requirement, value:Object)
         {
             var callStack:Vector.<CallStackInfo> = Debug.getCallStack();
             var stackFrame:Number;

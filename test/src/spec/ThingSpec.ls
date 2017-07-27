@@ -3,7 +3,7 @@ package
     import pixeldroid.bdd.Matcher;
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
 
 
     public static class ThingSpec
@@ -15,8 +15,8 @@ package
             it = specifier.describe('Thing');
 
             it.should('describe behavior', describe_behavior);
-            it.should('create matchers to assert expectations', create_matchers);
-            it.should('validate execution of real code', be_executable);
+            it.should('create matchers to validate requirements', create_matchers);
+            it.should('validate via execution of real code', be_executable);
         }
 
 
@@ -27,9 +27,9 @@ package
             var validator:TestValidator = new TestValidator();
             test.submitForValidation(validator);
 
-            it.expects(validator.numExpectations).toEqual(0);
-            test.should('create expectations out of declaration,validation pairs', function() {});
-            it.expects(validator.numExpectations).toEqual(1);
+            it.expects(validator.numRequirements).toEqual(0);
+            test.should('create requirements out of declaration,validation pairs', function() {});
+            it.expects(validator.numRequirements).toEqual(1);
         }
 
         private static function create_matchers():void
@@ -55,9 +55,9 @@ package
 
     private class TestValidator extends ThingValidator
     {
-        private var peek:Vector.<Expectation>;
+        private var peek:Vector.<Requirement>;
 
-        override public function setExpectations(value:Vector.<Expectation>):void { peek = value; super.setExpectations(value); }
-        public function get numExpectations():Number { return peek.length; }
+        override public function setRequirements(value:Vector.<Requirement>):void { peek = value; super.setRequirements(value); }
+        public function get numRequirements():Number { return peek.length; }
     }
 }

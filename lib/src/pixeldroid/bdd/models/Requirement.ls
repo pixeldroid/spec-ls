@@ -4,15 +4,16 @@ package pixeldroid.bdd.models
     import pixeldroid.bdd.models.MatchResult;
 
     /**
-    Represents the description and validation of an assertion; collects results from the validation execution.
+    Represents the description and validation of a requirement; collects results from the validation execution.
 
-    Expectations are created by calling the `should()` method of an instance of `Thing`.
-    The validation of the expectation must contain calls to the `expects()` method of the same `Thing`.
+    Requirements are created by calling the `should()` method of an instance of `Thing`.
+    The validation of the requirement must contain calls to the `expects()` and `asserts()` methods of the same `Thing`.
 
     @see pixeldroid.bdd.Thing#should
+    @see pixeldroid.bdd.Thing#asserts
     @see pixeldroid.bdd.Thing#expects
     */
-    public class Expectation
+    public class Requirement
     {
         private var _description:String;
         private var validation:Function;
@@ -20,9 +21,9 @@ package pixeldroid.bdd.models
 
 
         /**
-        Create an expectation from a description and validation function.
+        Create an requirement from a description and validation function.
 
-        Descriptions should begin with a present tense modal verb that completes the
+        _Opinion:_ Descriptions should begin with a present tense modal verb that completes the
         sentence fragment: "It should ____". Do not include 'should' in the description,
         since the invocation method is called `should()`.
 
@@ -37,7 +38,7 @@ package pixeldroid.bdd.models
         @param description A phrase describing desired behavior that completes the sentence fragment: "It should ____"
         @param validation A function that tests whether the desired behavior is exhibited
         */
-        public function Expectation(description:String, validation:Function)
+        public function Requirement(description:String, validation:Function)
         {
             _description = description;
             this.validation = validation;
@@ -56,9 +57,9 @@ package pixeldroid.bdd.models
         }
 
         /**
-        Add the result of a `Matcher` assertion tested during execution of the validation.
+        Add the result of an expectation tested during execution of the validation.
 
-        @param result A `MatchResult` instance generated during the execution of a `Matcher` chain.
+        @param result A `MatchResult` instance generated during the execution of an expectation test chain.
         */
         public function addResult(result:MatchResult):void
         {

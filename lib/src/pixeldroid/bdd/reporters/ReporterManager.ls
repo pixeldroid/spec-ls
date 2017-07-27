@@ -2,7 +2,7 @@
 package pixeldroid.bdd.reporters
 {
     import pixeldroid.bdd.Reporter;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.SpecInfo;
 
 
@@ -61,7 +61,7 @@ package pixeldroid.bdd.reporters
         }
 
         /** @inherit */
-        public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
+        public function report(e:Requirement, durationSec:Number, index:Number, total:Number):void
         {
             for each (var reporter:Reporter in reporters)
             {

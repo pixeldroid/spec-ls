@@ -7,7 +7,7 @@ package pixeldroid.bdd
     import system.reflection.Type;
 
     import pixeldroid.bdd.Matcher;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
 
 
     public class Assertion
@@ -20,7 +20,7 @@ package pixeldroid.bdd
         public static var asserter:Asserter = defaultAsserter;
 
 
-        public function Assertion(context:Expectation, value:Object)
+        public function Assertion(context:Requirement, value:Object)
         {
             value1 = value;
 

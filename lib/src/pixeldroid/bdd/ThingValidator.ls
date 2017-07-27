@@ -5,7 +5,7 @@ package pixeldroid.bdd
     import pixeldroid.bdd.Matcher;
     import pixeldroid.bdd.Reporter;
     import pixeldroid.bdd.Thing;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
     import pixeldroid.random.Randomizer;
 
@@ -16,55 +16,54 @@ package pixeldroid.bdd
     */
     public class ThingValidator
     {
-        private var expectations:Vector.<Expectation>;
-        private var currentExpectation:Expectation;
+        private var requirements:Vector.<Requirement>;
+        private var currentRequirement:Requirement;
         private var startTimeMs:Number;
 
 
         /**
-        Provide the expectations to be validated.
+        Provide the requirements to be validated.
 
-        @param value Vector of Expectation instances to be tested
+        @param value Vector of Requirement instances to be tested
         */
-        public function setExpectations(value:Vector.<Expectation>):void { expectations = value; }
+        public function setRequirements(value:Vector.<Requirement>):void { requirements = value; }
 
         /**
-        Retrieve an assertion for the expectation currently under test.
+        Retrieve an assertion for the requirement currently under validation.
 
         @param value A value to provide to the Assertion
         */
         public function getAssertion(value:Object):Assertion
         {
-            var assertion:Assertion = new Assertion(currentExpectation, value);
+            var assertion:Assertion = new Assertion(currentRequirement, value);
             return assertion;
         }
 
         /**
-        Retrieve a matcher for the expectation currently under test.
+        Retrieve a matcher for the requirement currently under validation.
 
         @param value A value to provide to the Matcher
         */
         public function getMatcher(value:Object):Matcher
         {
-            var matcher:Matcher = new Matcher(currentExpectation, value);
+            var matcher:Matcher = new Matcher(currentRequirement, value);
             return matcher;
         }
 
         /**
-        Test all expectations currently defined. Progress and results will be sent to the provided reporter.
+        Test all requirements currently described. Progress and results will be sent to the provided reporter.
 
         @param reporter An implementor of the `Reporter` interface, to receive real-time progress updates and final test results
         */
         public function validate(thing:Thing, reporter:Reporter):Boolean
         {
             thing.submitForValidation(this);
-            var n:Number = expectations.length;
+            var n:Number = requirements.length;
             if (n == 0) return true;
 
             startTimeMs = Platform.getTime();
-            Randomizer.shuffle(expectations);
+            Randomizer.shuffle(requirements);
 
-            var e:Expectation;
             var i:Number;
             var ms:Number;
 
@@ -73,28 +72,28 @@ package pixeldroid.bdd
             for (i = 0; i < n; i++)
             {
                 ms = Platform.getTime();
-                currentExpectation = expectations[i];
+                currentRequirement = requirements[i];
 
-                // run the validation closure, which has captured a Thing instance in its scope
+                // run the validation closure `.test()`, which has captured a Thing instance in its scope
                 // it will call in to Thing.expects(),
-                //   which will call getMatcher() to retrieve a Matcher linked to the current expectation
-                //     which will process the assertion and call addResult() on the current expectation
-                currentExpectation.test();
+                //   which will call getMatcher() to retrieve a Matcher linked to the current requirement
+                //     which will process the expectation and call addResult() on the current requirement
+                currentRequirement.test();
 
-                if (currentExpectation.numResults == 0)
+                if (currentRequirement.numResults == 0)
                 {
                     var noop:MatchResult = new MatchResult();
                     noop.success = false;
                     noop.description = 'nothing';
-                    noop.message = 'expectations must test something';
-                    currentExpectation.addResult(noop);
+                    noop.message = 'requirements must test something';
+                    currentRequirement.addResult(noop);
                 }
 
                 // result is added, so can now report it
-                reporter.report(currentExpectation, (Platform.getTime() - ms) * .001, i, n);
+                reporter.report(currentRequirement, (Platform.getTime() - ms) * .001, i, n);
             }
 
-            currentExpectation = null;
+            currentRequirement = null;
 
             return reporter.end(thing.name, (Platform.getTime() - startTimeMs) * .001);
         }

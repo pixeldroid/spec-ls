@@ -1,7 +1,7 @@
 
 package pixeldroid.bdd
 {
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.SpecInfo;
 
     /**
@@ -30,16 +30,16 @@ package pixeldroid.bdd
         function begin(name:String, total:Number):void;
 
         /**
-        Record the results of one expectation.
+        Record the results of one requirement.
 
-        Called once per each expectation to be tested.
+        Called once per each requirement to be tested.
 
-        @param expectation The expectation tested. Provides access to the `MatchResult`
-        @param durationSec Seconds elapsed during the execution of this expectation. Floating point value.
-        @param index Zero-based index of the expectation being reported. Range is [0, total-1]
+        @param requirement The requirement tested. Provides access to the `MatchResult`
+        @param durationSec Seconds elapsed during the execution of this requirement. Floating point value.
+        @param index Zero-based index of the requirement being reported. Range is [0, total-1]
         @param total Number of expectations to be tested
         */
-        function report(expectation:Expectation, durationSec:Number, index:Number, total:Number):void;
+        function report(requirement:Requirement, durationSec:Number, index:Number, total:Number):void;
 
         /**
         Complete the reporting session for a single specification.

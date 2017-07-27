@@ -2,7 +2,7 @@
 package pixeldroid.bdd.reporters
 {
     import pixeldroid.bdd.Reporter;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
     import pixeldroid.bdd.models.SpecInfo;
 
@@ -47,14 +47,14 @@ package pixeldroid.bdd.reporters
         }
 
         /** @inherit */
-        public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
+        public function report(req:Requirement, durationSec:Number, index:Number, total:Number):void
         {
             var i:Number;
-            var n:Number = e.numResults;
+            var n:Number = req.numResults;
             var result:MatchResult;
 
             var suite:XMLElement = xml.newElement('testsuite');
-            suite.setAttribute('name', e.description);
+            suite.setAttribute('name', req.description);
             suite.setAttribute('time', durationSec.toString());
 
             var test:XMLElement;
@@ -62,7 +62,7 @@ package pixeldroid.bdd.reporters
 
             for (i = 0; i < n; i++)
             {
-                result = e.getResult(i);
+                result = req.getResult(i);
 
                 test = xml.newElement('testcase');
                 test.setAttribute('name', 'expect ' +result.description);
