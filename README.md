@@ -25,9 +25,17 @@ To uninstall, simply delete the file:
 
 ## usage
 
-0. import Spec, a Reporter, and your specifications
-0. have the specifications describe themselves to Spec
-0. add your reporter(s) to Spec and execute
+### in a nutshell
+
+0. import `Spec`, one or more `Reporter`s, and one or more specifications
+0. add the reporter(s) to an instance of `Spec`
+0. in the specifications, describe the desired behavior of the thing they validate
+  * `Spec.describe()` instantiates a `Thing`
+  * `Thing.should()` declares a requirement function
+    - in the function, `expects()` and `asserts()` validate the requirement
+0. execute the spec to see results from the reporter
+
+### simple example
 
 ```ls
 package
@@ -37,31 +45,49 @@ package
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.reporters.ConsoleReporter;
 
+    import WidgetSpec;
+
 
     public class SpecTest extends Application
     {
 
         override public function run():void
         {
-            MySpec.describe();
+            var spec:Spec = new Spec();
+            spec.addReporter(new ConsoleReporter());
 
-            Spec.addReporter(new ConsoleReporter());
-            Spec.execute();
+            WidgetSpec.specify(spec);
+
+            spec.execute();
         }
     }
 
 
+    import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
 
-    public static class MySpec
+    public static class WidgetSpec
     {
-        public static function describe():void
-        {
-            var it:Thing = Spec.describe('a Thing');
+        private static var it:Thing;
 
-            it.should('exist', function() {
-                it.expects(MySpec).not.toBeNull();
-            });
+        public static function specify(specifier:Spec):void
+        {
+            it = specifier.describe('Widget');
+
+            it.should('be versioned', be_versioned);
+            it.should('contain three thingamajigs when initialized', have_three_thingamajigs);
+        }
+
+        private static function be_versioned():void
+        {
+            it.expects(Widget.version).toPatternMatch('(%d+).(%d+).(%d+)', 3);
+        }
+
+        private static function have_three_thingamajigs():void
+        {
+            // assert before array access to avoid out-of-bounds error
+            it.asserts(Widget.thingamajigs.length).isEqualTo(3).or('Widget initialized without three thingamajigs');
+            it.expects(Widget.thingamajigs[2]).isTypeOf(Sprocket).or('Third thingamajig not a Sprocket');
         }
     }
 
@@ -70,24 +96,43 @@ package
 
 > **TIP**: use [SpecExecutor][SpecExecutor.ls]; it has convenience methods to set reporter formats and seed values. See [SpecTest][SpecTest.ls] for an example.
 
-### matchers
+### expectations
 
-spec-ls has a basic set of expectation phrases for specifying behavior:
+spec-ls provides a set of expectation tests for specifying behavior:
 
-* `toBeA(type:Type)`
-* `toBeEmpty()`
-* `toBeFalsey()` / `toBeTruthy()`
-* `toBeGreaterThan(value2:Number)` / `toBeLessThan(value2:Number)`
-* `toBeNaN()`
-* `toBeNull()`
-* `toBePlusOrMinus(absoluteDelta:Number).from(value2:Number)`
-* `toContain(value2:Object)`
-* `toEndWith(value2:String)` / `toStartWith(value2:String)`
-* `toEqual(value2:Object)`
-* `toPatternMatch(value2:String, matches:Number=1)`
+`it.expects(value:Object)`
+
+* `.toBeA(type:Type)`
+* `.toBeEmpty()`
+* `.toBeFalsey()` / `toBeTruthy()`
+* `.toBeGreaterThan(value2:Number)` / `toBeLessThan(value2:Number)`
+* `.toBeNaN()`
+* `.toBeNull()`
+* `.toBePlusOrMinus(absoluteDelta:Number).from(value2:Number)`
+* `.toContain(value2:Object)`
+* `.toEndWith(value2:String)` / `toStartWith(value2:String)`
+* `.toEqual(value2:Object)`
+* `.toPatternMatch(value2:String, matches:Number=1)`
 
 they are defined in [Matcher.ls][Matcher.ls];
 you can see them used in the specifications for spec-ls itself: [ExpectationSpec][ExpectationSpec.ls]
+
+### assertions
+
+spec-ls provides a set of assertion tests for mandating conditions and aborting immediately on violation:
+
+`it.asserts(value:Object)`
+
+* `.isNotNaN().or('value was NaN')`
+* `.isNull().or('value was not null')` / `.isNotNull().or('value was null')`
+* `.isEmpty().or('value was not empty')` / `.isNotEmpty().or('value was empty')`
+* `.isEqualTo(value2).or('value was not equal to value2')` / `.isNotEqualTo(value2).or('value was equal to value2')`
+* `.isGreaterThan(value2).or('value was not greater than value2')`
+* `.isLessThan(value2).or('value was not less than value2')`
+* `.isTypeOf(type).or('value was not a kind of type')`
+
+they are defined in [Assertion.ls][Assertion.ls];
+you can see them used in the specifications for spec-ls itself: [AssertionSpec][AssertionSpec.ls]
 
 ### reporters
 
@@ -141,8 +186,10 @@ Pull requests are welcome!
 
 
 [ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
+[AssertionSpec.ls]: test/src/spec/AssertionSpec.ls "AssertionSpec.ls"
 [loom-sdk]: https://github.com/LoomSDK/LoomSDK "a native mobile app and game framework"
 [loomtasks]: https://github.com/pixeldroid/loomtasks "Rake tasks for working with loomlibs"
+[Assertion.ls]: lib/src/pixeldroid/bdd/Assertion.ls "Assertion.ls"
 [Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [SpecExecutor.ls]: lib/src/pixeldroid/bdd/SpecExecutor.ls "SpecExecutor.ls"

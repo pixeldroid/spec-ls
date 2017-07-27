@@ -7,6 +7,29 @@ package pixeldroid.bdd.reporters
     import pixeldroid.bdd.models.SpecInfo;
 
 
+    /**
+    Prints results of executing a specification to the console using a simple human readable format:
+
+    ```
+    [Spec v2.0.0] seed: 63134
+
+    Thing1
+     -should be versioned
+    . expect '2.0.0' toPatternMatch '(%d+).(%d+).(%d+)' with 3 capture groups
+     -should fail specifications whose expectations lack assertions
+    . expect false toBeFalsey
+    0 failures in 2 assertions from 2 expectations. 0.001s.
+
+    Thing2
+     -should be readable
+    X expect false toBeTruthy (./src/spec//Thing2Spec.ls:23)
+    . expect true toBeTruthy
+    1 failure in 2 assertions from 1 expectation. 0.001s.
+
+    1 failure in 4 assertions from 3 expectations.
+    completed in 0.002s.
+    ```
+    */
     public class ConsoleReporter implements Reporter
     {
         private var totalFailures:Number;
@@ -18,6 +41,7 @@ package pixeldroid.bdd.reporters
         private var numExpect:Number;
 
 
+        /** @inherit */
         public function init(specInfo:SpecInfo):void
         {
             totalFailures = 0;
@@ -28,6 +52,7 @@ package pixeldroid.bdd.reporters
             trace(specInfo);
         }
 
+        /** @inherit */
         public function begin(name:String, total:Number):void
         {
             numFailures = 0;
@@ -38,6 +63,7 @@ package pixeldroid.bdd.reporters
             trace(name);
         }
 
+        /** @inherit */
         public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
         {
             trace(' -should ' +e.description);
@@ -68,6 +94,7 @@ package pixeldroid.bdd.reporters
 
         }
 
+        /** @inherit */
         public function end(name:String, durationSec:Number):Boolean
         {
             var summary:String = '';
@@ -86,6 +113,7 @@ package pixeldroid.bdd.reporters
             return (numFailures == 0);
         }
 
+        /** @inherit */
         public function finalize(durationSec:Number):void
         {
             var summary:String = '';

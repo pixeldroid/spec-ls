@@ -8,6 +8,29 @@ package pixeldroid.bdd.reporters
     import pixeldroid.bdd.models.SpecInfo;
 
 
+    /**
+    Prints results of executing a specification to the console using ANSI codes for colored formatting.
+
+    The format is compact:
+
+    ```
+    [Spec v2.0.0] seed: 36440
+
+    Thing1 ...........................X.........................
+    ........
+
+     1 failure in 61 assertions from 10 expectations. 0.025s.
+     "should be readable" expected false toBeTruthy but value is not truthy.
+      ./src/spec//Thing1Spec.ls:123
+
+    Thing2 ....
+
+     0 failures in 4 assertions from 3 expectations. 0.001s.
+
+    1 failure in 65 assertions from 13 expectations.
+    completed in 0.026s.
+    ```
+    */
     public class AnsiReporter implements Reporter
     {
         private const lineWidth:Number = 60;
@@ -25,6 +48,7 @@ package pixeldroid.bdd.reporters
         private var numChars:Number;
 
 
+        /** @inherit */
         public function init(specInfo:SpecInfo):void
         {
             totalFailures = 0;
@@ -40,6 +64,7 @@ package pixeldroid.bdd.reporters
             trace(ansi);
         }
 
+        /** @inherit */
         public function begin(name:String, total:Number):void
         {
             failures = {};
@@ -53,6 +78,7 @@ package pixeldroid.bdd.reporters
             trace(''); // overwriting will start on this line
         }
 
+        /** @inherit */
         public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
         {
             var i:Number;
@@ -92,6 +118,7 @@ package pixeldroid.bdd.reporters
             }
         }
 
+        /** @inherit */
         public function end(name:String, durationSec:Number):Boolean
         {
             var failMessages:Vector.<String> = collectFailures();
@@ -119,6 +146,7 @@ package pixeldroid.bdd.reporters
             return success;
         }
 
+        /** @inherit */
         public function finalize(durationSec:Number):void
         {
             trace('');

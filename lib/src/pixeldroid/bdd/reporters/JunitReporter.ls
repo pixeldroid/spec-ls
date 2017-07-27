@@ -10,6 +10,14 @@ package pixeldroid.bdd.reporters
     import system.xml.XMLElement;
 
 
+    /**
+    Generates an xml report of the results of executing a specification.
+
+    The xml format matches the schema introduced by JUnit, and commonly supported by CI tools like Jenkins.
+
+    @see http://llg.cubic.org/docs/junit/
+    @see https://github.com/windyroad/JUnit-Schema
+    */
     public class JunitReporter implements Reporter
     {
         private var xml:XMLDocument;
@@ -17,6 +25,7 @@ package pixeldroid.bdd.reporters
         private var numFailures:Number;
 
 
+        /** @inherit */
         public function init(specInfo:SpecInfo):void
         {
             xml = new XMLDocument();
@@ -27,6 +36,7 @@ package pixeldroid.bdd.reporters
             xml.linkEndChild(suites);
         }
 
+        /** @inherit */
         public function begin(name:String, total:Number):void
         {
             numFailures = 0;
@@ -36,6 +46,7 @@ package pixeldroid.bdd.reporters
             suites.setAttribute('tests', total.toString());
         }
 
+        /** @inherit */
         public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
         {
             var i:Number;
@@ -73,6 +84,7 @@ package pixeldroid.bdd.reporters
             suites.linkEndChild(suite);
         }
 
+        /** @inherit */
         public function end(name:String, durationSec:Number):Boolean
         {
             suites.setAttribute('errors', '0');
@@ -84,6 +96,7 @@ package pixeldroid.bdd.reporters
             return (numFailures == 0);
         }
 
+        /** @inherit */
         public function finalize(durationSec:Number):void
         {
             /* no-op */
