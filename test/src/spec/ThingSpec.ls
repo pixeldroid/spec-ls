@@ -1,6 +1,6 @@
 package
 {
-    import pixeldroid.bdd.Matcher;
+    import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
     import pixeldroid.bdd.models.Requirement;
@@ -40,7 +40,7 @@ package
             test.submitForValidation(validator);
 
             var value:Number = 123;
-            it.expects(test.expects(value)).toBeA(Matcher);
+            it.expects(test.expects(value)).toBeA(Expectation);
         }
 
         private static function be_executable():void

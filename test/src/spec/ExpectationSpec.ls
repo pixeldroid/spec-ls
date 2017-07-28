@@ -4,13 +4,13 @@ package
     import pixeldroid.bdd.Thing;
 
 
-    public static class MatcherSpec
+    public static class ExpectationSpec
     {
         private static var it:Thing;
 
         public static function specify(specifier:Spec):void
         {
-            it = specifier.describe('Matcher');
+            it = specifier.describe('Expectation');
 
             it.should('provide boolean matchers', provide_boolean_matchers);
             it.should('provide a negation helper', provide_negation_helper);

@@ -6,7 +6,7 @@ package pixeldroid.bdd
     import system.Process;
     import system.reflection.Type;
 
-    import pixeldroid.bdd.Matcher;
+    import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.models.Requirement;
 
 
@@ -31,7 +31,7 @@ package pixeldroid.bdd
             for (stackFrame = callStack.length - 1; stackFrame >= 0; stackFrame--)
             {
                 csi = callStack[stackFrame];
-                if (Matcher.stringEndsWith(csi.source, context.getTypeName() +'.ls'))
+                if (Expectation.stringEndsWith(csi.source, context.getTypeName() +'.ls'))
                 {
                     stackFrame--;
                     csi = callStack[stackFrame];

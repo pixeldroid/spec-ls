@@ -7,7 +7,7 @@ package pixeldroid.bdd
     import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
 
-    public class Matcher
+    public class Expectation
     {
         private var positive:Boolean = true;
         private var absoluteDelta:Number = 0;
@@ -17,6 +17,15 @@ package pixeldroid.bdd
         private var value:Object;
 
 
+        private static function vectorEndsWith(vector:Vector.<Object>, item:Object):Boolean
+        {
+            return (vector[vector.length - 1] == item);
+        }
+
+        private static function vectorStartsWith(vector:Vector.<Object>, item:Object):Boolean
+        {
+            return (vector[0] == item);
+        }
 
         public static function stringEndsWith(string1:String, string2:String):Boolean
         {
@@ -29,7 +38,7 @@ package pixeldroid.bdd
         }
 
 
-        public function Matcher(context:Requirement, value:Object)
+        public function Expectation(context:Requirement, value:Object)
         {
             var callStack:Vector.<CallStackInfo> = Debug.getCallStack();
             var stackFrame:Number;
@@ -40,7 +49,7 @@ package pixeldroid.bdd
             for (stackFrame = callStack.length - 1; stackFrame >= 0; stackFrame--)
             {
                 csi = callStack[stackFrame];
-                if (Matcher.stringEndsWith(csi.source, context.getTypeName() +'.ls'))
+                if (Expectation.stringEndsWith(csi.source, context.getTypeName() +'.ls'))
                 {
                     stackFrame--;
                     csi = callStack[stackFrame];
@@ -57,13 +66,13 @@ package pixeldroid.bdd
 
 
         // modifiers
-        public function get not():Matcher
+        public function get not():Expectation
         {
             positive = !positive;
             return this;
         }
 
-        public function toBePlusOrMinus(absoluteDelta:Number):Matcher // used with from()
+        public function toBePlusOrMinus(absoluteDelta:Number):Expectation // used with from()
         {
             this.absoluteDelta = absoluteDelta;
             return this;
@@ -245,7 +254,7 @@ package pixeldroid.bdd
 
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toStartWith") +" '" +string2 +"'";
 
-                result.success = rectifiedMatch( Matcher.stringStartsWith(string1, string2) );
+                result.success = rectifiedMatch( Expectation.stringStartsWith(string1, string2) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" start with '" +string2 +"'.";
             }
             else
@@ -265,7 +274,7 @@ package pixeldroid.bdd
 
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toEndWith") +" '" +string2 +"'";
 
-                result.success = rectifiedMatch( Matcher.stringEndsWith(string1, string2) );
+                result.success = rectifiedMatch( Expectation.stringEndsWith(string1, string2) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" end with '" +string2 +"'.";
             }
             else

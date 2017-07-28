@@ -2,7 +2,7 @@
 package pixeldroid.bdd
 {
     import pixeldroid.bdd.Assertion;
-    import pixeldroid.bdd.Matcher;
+    import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.Reporter;
     import pixeldroid.bdd.Thing;
     import pixeldroid.bdd.models.Requirement;
@@ -40,14 +40,14 @@ package pixeldroid.bdd
         }
 
         /**
-        Retrieve a matcher for the requirement currently under validation.
+        Retrieve an expectation for the requirement currently under validation.
 
-        @param value A value to provide to the Matcher
+        @param value A value to provide to the Expectation
         */
-        public function getMatcher(value:Object):Matcher
+        public function getExpectation(value:Object):Expectation
         {
-            var matcher:Matcher = new Matcher(currentRequirement, value);
-            return matcher;
+            var expectation:Expectation = new Expectation(currentRequirement, value);
+            return expectation;
         }
 
         /**
@@ -76,7 +76,7 @@ package pixeldroid.bdd
 
                 // run the validation closure `.test()`, which has captured a Thing instance in its scope
                 // it will call in to Thing.expects(),
-                //   which will call getMatcher() to retrieve a Matcher linked to the current requirement
+                //   which will call getExpectation() to retrieve an Expectation linked to the current requirement
                 //     which will process the expectation and call addResult() on the current requirement
                 currentRequirement.test();
 

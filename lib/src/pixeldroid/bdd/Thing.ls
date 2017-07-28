@@ -1,7 +1,7 @@
 
 package pixeldroid.bdd
 {
-    import pixeldroid.bdd.Matcher;
+    import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.ThingValidator;
     import pixeldroid.bdd.models.Requirement;
 
@@ -30,6 +30,20 @@ package pixeldroid.bdd
         }
     }
     ```
+
+    An `asserts` method is also provided, with an intended use of
+    ensuring expectations have valid data to run, e.g.:
+
+    ```as3
+    private static function initialize_with_c_third():void
+    {
+        var sample:Sample = new TestSample();
+        it.asserts(sample.letters.length).isEqualTo(3).or('letters does not contain three items');
+        it.expects(sample.letters[2]).toEqual('c');
+    }
+    ```
+
+    As such, assertions don't test behavior and are not included in the test results.
     */
     public class Thing
     {
@@ -91,14 +105,14 @@ package pixeldroid.bdd
         }
 
         /**
-        Start a value matching chain to compare the provided value to the results of one or more `Matcher`.
+        Start a value matching chain to compare the provided value to the results of one or more `Expectation`.
 
         @param value A value to set requirements for
         */
-        public function expects(value:Object):Matcher
+        public function expects(value:Object):Expectation
         {
             Debug.assert(validator, 'validator must be initialized via submitForValidation');
-            return validator.getMatcher(value);
+            return validator.getExpectation(value);
         }
     }
 }

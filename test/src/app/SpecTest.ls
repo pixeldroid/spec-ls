@@ -5,7 +5,8 @@ package
 
     import pixeldroid.bdd.SpecExecutor;
 
-    import MatcherSpec;
+    import AssertionSpec;
+    import ExpectationSpec;
     import SpecSpec;
     import ThingSpec;
 
@@ -19,7 +20,7 @@ package
             var returnCode:Number = SpecExecutor.exec([
                 SpecSpec,
                 ThingSpec,
-                MatcherSpec,
+                ExpectationSpec,
                 AssertionSpec,
             ]);
 
