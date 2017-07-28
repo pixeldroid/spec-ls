@@ -6,6 +6,7 @@ package pixeldroid.bdd
     import system.Process;
     import system.reflection.Type;
 
+    import pixeldroid.bdd.Does;
     import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.models.Requirement;
 
@@ -31,7 +32,7 @@ package pixeldroid.bdd
             for (stackFrame = callStack.length - 1; stackFrame >= 0; stackFrame--)
             {
                 csi = callStack[stackFrame];
-                if (Expectation.stringEndsWith(csi.source, context.getTypeName() +'.ls'))
+                if (Does.stringEndWith(csi.source, context.getTypeName() +'.ls'))
                 {
                     stackFrame--;
                     csi = callStack[stackFrame];
@@ -73,12 +74,12 @@ package pixeldroid.bdd
         {
             var condition:Boolean;
 
-            if (isTypeMatch(value1, String))
+            if (Does.typeMatch(value1, String))
             {
                 var s:String = value1 as String;
                 condition = (s.length == 0);
             }
-            else if (isTypeMatch(value1, Vector))
+            else if (Does.typeMatch(value1, Vector))
             {
                 var vector:Vector = value1 as Vector;
                 condition = (vector.length == 0);
@@ -95,12 +96,12 @@ package pixeldroid.bdd
         {
             var condition:Boolean;
 
-            if (isTypeMatch(value1, String))
+            if (Does.typeMatch(value1, String))
             {
                 var s:String = value1 as String;
                 condition = (s.length > 0);
             }
-            else if (isTypeMatch(value1, Vector))
+            else if (Does.typeMatch(value1, Vector))
             {
                 var vector:Vector = value1 as Vector;
                 condition = (vector.length > 0);
@@ -139,21 +140,10 @@ package pixeldroid.bdd
 
         public function isTypeOf(type:Type):Asserter
         {
-            var condition:Boolean = (isTypeMatch(value1, type) || isSubtypeMatch(value1, type));
+            var condition:Boolean = (Does.typeMatch(value1, type) || Does.subtypeMatch(value1, type));
             return getAsserter(condition);
         }
 
-
-        // helpers
-        private function isTypeMatch(value:Object, type:Type):Boolean
-        {
-            return (value.getFullTypeName() == type.getFullName());
-        }
-
-        private function isSubtypeMatch(value:Object, type:Type):Boolean
-        {
-            return ((value instanceof type) || (value is type) || ((value as type) != null));
-        }
 
     }
 
