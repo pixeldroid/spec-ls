@@ -119,7 +119,7 @@ you can see them used in the specifications for spec-ls itself: [ExpectationSpec
 
 ### assertions
 
-spec-ls provides a set of assertion tests for mandating conditions and aborting immediately on violation:
+spec-ls provides a set of assertion tests for mandating test pre-conditions and aborting on violation:
 
 `it.asserts(value:Object)`
 
@@ -146,7 +146,7 @@ spec-ls ships with three reporters:
 
 ### random seed
 
-by default, Spec will execute tests in a different random order every time, to guard against accidental order dependencies.
+by default, Spec will execute tests in a different random order every time, to guard against hidden dependencies.
 
 to reproduce the order of a specific run, pass in the same seed value to `Spec.execute()`:
 
@@ -185,11 +185,11 @@ this will build the Spec library, install it in the currently configured sdk, bu
 Pull requests are welcome!
 
 
-[ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
+[Assertion.ls]: lib/src/pixeldroid/bdd/Assertion.ls "Assertion.ls"
 [AssertionSpec.ls]: test/src/spec/AssertionSpec.ls "AssertionSpec.ls"
+[ExpectationSpec.ls]: test/src/spec/ExpectationSpec.ls "ExpectationSpec.ls"
 [loom-sdk]: https://github.com/LoomSDK/LoomSDK "a native mobile app and game framework"
 [loomtasks]: https://github.com/pixeldroid/loomtasks "Rake tasks for working with loomlibs"
-[Assertion.ls]: lib/src/pixeldroid/bdd/Assertion.ls "Assertion.ls"
 [Matcher.ls]: lib/src/pixeldroid/bdd/Matcher.ls "Matcher.ls"
 [Reporter.ls]: lib/src/pixeldroid/bdd/Reporter.ls "Reporter.ls"
 [SpecExecutor.ls]: lib/src/pixeldroid/bdd/SpecExecutor.ls "SpecExecutor.ls"
