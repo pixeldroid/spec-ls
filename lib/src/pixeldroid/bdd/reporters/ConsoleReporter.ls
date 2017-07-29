@@ -89,7 +89,7 @@ package pixeldroid.bdd.reporters
                 }
 
                 trace(verdict +' expect ' +result.description);
-                if (!result.success) trace('  ' +result.message, '(' +result.source +':' +result.line +')');
+                if (!result.success) trace('  ' +result.message, 'see ' +result.callTrace);
             }
 
         }

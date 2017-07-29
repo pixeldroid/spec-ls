@@ -1,12 +1,10 @@
 
 package pixeldroid.bdd
 {
-    import system.CallStackInfo;
-    import system.Debug;
-
     import pixeldroid.bdd.Does;
     import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
+
 
     public class Expectation
     {
@@ -20,28 +18,13 @@ package pixeldroid.bdd
 
         public function Expectation(context:Requirement, value:Object)
         {
-            var callStack:Vector.<CallStackInfo> = Debug.getCallStack();
-            var stackFrame:Number;
-            var csi:CallStackInfo;
-            var source:String;
-            var line:Number;
-
-            for (stackFrame = callStack.length - 1; stackFrame >= 0; stackFrame--)
-            {
-                csi = callStack[stackFrame];
-                if (Does.stringEndWith(csi.source, context.getTypeName() +'.ls'))
-                {
-                    stackFrame--;
-                    csi = callStack[stackFrame];
-                    source = csi.source;
-                    line = csi.line;
-                    break;
-                }
-            }
-
             this.context = context;
             this.value = value;
-            result = new MatchResult(source, line);
+
+            result = new MatchResult();
+            result.source = context.currentCallInfo.source;
+            result.line = context.currentCallInfo.line;
+            result.method = context.currentCallInfo.method.getName();
         }
 
 

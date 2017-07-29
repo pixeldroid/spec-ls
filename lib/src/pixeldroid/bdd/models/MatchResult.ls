@@ -1,13 +1,20 @@
 
 package pixeldroid.bdd.models
 {
+
     /**
     Enscapsulates the components of an expectation comparison result.
     */
     public class MatchResult
     {
-        private var _source:String;
-        private var _line:Number;
+        /** Path to source file containing expectation declaration */
+        public var source:String = null;
+
+        /** Line number of expectation declaration in source file */
+        public var line:Number = -1;
+
+        /** Method name of expectation declaration in source file */
+        public var method:String = null;
 
         /** Human readable description of the expectation */
         public var description:String = '';
@@ -18,26 +25,6 @@ package pixeldroid.bdd.models
         /** Error message from the match comparison, if any. */
         public var message:String = '';
 
-
-        /*
-        Construct a new MatchResult, noting source file and line number of originating expectation.
-
-        @param source Path to source file containing expectation declaration
-        @param line Line number of expectation declaration in source file
-        */
-        public function MatchResult(source:String = null, line:Number = -1)
-        {
-            _source = source;
-            _line = line;
-        }
-
-
-        /* Path to source file containing expectation declaration */
-        public function get source():String { return _source; }
-
-        /* Line number of expectation declaration in source file */
-        public function get line():Number { return _line; }
-
         /**
         Query for the presence of an error message.
 
@@ -46,6 +33,16 @@ package pixeldroid.bdd.models
         public function hasMessage():Boolean
         {
             return (message && (message.length > 0));
+        }
+
+        /**
+        Retrieve a formatted call trace showing source, method and line number of the validation call that generated this result.
+
+        e.g. `./src/spec//AssertionSpec.ls(provide_type_assertion):89`
+        */
+        public function get callTrace():String
+        {
+            return (source +'(' +method +'):' +line);
         }
     }
 }

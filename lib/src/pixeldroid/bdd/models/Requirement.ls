@@ -3,6 +3,9 @@ package pixeldroid.bdd.models
 {
     import pixeldroid.bdd.models.MatchResult;
 
+    import system.CallStackInfo;
+
+
     /**
     Represents the description and validation of a requirement; collects results from the validation execution.
 
@@ -18,6 +21,8 @@ package pixeldroid.bdd.models
         private var _description:String;
         private var validation:Function;
         private var results:Vector.<MatchResult>;
+
+        public var currentCallInfo:CallStackInfo;
 
 
         /**

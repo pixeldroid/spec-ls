@@ -73,7 +73,7 @@ package pixeldroid.bdd.reporters
 
                     fail = xml.newElement('failure');
                     fail.setAttribute('type', 'assertion');
-                    if (result.hasMessage()) fail.setAttribute('message', result.message +' (' +result.source +':' +result.line +')');
+                    if (result.hasMessage()) fail.setAttribute('message', result.message +' see ' +result.callTrace);
 
                     test.linkEndChild(fail);
                 }

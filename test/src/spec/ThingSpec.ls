@@ -1,5 +1,6 @@
 package
 {
+    import pixeldroid.bdd.Assertion;
     import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.Spec;
     import pixeldroid.bdd.Thing;
@@ -39,8 +40,18 @@ package
             var validator:TestValidator = new TestValidator();
             test.submitForValidation(validator);
 
+            var expectation:Object;
+            var assertion:Object;
             var value:Number = 123;
-            it.expects(test.expects(value)).toBeA(Expectation);
+
+            test.should('create Expectations and Assertions during validation', function() {
+                expectation = test.expects(value);
+                assertion = test.asserts(value);
+            });
+            validator.validate(test, new MockReporter());
+
+            it.expects(expectation).toBeA(Expectation);
+            it.expects(assertion).toBeA(Assertion);
         }
 
         private static function be_executable():void
@@ -59,5 +70,19 @@ package
 
         override public function setRequirements(value:Vector.<Requirement>):void { peek = value; super.setRequirements(value); }
         public function get numRequirements():Number { return peek.length; }
+    }
+
+
+    import pixeldroid.bdd.Reporter;
+    import pixeldroid.bdd.models.Requirement;
+    import pixeldroid.bdd.models.SpecInfo;
+
+    private class MockReporter implements Reporter
+    {
+        public function init(specInfo:SpecInfo):void {}
+        public function begin(name:String, total:Number):void {}
+        public function report(requirement:Requirement, durationSec:Number, index:Number, total:Number):void {}
+        public function end(name:String, durationSec:Number):Boolean { return true; }
+        public function finalize(durationSec:Number):void {}
     }
 }

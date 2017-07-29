@@ -177,7 +177,7 @@ package pixeldroid.bdd.reporters
                     result = req.getResult(i);
                     ansi.clear.fgRed.add(' "' +req.description +'" ').faint.add('expected ').nofaint.add(result.description).reset;
                     if (result.hasMessage()) ansi.fgRed.faint.add(' but ').nofaint.add(result.message).reset;
-                    if (result.source) ansi.fgRed.faint.add('\n  ' +result.source +':' +result.line).reset;
+                    if (result.source) ansi.fgRed.faint.add('\n  ' +result.callTrace).reset;
                     v.push(ansi.toString());
                 }
             }

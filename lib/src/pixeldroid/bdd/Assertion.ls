@@ -1,14 +1,13 @@
 
 package pixeldroid.bdd
 {
-    import system.CallStackInfo;
     import system.Debug;
     import system.Process;
     import system.reflection.Type;
 
     import pixeldroid.bdd.Does;
-    import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.models.Requirement;
+    import pixeldroid.platform.CallUtil;
 
 
     public class Assertion
@@ -16,6 +15,7 @@ package pixeldroid.bdd
         private var value1:Object;
         private var source:String;
         private var line:Number;
+        private var method:String;
 
         public static const defaultAsserter:Asserter = new ExitAsserter();
         public static var asserter:Asserter = defaultAsserter;
@@ -24,29 +24,15 @@ package pixeldroid.bdd
         public function Assertion(context:Requirement, value:Object)
         {
             value1 = value;
-
-            var callStack:Vector.<CallStackInfo> = Debug.getCallStack();
-            var stackFrame:Number;
-            var csi:CallStackInfo;
-
-            for (stackFrame = callStack.length - 1; stackFrame >= 0; stackFrame--)
-            {
-                csi = callStack[stackFrame];
-                if (Does.stringEndWith(csi.source, context.getTypeName() +'.ls'))
-                {
-                    stackFrame--;
-                    csi = callStack[stackFrame];
-                    source = csi.source;
-                    line = csi.line;
-                    break;
-                }
-            }
+            source = context.currentCallInfo.source;
+            line = context.currentCallInfo.line;
+            method = context.currentCallInfo.method.getName();
         }
 
         protected function getAsserter(condition:Boolean):Asserter
         {
             var a:Asserter = asserter.getType().getConstructor().invoke() as Asserter;
-            a.init(condition, source, line);
+            a.init(condition, source, line, method);
 
             return a;
         }
@@ -150,7 +136,7 @@ package pixeldroid.bdd
 
     public interface Asserter
     {
-        function init(condition:Boolean, source:String, line:Number):void;
+        function init(condition:Boolean, source:String, line:Number, method:String):void;
         function or(message:String):Boolean;
     }
 
@@ -161,12 +147,14 @@ package pixeldroid.bdd
         private var condition:Boolean;
         private var source:String;
         private var line:Number;
+        private var method:String;
 
-        public function init(condition:Boolean, source:String, line:Number):void
+        public function init(condition:Boolean, source:String, line:Number, method:String):void
         {
             this.condition = condition;
             this.source = source;
             this.line = line;
+            this.method = method;
         }
 
         public function or(message:String):Boolean
@@ -174,7 +162,7 @@ package pixeldroid.bdd
             if (!condition)
             {
                 trace('runtime assertion failed:', message);
-                trace(source +':' +line);
+                trace(source +'(' +method +'):' +line);
 
                 Process.exit(FAILURE);
             }

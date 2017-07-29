@@ -9,6 +9,7 @@ package pixeldroid.bdd
     import pixeldroid.bdd.models.MatchResult;
     import pixeldroid.random.Randomizer;
 
+    import system.CallStackInfo;
     import system.platform.Platform;
 
 
@@ -19,7 +20,6 @@ package pixeldroid.bdd
         private var requirements:Vector.<Requirement>;
         private var currentRequirement:Requirement;
         private var startTimeMs:Number;
-
 
         /**
         Provide the requirements to be validated.
@@ -32,9 +32,13 @@ package pixeldroid.bdd
         Retrieve an assertion for the requirement currently under validation.
 
         @param value A value to provide to the Assertion
+        @param csi Reflection info for the calling validation method
         */
-        public function getAssertion(value:Object):Assertion
+        public function getAssertion(value:Object, csi:CallStackInfo):Assertion
         {
+            Debug.assert(currentRequirement, 'requirement must be declared via should() prior to calling asserts()');
+            currentRequirement.currentCallInfo = csi;
+
             var assertion:Assertion = new Assertion(currentRequirement, value);
             return assertion;
         }
@@ -43,9 +47,13 @@ package pixeldroid.bdd
         Retrieve an expectation for the requirement currently under validation.
 
         @param value A value to provide to the Expectation
+        @param csi Reflection info for the calling validation method
         */
-        public function getExpectation(value:Object):Expectation
+        public function getExpectation(value:Object, csi:CallStackInfo):Expectation
         {
+            Debug.assert(currentRequirement, 'requirement must be declared via should() prior to calling expects()');
+            currentRequirement.currentCallInfo = csi;
+
             var expectation:Expectation = new Expectation(currentRequirement, value);
             return expectation;
         }
