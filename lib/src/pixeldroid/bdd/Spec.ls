@@ -57,6 +57,8 @@ package pixeldroid.bdd
 
             reporters.finalize((Platform.getTime() - startTimeMs) * .001);
 
+            things.clear();
+
             return success;
         }
 

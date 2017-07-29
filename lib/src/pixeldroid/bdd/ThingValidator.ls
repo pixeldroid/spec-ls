@@ -39,8 +39,7 @@ package pixeldroid.bdd
             Debug.assert(currentRequirement, 'requirement must be declared via should() prior to calling asserts()');
             currentRequirement.currentCallInfo = csi;
 
-            var assertion:Assertion = new Assertion(currentRequirement, value);
-            return assertion;
+            return new Assertion(currentRequirement, value);
         }
 
         /**
@@ -54,8 +53,7 @@ package pixeldroid.bdd
             Debug.assert(currentRequirement, 'requirement must be declared via should() prior to calling expects()');
             currentRequirement.currentCallInfo = csi;
 
-            var expectation:Expectation = new Expectation(currentRequirement, value);
-            return expectation;
+            return new Expectation(currentRequirement, value);
         }
 
         /**
@@ -102,6 +100,7 @@ package pixeldroid.bdd
             }
 
             currentRequirement = null;
+            requirements.clear();
 
             return reporter.end(thing.name, (Platform.getTime() - startTimeMs) * .001);
         }
