@@ -4,7 +4,7 @@ package pixeldroid.platform
     import system.CallStackInfo;
     import system.Debug;
 
-    public final class CallUtil
+    public final class CallUtils
     {
         private static var callStack:Vector.<CallStackInfo>;
 
@@ -21,7 +21,7 @@ package pixeldroid.platform
             var csi:CallStackInfo;
 
             // search from the top of the callstack (most recently called)
-            while (stackFrame-- >= 0)
+            while (stackFrame-- > 0)
             {
                 csi = callStack[stackFrame];
 
@@ -43,8 +43,8 @@ package pixeldroid.platform
         For example, assuming in the chain below that method `bar()` calls `getPriorStackFrame()`, then
         the valid distance values would be as follows:
         ```
-        ConsoleApplication.initialize()->Example.run()->Bat.baz()->Foo.bar()->CallUtil.getPriorStackframe()
-                                     3              2          1          0                             -1
+        ConsoleApplication.initialize()->Example.run()->Bat.baz()->Foo.bar()->CallUtils.getPriorStackframe()
+                                     3              2          1          0                              -1
         ------------------------------------------------------------------^
         ```
 
@@ -59,7 +59,7 @@ package pixeldroid.platform
          2  ./src/app//Example.ls(run):22
          1  ./src/app//Bat.ls(baz):111
          0  ./src/app//Foo.ls(bar):9
-        -1  ./src/.//pixeldroid/platform/CallUtil.ls(getPriorStackFrame):67
+        -1  ./src/.//pixeldroid/platform/CallUtils.ls(getPriorStackFrame):67
         ```
         */
         public static function getPriorStackFrame(n:Number = 1):CallStackInfo
@@ -80,7 +80,7 @@ package pixeldroid.platform
         Generate a human readable single line trace of the provided method call info.
 
         The trace line includes method source file, method name, and line number, e.g.:
-        `./src/.//pixeldroid/platform/CallUtil.ls(toCallTrace):82`
+        `./src/.//pixeldroid/platform/CallUtils.ls(toCallTrace):82`
 
         @param csi `CallStackInfo` instance to create trace line for
         */

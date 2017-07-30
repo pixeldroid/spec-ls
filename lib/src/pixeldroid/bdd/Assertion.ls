@@ -7,7 +7,7 @@ package pixeldroid.bdd
 
     import pixeldroid.bdd.Does;
     import pixeldroid.bdd.models.Requirement;
-    import pixeldroid.platform.CallUtil;
+    import pixeldroid.platform.CallUtils;
 
 
     public class Assertion

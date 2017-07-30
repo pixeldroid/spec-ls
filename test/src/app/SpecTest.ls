@@ -6,7 +6,7 @@ package
     import pixeldroid.bdd.SpecExecutor;
 
     import AssertionSpec;
-    import CallUtilSpec;
+    import CallUtilsSpec;
     import ExpectationSpec;
     import SpecSpec;
     import ThingSpec;
@@ -23,7 +23,7 @@ package
                 ThingSpec,
                 ExpectationSpec,
                 AssertionSpec,
-                CallUtilSpec,
+                CallUtilsSpec,
             ]);
 
             Process.exit(returnCode);

@@ -4,7 +4,7 @@ package pixeldroid.bdd
     import pixeldroid.bdd.Expectation;
     import pixeldroid.bdd.ThingValidator;
     import pixeldroid.bdd.models.Requirement;
-    import pixeldroid.platform.CallUtil;
+    import pixeldroid.platform.CallUtils;
 
     import system.CallStackInfo;
 
@@ -104,7 +104,7 @@ package pixeldroid.bdd
         public function asserts(value:Object):Assertion
         {
             Debug.assert(validator, 'validator must be initialized via submitForValidation');
-            var csi:CallStackInfo = CallUtil.getPriorStackFrame();
+            var csi:CallStackInfo = CallUtils.getPriorStackFrame();
             return validator.getAssertion(value, csi);
         }
 
@@ -116,7 +116,7 @@ package pixeldroid.bdd
         public function expects(value:Object):Expectation
         {
             Debug.assert(validator, 'validator must be initialized via submitForValidation');
-            var csi:CallStackInfo = CallUtil.getPriorStackFrame();
+            var csi:CallStackInfo = CallUtils.getPriorStackFrame();
             return validator.getExpectation(value, csi);
         }
     }
