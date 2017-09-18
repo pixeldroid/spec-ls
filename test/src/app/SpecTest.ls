@@ -5,8 +5,11 @@ package
 
     import pixeldroid.bdd.SpecExecutor;
 
+    import AssertionSpec;
+    import CallUtilsSpec;
     import ExpectationSpec;
     import SpecSpec;
+    import ThingSpec;
 
 
     public class SpecTest extends ConsoleApplication
@@ -16,8 +19,11 @@ package
             SpecExecutor.parseArgs();
 
             var returnCode:Number = SpecExecutor.exec([
+                SpecSpec,
+                ThingSpec,
                 ExpectationSpec,
-                SpecSpec
+                AssertionSpec,
+                CallUtilsSpec,
             ]);
 
             Process.exit(returnCode);

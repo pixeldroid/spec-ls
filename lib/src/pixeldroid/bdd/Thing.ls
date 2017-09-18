@@ -1,77 +1,123 @@
 
 package pixeldroid.bdd
 {
-    import pixeldroid.bdd.Matcher;
-    import pixeldroid.bdd.Reporter;
-    import pixeldroid.bdd.models.Expectation;
-    import pixeldroid.bdd.models.MatchResult;
-    import pixeldroid.random.Randomizer;
+    import pixeldroid.bdd.Expectation;
+    import pixeldroid.bdd.ThingValidator;
+    import pixeldroid.bdd.models.Requirement;
+    import pixeldroid.platform.CallUtils;
 
-    import system.platform.Platform;
+    import system.CallStackInfo;
 
 
+    /**
+    A test subject whose behavior will be described through requirements.
+
+    Use the `should` method to describe a desired behavior and a function that
+    validates the behavior with one or more calls to the `expects` method:
+
+    ```as3
+    public static class SampleSpec
+    {
+        private static const it:Thing;
+
+        public static function specify(specifier:Spec):void
+        {
+            it = specifier.describe('Sample');
+            it.should('be enabled by default', initialize_enabled);
+        }
+
+        private static function initialize_enabled():void
+        {
+            var sample:Sample = new TestSample();
+            it.expects(sample.enabled).toBeTruthy();
+        }
+    }
+    ```
+
+    An `asserts` method is also provided, with an intended use of
+    ensuring expectations have valid data to run, e.g.:
+
+    ```as3
+    private static function initialize_with_c_third():void
+    {
+        var sample:Sample = new TestSample();
+        it.asserts(sample.letters.length).isEqualTo(3).or('letters does not contain three items');
+        it.expects(sample.letters[2]).toEqual('c');
+    }
+    ```
+
+    As such, assertions don't test behavior and are not included in the test results.
+    */
     public class Thing
     {
-        private var name:String = '<thing>';
-        private var expectations:Vector.<Expectation> = [];
-        private var currentExpectation:Expectation;
-        private var startTimeMs:Number;
+        private var _name:String = '<thing>';
+        private var validator:ThingValidator;
+        private const requirements:Vector.<Requirement> = [];
 
 
+        /**
+        Instantiate a named test subject.
+
+        @param name Name of the test subject (typically its class name)
+        */
         public function Thing(name:String)
         {
-            this.name = name;
+            _name = name;
         }
 
+        /** Retrieve the name of the test subject. */
+        public function get name():String { return _name; }
 
+        /**
+        Declare an expectation about the behavior of this test subject.
+
+        Declarations should begin with a present tense modal verb that completes the
+        sentence fragment: "It should ____".
+
+        Validations must include at least one call to `expects` to validate the behavior.
+
+        @param declaration Statement that describes valid behavior
+        @param validation Function that tests for the desired bahavior, using `expects()`
+        */
         public function should(declaration:String, validation:Function):void
         {
-            expectations.push(new Expectation(declaration, validation));
+            Debug.assert(validation, 'validation function must not be null');
+            requirements.push(new Requirement(declaration, validation));
         }
 
-        public function execute(reporter:Reporter):Boolean
+        /**
+        provide requirements to a validator for testing.
+
+        @param validator A test execution engine that can process the requirements of this subject's behavior
+        */
+        public function submitForValidation(validator:ThingValidator):void
         {
-            startTimeMs = Platform.getTime();
-            Randomizer.shuffle(expectations);
-
-            var e:Expectation;
-            var i:Number;
-            var n:Number = expectations.length;
-            var ms:Number;
-
-            reporter.begin(name, n);
-
-            for (i = 0; i < n; i++)
-            {
-                ms = Platform.getTime();
-
-                currentExpectation = expectations[i];
-
-                // run the validation closure, which has captured this instance in its scope
-                // it will call in to expects(), which will pass flow on to Matcher
-                // which will call addResult()
-                currentExpectation.test();
-
-                reporter.report(currentExpectation, (Platform.getTime() - ms) * .001, i, n);
-            }
-
-            currentExpectation = null;
-
-            return reporter.end(name, (Platform.getTime() - startTimeMs) * .001);
+            this.validator = validator;
+            this.validator.setRequirements(requirements);
         }
 
+        /**
+        Ensure a critical condition is true, or else abort application execution and log an error message to the console.
 
-        /// used by closures
-        public function expects(value:Object):Matcher
+        @param value A value to set an assertion for
+        */
+        public function asserts(value:Object):Assertion
         {
-            var matcher:Matcher = new Matcher(this, value);
-            return matcher;
+            Debug.assert(validator, 'validator must be initialized via submitForValidation');
+            var csi:CallStackInfo = CallUtils.getPriorStackFrame();
+            return validator.getAssertion(value, csi);
         }
 
-        public function addResult(result:MatchResult):void
+        /**
+        Start a value matching chain to compare the provided value to the results of one or more `Expectation`.
+
+        @param value A value to set requirements for
+        */
+        public function expects(value:Object):Expectation
         {
-            currentExpectation.addResult(result);
+            Debug.assert(validator, 'validator must be initialized via submitForValidation');
+            var csi:CallStackInfo = CallUtils.getPriorStackFrame();
+            return validator.getExpectation(value, csi);
         }
-
     }
 }

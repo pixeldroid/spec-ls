@@ -1,35 +1,41 @@
 
 package pixeldroid.bdd
 {
-    import pixeldroid.bdd.Thing;
+    import pixeldroid.bdd.Does;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
 
-    public class Matcher
+
+    public class Expectation
     {
         private var positive:Boolean = true;
         private var absoluteDelta:Number = 0;
 
-        private var context:Thing;
+        private var context:Requirement;
         private var result:MatchResult;
         private var value:Object;
 
 
-        public function Matcher(context:Thing, value:Object)
+        public function Expectation(context:Requirement, value:Object)
         {
             this.context = context;
             this.value = value;
+
             result = new MatchResult();
+            result.source = context.currentCallInfo.source;
+            result.line = context.currentCallInfo.line;
+            result.method = context.currentCallInfo.method.getName();
         }
 
 
         // modifiers
-        public function get not():Matcher
+        public function get not():Expectation
         {
             positive = !positive;
             return this;
         }
 
-        public function toBePlusOrMinus(absoluteDelta:Number):Matcher // used with from()
+        public function toBePlusOrMinus(absoluteDelta:Number):Expectation // used with from()
         {
             this.absoluteDelta = absoluteDelta;
             return this;
@@ -41,7 +47,7 @@ package pixeldroid.bdd
         {
             result.description = value.getFullTypeName() +" " +rectifiedPrefix("toBeA") +" " +type.getFullName();
 
-            var match:Boolean = (isTypeMatch(value, type) || isSubtypeMatch(value, type));
+            var match:Boolean = (Does.typeMatch(value, type) || Does.subtypeMatch(value, type));
             result.success = rectifiedMatch( match );
             if (!result.success) result.message = "types " +rectifiedSuffix("do", true) +" match.";
 
@@ -112,7 +118,7 @@ package pixeldroid.bdd
 
         public function toBeEmpty():void
         {
-            if (isTypeMatch(value, String))
+            if (Does.typeMatch(value, String))
             {
                 var s:String = value as String;
 
@@ -121,7 +127,7 @@ package pixeldroid.bdd
                 result.success = rectifiedMatch( (s.length == 0) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("is", true) +" empty.";
             }
-            else if (isTypeMatch(value, Vector))
+            else if (Does.typeMatch(value, Vector))
             {
                 var vector:Vector = value as Vector;
 
@@ -140,7 +146,7 @@ package pixeldroid.bdd
 
         public function toContain(value2:Object):void
         {
-            if (isTypeMatch(value, String))
+            if (Does.typeMatch(value, String))
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
@@ -150,7 +156,7 @@ package pixeldroid.bdd
                 result.success = rectifiedMatch( (string1.indexOf(string2) > -1) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" contain '" +string2 +"'.";
             }
-            else if (isTypeMatch(value, Vector))
+            else if (Does.typeMatch(value, Vector))
             {
                 var vector:Vector = value as Vector;
 
@@ -182,7 +188,7 @@ package pixeldroid.bdd
             // Loom uses Lua regex patterns:
             //   http://lua-users.org/wiki/PatternsTutorial
             //   http://www.lua.org/manual/5.2/manual.html#6.4.1
-            if (isTypeMatch(value, String))
+            if (Does.typeMatch(value, String))
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
@@ -204,14 +210,14 @@ package pixeldroid.bdd
 
         public function toStartWith(value2:String):void
         {
-            if (isTypeMatch(value, String))
+            if (Does.typeMatch(value, String))
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
 
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toStartWith") +" '" +string2 +"'";
 
-                result.success = rectifiedMatch( (string1.indexOf(string2) == 0) );
+                result.success = rectifiedMatch( Does.stringStartWith(string1, string2) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" start with '" +string2 +"'.";
             }
             else
@@ -224,14 +230,14 @@ package pixeldroid.bdd
 
         public function toEndWith(value2:String):void
         {
-            if (isTypeMatch(value, String))
+            if (Does.typeMatch(value, String))
             {
                 var string1:String = value as String;
                 var string2:String = value2 as String;
 
                 result.description = "'" +string1 +"' " +rectifiedPrefix("toEndWith") +" '" +string2 +"'";
 
-                result.success = rectifiedMatch( (string1.indexOf(string2) == (string1.length - string2.length)) );
+                result.success = rectifiedMatch( Does.stringEndWith(string1, string2) );
                 if (!result.success) result.message = "String " +rectifiedSuffix("does", true) +" end with '" +string2 +"'.";
             }
             else
@@ -254,16 +260,6 @@ package pixeldroid.bdd
 
 
         // helpers
-        private function isTypeMatch(value:Object, type:Type):Boolean
-        {
-            return (value.getFullTypeName() == type.getFullName());
-        }
-
-        private function isSubtypeMatch(value:Object, type:Type):Boolean
-        {
-            return ((value instanceof type) || (value is type) || ((value as type) != null));
-        }
-
         private function rectifiedSuffix(phrase:String, flipped:Boolean = false):String
         {
             if (flipped) return (!positive ? phrase : phrase +' not');

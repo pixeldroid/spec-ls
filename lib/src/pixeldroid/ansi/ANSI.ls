@@ -74,7 +74,7 @@ package pixeldroid.ansi
         private function addSGR(n:Number, args:String=''):ANSI
         {
             // SGR codes follow the CSIx[;y][;z]m format
-            _string = _string.concat([code_begin, n, args, sgr_end]);
+            _string += (code_begin +n +args +sgr_end);
 
             return this;
         }
@@ -82,7 +82,7 @@ package pixeldroid.ansi
         private function addCode(code:String):ANSI
         {
             // regular codes are just CSIx format
-            _string = _string.concat([code_begin, code]);
+            _string += (code_begin +code);
 
             return this;
         }

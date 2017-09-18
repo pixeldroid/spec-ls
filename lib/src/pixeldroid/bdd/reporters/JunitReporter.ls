@@ -2,7 +2,7 @@
 package pixeldroid.bdd.reporters
 {
     import pixeldroid.bdd.Reporter;
-    import pixeldroid.bdd.models.Expectation;
+    import pixeldroid.bdd.models.Requirement;
     import pixeldroid.bdd.models.MatchResult;
     import pixeldroid.bdd.models.SpecInfo;
 
@@ -10,6 +10,14 @@ package pixeldroid.bdd.reporters
     import system.xml.XMLElement;
 
 
+    /**
+    Generates an xml report of the results of executing a specification.
+
+    The xml format matches the schema introduced by JUnit, and commonly supported by CI tools like Jenkins.
+
+    @see http://llg.cubic.org/docs/junit/
+    @see https://github.com/windyroad/JUnit-Schema
+    */
     public class JunitReporter implements Reporter
     {
         private var xml:XMLDocument;
@@ -17,6 +25,7 @@ package pixeldroid.bdd.reporters
         private var numFailures:Number;
 
 
+        /** @inherit */
         public function init(specInfo:SpecInfo):void
         {
             xml = new XMLDocument();
@@ -27,6 +36,7 @@ package pixeldroid.bdd.reporters
             xml.linkEndChild(suites);
         }
 
+        /** @inherit */
         public function begin(name:String, total:Number):void
         {
             numFailures = 0;
@@ -36,14 +46,15 @@ package pixeldroid.bdd.reporters
             suites.setAttribute('tests', total.toString());
         }
 
-        public function report(e:Expectation, durationSec:Number, index:Number, total:Number):void
+        /** @inherit */
+        public function report(req:Requirement, durationSec:Number, index:Number, total:Number):void
         {
             var i:Number;
-            var n:Number = e.numResults;
+            var n:Number = req.numResults;
             var result:MatchResult;
 
             var suite:XMLElement = xml.newElement('testsuite');
-            suite.setAttribute('name', e.description);
+            suite.setAttribute('name', req.description);
             suite.setAttribute('time', durationSec.toString());
 
             var test:XMLElement;
@@ -51,7 +62,7 @@ package pixeldroid.bdd.reporters
 
             for (i = 0; i < n; i++)
             {
-                result = e.getResult(i);
+                result = req.getResult(i);
 
                 test = xml.newElement('testcase');
                 test.setAttribute('name', 'expect ' +result.description);
@@ -62,7 +73,7 @@ package pixeldroid.bdd.reporters
 
                     fail = xml.newElement('failure');
                     fail.setAttribute('type', 'assertion');
-                    if (result.hasMessage()) fail.setAttribute('message', result.message);
+                    if (result.hasMessage()) fail.setAttribute('message', result.message +' see ' +result.callTrace);
 
                     test.linkEndChild(fail);
                 }
@@ -73,6 +84,7 @@ package pixeldroid.bdd.reporters
             suites.linkEndChild(suite);
         }
 
+        /** @inherit */
         public function end(name:String, durationSec:Number):Boolean
         {
             suites.setAttribute('errors', '0');
@@ -82,6 +94,12 @@ package pixeldroid.bdd.reporters
             writeFile('TEST-' +name +'.xml');
 
             return (numFailures == 0);
+        }
+
+        /** @inherit */
+        public function finalize(durationSec:Number):void
+        {
+            /* no-op */
         }
 
 

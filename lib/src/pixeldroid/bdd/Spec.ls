@@ -4,19 +4,25 @@ package pixeldroid.bdd
 
     import pixeldroid.bdd.Reporter;
     import pixeldroid.bdd.Thing;
+    import pixeldroid.bdd.ThingValidator;
     import pixeldroid.bdd.models.SpecInfo;
     import pixeldroid.bdd.reporters.ReporterManager;
     import pixeldroid.random.Randomizer;
 
+    import system.platform.Platform;
+
     public class Spec
     {
-        public static const version:String = '1.3.1';
+        public static const version:String = '2.0.0';
 
-        private static var things:Vector.<Thing> = [];
-        private static var reporters:ReporterManager = new ReporterManager();
+        private const things:Vector.<Thing> = [];
+        private const validator:ThingValidator = new ThingValidator();
+        private const reporters:ReporterManager = new ReporterManager();
+
+        public function Spec() { }
 
 
-        public static function describe(thingName:String):Thing
+        public function describe(thingName:String):Thing
         {
             var thing:Thing = new Thing(thingName);
             things.push(thing);
@@ -24,31 +30,34 @@ package pixeldroid.bdd
             return thing;
         }
 
-        public static function addReporter(reporter:Reporter):void
+        public function addReporter(reporter:Reporter):void
         {
             if (reporter) reporters.add(reporter);
         }
 
-        public static function get numReporters():Number
+        public function get numReporters():Number
         {
             return reporters.length;
         }
 
-        public static function execute(seed:Number=-1):Boolean
+        public function execute(seed:Number=-1):Boolean
         {
+            Debug.assert((numReporters > 0), 'must add at least one reporter to execute a Spec');
+
+            var startTimeMs:Number = Platform.getTime();
+            var success:Boolean = true;
+
             seed = Randomizer.initialize(seed);
             Randomizer.shuffle(things);
 
-            var success:Boolean = true;
-
             reporters.init(new SpecInfo('Spec', version, seed));
 
-            var i:Number;
-            var n:Number = things.length;
-            for(i = 0; i < n; i++)
-            {
-                if (!things[i].execute(reporters)) success = false;
-            }
+            for each(var thing:Thing in things)
+                if (!validator.validate(thing, reporters)) success = false;
+
+            reporters.finalize((Platform.getTime() - startTimeMs) * .001);
+
+            things.clear();
 
             return success;
         }
